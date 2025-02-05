@@ -600,7 +600,10 @@
 
             const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
             document.getElementById('result').innerHTML = procurement.generateHTML(); // Ensure the result is displayed
-
+            
+             // Show the result container
+            document.getElementById('resultContainer').classList.remove('hidden');
+            
             if (savedSearches.length < 15) {
                 savedSearches.push(procurement);
                 updateSavedSearchesTable();
