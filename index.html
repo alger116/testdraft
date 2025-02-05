@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riigihanke Andmed</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import "tailwindcss";
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .dark-mode input, .dark-mode select, .dark-mode button {
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #555;
+        }
+        .dark-mode button {
+            background-color: #007bff;
+        }
+        .dark-mode button:hover {
+            background-color: #0056b3;
+        }
+        .dark-mode th {
+            background-color: #007bff;
+        }
+        .dark-mode td {
+            background-color: #2e2e2e;
+        }
+        .dark-mode tr:nth-child(even) {
+            background-color: #3a3a3a;
+        }
+        .dark-mode .delete-button {
+            background-color: #dc3545;
+        }
+        .dark-mode .delete-button:hover {
+            background-color: #c82333;
+        }
+        .dark-mode .edit-button {
+            background-color: #ffc107;
+        }
+        .dark-mode .edit-button:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center h-screen bg-gray-100">
+    <div class="nav absolute top-2 left-2 flex space-x-2">
+        <button id="showForm" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center active" aria-label="Show Form">
+            <i class="fas fa-tools mr-2"></i> Tööriist
+        </button>
+        <button id="showSavedSearches" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show Saved Searches">
+            <i class="fas fa-folder-open mr-2"></i> Hanked
+        </button>
+        <button id="showHistory" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show History">
+            <i class="fas fa-history mr-2"></i> Ajalugu
+        </button>
+        <button id="settingsButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show Settings">
+            <i class="fas fa-cog mr-2"></i> Sätted
+        </button>
+    </div>
+    <div id="currentDateTime" class="absolute bottom-2 right-2 bg-white p-2 rounded shadow text-gray-800"></div>
+    <div id="toolTab" class="flex space-x-4">
+        <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
+            <h2 class="text-2xl font-bold text-center mb-4">Menetluse andmed</h2>
+            <form id="procurementForm" class="space-y-4">
+                <div>
+                    <label for="name" class="block text-gray-700">Nimi:</label>
+                    <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="cost" class="block text-gray-700">Maksumus:</label>
+                    <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="procedureType" class="block text-gray-700">Riigihanke menetlusliik:</label>
+                    <select id="procedureType" name="procedureType" class="w-full p-2 border rounded" required>
+                        <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Avatud hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                        <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Avatud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                        <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                        <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                        <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Piiratud hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                        <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                        <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks</option>
+                        <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks</option>
+                        <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Võistlev dialoog asjade hankelepingu sõlmimiseks</option>
+                        <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Võistlev dialoog teenuste hankelepingu sõlmimiseks</option>
+                        <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Võistlev dialoog ehitustööde hankelepingu sõlmimiseks</option>
+                        <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks</option>
+                        <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Kontsessioonimenetlus koos eraldi taotluse esitamisega</option>
+                        <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Kontsessioonimenetlus ilma eraldi taotlust esitamata</option>
+                        <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
+                        <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="contractSigningDate" class="block text-gray-700">Lepingu Allkirjastamise Kuupäev:</label>
+                    <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center">
+                    <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
+                </button>
+            </form>
+            <div class="flex space-x-2 mt-4">
+                <button id="clearFields" class="clear-button bg-red-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center">
+                    <i class="fas fa-broom mr-2"></i> Puhasta
+                </button>
+                <button id="saveFields" class="save-button bg-green-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center">
+                    <i class="fas fa-save mr-2"></i> Salvesta
+                </button>
+                <button id="refreshFields" class="refresh-button bg-yellow-500 text-black px-4 py-2 rounded flex-1 flex items-center justify-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Uuenda
+                </button>
+            </div>
+        </div>
+        <div class="container bg-white p-6 rounded shadow max-w-2xl" id="resultContainer">
+            <div id="result" class="result-card"></div>
+        </div>
+    </div>
+
+    <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
+    <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
+        <h2 class="text-2xl font-bold text-center mb-4">Salvestatud Hanked</h2>
+        <table class="w-full border-collapse table-auto">
+            <thead>
+                <tr>
+                    <th class="border p-2 bg-blue-500 text-white">Nimi</th>
+                    <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
+                    <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
+                    <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
+                    <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
+                    <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
+                    <th class="border p-2 bg-blue-500 text-white">Muuda</th>
+                    <th class="border p-2 bg-blue-500 text-white">Kustuta</th>
+                </tr>
+            </thead>
+            <tbody id="savedSearchesTableBody">
+                <!-- Saved searches will be inserted here -->
+            </tbody>
+        </table>
+        <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4">Salvesta Excelisse</button>
+    </div>
+    <div class="container bg-white p-6 rounded shadow max-w-lg hidden" id="settingsContainer">
+        <h2 class="text-2xl font-bold text-center mb-4">Settings</h2>
+        <form id="settingsForm" class="space-y-4">
+            <h3 class="text-xl font-semibold">Menetlusliigi sätted</h3>
+            <div>
+                <label for="documentPreparationDays" class="block text-gray-700">Riigihanke alusdokumentide koostamine (päevad):</label>
+                <input type="number" id="documentPreparationDays" name="documentPreparationDays" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="offerEvaluationDays" class="block text-gray-700">Pakkumuste hindamine (päevad):</label>
+                <input type="number" id="offerEvaluationDays" name="offerEvaluationDays" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="decisionDays" class="block text-gray-700">Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
+                <input type="number" id="decisionDays" name="decisionDays" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="bidderEvaluationDays" class="block text-gray-700">Pakkujate hindamine (päevad):</label>
+                <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="successfulBidderDays" class="block text-gray-700">Eduka kõrvaldamata jätmine ja kval (päevad):</label>
+                <input type="number" id="successfulBidderDays" name="successfulBidderDays" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="waitingPeriodDays" class="block text-gray-700">Ootaeg (päevad):</label>
+                <input type="number" id="waitingPeriodDays" name="waitingPeriodDays" class="w-full p-2 border rounded" required>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Salvesta</button>
+        </form>
+        <h3 class="text-xl font-semibold mt-6">Menetlusliigid</h3>
+        <select id="procedureTypeSelect" class="w-full p-2 border rounded mt-2">
+            <!-- Options will be populated dynamically -->
+        </select>
+        <div id="procedureTypeSettings" class="mt-4 space-y-4">
+            <!-- Procedure type settings will be displayed here -->
+        </div>
+        <button id="addProcedureTypeButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Lisa Menetlusliik</button>
+    </div>
+    <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
+        <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
+        <div class="filter-container mb-4">
+            <label for="filterByDate" class="block text-gray-700">Filtreeri kuupäeva järgi:</label>
+            <select id="filterByDate" class="w-full p-2 border rounded">
+                <option value="all">Kõik</option>
+                <!-- Options will be populated dynamically -->
+            </select>
+        </div>
+        <table class="w-full border-collapse table-auto">
+            <thead>
+                <tr>
+                    <th class="border p-2 bg-blue-500 text-white">Nimi</th>
+                    <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
+                    <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
+                    <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
+                    <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
+                    <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
+                </tr>
+            </thead>
+            <tbody id="historyTableBody">
+                <!-- History entries will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <button id="toggleDarkMode" class="absolute bottom-2 left-2 bg-blue-500 text-white px-4 py-2 rounded">Toggle Dark Mode</button>
+    <div class="password-prompt hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-80 text-center" id="passwordPrompt">
+        <h3 class="text-xl font-bold mb-4">Enter Password</h3>
+        <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
+        <div class="flex justify-center space-x-2">
+            <button id="passwordSubmit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+            <button id="passwordClose" class="close-button bg-red-500 text-white px-4 py-2 rounded">Close</button>
+        </div>
+        <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script>
+        const procedureData = {
+            "Lihthankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
+            "Lihthankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
+            "Lihthankemenetlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 15, piirmäär: 150000 },
+            "Avatud hankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Avatud hankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 15, piirmäär: 150000 },
+            "Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Piiratud hankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 150000 },
+            "Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 25, piirmäär: 150000 },
+            "Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Võistlev dialoog asjade hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Võistlev dialoog teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 15, piirmäär: 60000 },
+            "Võistlev dialoog ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 25, piirmäär: 150000 },
+            "Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 15, pakkumusteAeg: 25, piirmäär: 150000 },
+            "Kontsessioonimenetlus koos eraldi taotluse esitamisega": { taotlusteAeg: 30, pakkumusteAeg: 17, piirmäär: 300000 },
+            "Kontsessioonimenetlus ilma eraldi taotlust esitamata": { taotlusteAeg: 0, pakkumusteAeg: 30, piirmäär: 300000 },
+            "Sotsiaalteenuste erimenetlus": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 300000 },
+            "Eriteenuste erimenetlus": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
+        };
+
+        const internationalProcedureData = {
+            "Avatud hankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 30, piirmäär: 143000 },
+            "Avatud hankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 30, piirmäär: 143000 },
+            "Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 45, piirmäär: 5538000 },
+            "Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Piiratud hankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 5538000 },
+            "Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 5538000 },
+            "Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 5538000 },
+            "Võistlev dialoog asjade hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Võistlev dialoog teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 143000 },
+            "Võistlev dialoog ehitustööde hankelepingu sõlmimiseks": { taotlusteAeg: 30, pakkumusteAeg: 25, piirmäär: 5538000 },
+            "Kontsessioonimenetlus koos eraldi taotluse esitamisega": { taotlusteAeg: 30, pakkumusteAeg: 17, piirmäär: 5538000 },
+            "Kontsessioonimenetlus ilma eraldi taotlust esitamata": { taotlusteAeg: 0, pakkumusteAeg: 30, piirmäär: 5538000 },
+            "Sotsiaalteenuste erimenetlus": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 750000 },
+            "Eriteenuste erimenetlus": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 750000 }
+        };
+
+        const defaultSettings = {
+            documentPreparationDays: 10,
+            offerEvaluationDays: 5,
+            decisionDays: 3,
+            bidderEvaluationDays: 3,
+            successfulBidderDays: 3,
+            waitingPeriodDays: 14
+        };
+
+        let settings = { ...defaultSettings };
+
+        const correctPassword = 'admin';
+        let passwordValidUntil = null;
+
+        function showPasswordPrompt(callback) {
+            const now = new Date();
+            if (passwordValidUntil && now < passwordValidUntil) {
+                callback();
+                return;
+            }
+
+            const passwordPrompt = document.getElementById('passwordPrompt');
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordError = document.getElementById('passwordError');
+            passwordPrompt.classList.remove('hidden');
+            passwordInput.value = '';
+            passwordError.classList.add('hidden');
+
+            document.getElementById('passwordSubmit').onclick = function() {
+                if (passwordInput.value === correctPassword) {
+                    passwordPrompt.classList.add('hidden');
+                    passwordValidUntil = new Date(now.getTime() + 10 * 60000); // 10 minutes from now
+                    callback();
+                } else {
+                    passwordError.classList.remove('hidden');
+                }
+            };
+
+            document.getElementById('passwordClose').onclick = function() {
+                passwordPrompt.classList.add('hidden');
+            };
+        }
+
+        document.getElementById('settingsButton').addEventListener('click', function() {
+            showPasswordPrompt(() => {
+                document.getElementById('settingsContainer').classList.toggle('hidden');
+                document.getElementById('formContainer').classList.add('hidden');
+                document.getElementById('savedSearchesContainer').classList.add('hidden');
+                loadSettings();
+                loadProcedureTypes();
+            });
+        });
+
+        document.getElementById('settingsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            settings.documentPreparationDays = parseInt(document.getElementById('documentPreparationDays').value);
+            settings.offerEvaluationDays = parseInt(document.getElementById('offerEvaluationDays').value);
+            settings.decisionDays = parseInt(document.getElementById('decisionDays').value);
+            settings.bidderEvaluationDays = parseInt(document.getElementById('bidderEvaluationDays').value);
+            settings.successfulBidderDays = parseInt(document.getElementById('successfulBidderDays').value);
+            settings.waitingPeriodDays = parseInt(document.getElementById('waitingPeriodDays').value);
+            saveSettings();
+            alert('Settings saved successfully!');
+        });
+
+        document.getElementById('addProcedureTypeButton').addEventListener('click', function() {
+            addProcedureType();
+        });
+
+        document.getElementById('procedureTypeSelect').addEventListener('change', function() {
+            const selectedType = this.value;
+            loadProcedureTypeSettings(selectedType);
+        });
+
+        function loadSettings() {
+            document.getElementById('documentPreparationDays').value = settings.documentPreparationDays;
+            document.getElementById('offerEvaluationDays').value = settings.offerEvaluationDays;
+            document.getElementById('decisionDays').value = settings.decisionDays;
+            document.getElementById('bidderEvaluationDays').value = settings.bidderEvaluationDays;
+            document.getElementById('successfulBidderDays').value = settings.successfulBidderDays;
+            document.getElementById('waitingPeriodDays').value = settings.waitingPeriodDays;
+        }
+
+        function saveSettings() {
+            localStorage.setItem('procurementSettings', JSON.stringify(settings));
+        }
+
+        function loadSavedSettings() {
+            const savedSettings = localStorage.getItem('procurementSettings');
+            if (savedSettings) {
+                settings = JSON.parse(savedSettings);
+            }
+        }
+
+        function loadProcedureTypes() {
+            const select = document.getElementById('procedureTypeSelect');
+            select.innerHTML = '';
+            Object.keys(procedureData).forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                select.appendChild(option);
+            });
+            if (select.options.length > 0) {
+                loadProcedureTypeSettings(select.options[0].value);
+            }
+        }
+
+        function loadProcedureTypeSettings(type) {
+            const procedure = procedureData[type];
+            const container = document.getElementById('procedureTypeSettings');
+            container.innerHTML = `
+                <div class="procedure-type">
+                    <label for="procedureTypeName" class="block text-gray-700">Menetlusliik:</label>
+                    <input type="text" id="procedureTypeName" value="${type}" required><br><br>
+                    <label for="requestDays" class="block text-gray-700">Taotluste esitamise päevad:</label>
+                    <input type="number" id="requestDays" value="${procedure.taotlusteAeg}" required><br><br>
+                    <label for="offerDays" class="block text-gray-700">Pakkumuste esitamise päevad:</label>
+                    <input type="number" id="offerDays" value="${procedure.pakkumusteAeg}" required><br><br>
+                    <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
+                    <input type="checkbox" id="useInternationalThreshold" ${procedure.useInternational ? 'checked' : ''} onchange="toggleInternationalThreshold('${type}')"><br><br>
+                    <button onclick="deleteProcedureType('${type}')" class="bg-red-500 text-white px-4 py-2 rounded">Kustuta</button>
+                    <button onclick="saveProcedureType('${type}')" class="bg-blue-500 text-white px-4 py-2 rounded">Salvesta</button>
+                </div>
+            `;
+        }
+
+        function addProcedureType() {
+            const container = document.getElementById('procedureTypeSettings');
+            container.innerHTML = `
+                <div class="procedure-type">
+                    <label for="procedureTypeName" class="block text-gray-700">Menetlusliik:</label>
+                    <input type="text" id="procedureTypeName" required><br><br>
+                    <label for="requestDays" class="block text-gray-700">Taotluste esitamise päevad:</label>
+                    <input type="number" id="requestDays" required><br><br>
+                    <label for="offerDays" class="block text-gray-700">Pakkumuste esitamise päevad:</label>
+                    <input type="number" id="offerDays" required><br><br>
+                    <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
+                    <input type="checkbox" id="useInternationalThreshold" onchange="toggleInternationalThreshold()"><br><br>
+                    <button onclick="saveNewProcedureType()" class="bg-blue-500 text-white px-4 py-2 rounded">Salvesta</button>
+                </div>
+            `;
+        }
+
+        function toggleInternationalThreshold(type) {
+            const useInternational = document.getElementById('useInternationalThreshold').checked;
+            const procedure = useInternational ? internationalProcedureData[type] : procedureData[type];
+            document.getElementById('requestDays').value = procedure.taotlusteAeg;
+            document.getElementById('offerDays').value = procedure.pakkumusteAeg;
+        }
+
+        function deleteProcedureType(type) {
+            delete procedureData[type];
+            loadProcedureTypes();
+            saveSettings();
+        }
+
+        function saveProcedureType(oldType) {
+            const newType = document.getElementById('procedureTypeName').value;
+            const requestDays = parseInt(document.getElementById('requestDays').value);
+            const offerDays = parseInt(document.getElementById('offerDays').value);
+            const useInternational = document.getElementById('useInternationalThreshold').checked;
+            delete procedureData[oldType];
+            procedureData[newType] = { taotlusteAeg: requestDays, pakkumusteAeg: offerDays, piirmäär: 60000, useInternational }; // Default piirmäär
+            loadProcedureTypes();
+            saveSettings();
+        }
+
+        function saveNewProcedureType() {
+            const newType = document.getElementById('procedureTypeName').value;
+            const requestDays = parseInt(document.getElementById('requestDays').value);
+            const offerDays = parseInt(document.getElementById('offerDays').value);
+            const useInternational = document.getElementById('useInternationalThreshold').checked;
+            procedureData[newType] = { taotlusteAeg: requestDays, pakkumusteAeg: offerDays, piirmäär: 60000, useInternational }; // Default piirmäär
+            loadProcedureTypes();
+            saveSettings();
+        }
+
+        loadSavedSettings();
+
+        class PublicProcurement {
+            constructor(name, cost, procedureType, contractSigningDate) {
+                this.name = name;
+                this.cost = cost;
+                this.procedureType = procedureType;
+                this.contractSigningDate = new Date(contractSigningDate);
+                this.procedureDuration = this.calculateProcedureDuration();
+                this.procedureDetails = this.calculateProcedureDetails();
+                this.requestSubmissionDate = this.calculateRequestSubmissionDate();
+            }
+
+            calculateProcedureDuration() {
+                const procedure = procedureData[this.procedureType];
+                const internationalProcedure = internationalProcedureData[this.procedureType];
+                const internationalThreshold = internationalProcedure.piirmäär;
+
+                let duration = 0;
+
+                if (this.cost > internationalThreshold || procedure.useInternational) {
+                    duration += internationalProcedure.taotlusteAeg + internationalProcedure.pakkumusteAeg;
+                } else {
+                    duration += procedure.taotlusteAeg + procedure.pakkumusteAeg;
+                }
+
+                duration += settings.documentPreparationDays;
+                duration += settings.offerEvaluationDays;
+                duration += settings.decisionDays;
+                duration += settings.bidderEvaluationDays;
+                duration += settings.successfulBidderDays;
+                duration += settings.waitingPeriodDays;
+
+                return duration;
+            }
+
+            calculateProcedureDetails() {
+                const procedure = procedureData[this.procedureType];
+                const internationalProcedure = internationalProcedureData[this.procedureType];
+                const internationalThreshold = internationalProcedure.piirmäär;
+                let taotlusteAeg, pakkumusteAeg;
+
+                if (this.cost > internationalThreshold || procedure.useInternational) {
+                    taotlusteAeg = internationalProcedure.taotlusteAeg;
+                    pakkumusteAeg = internationalProcedure.pakkumusteAeg;
+                } else {
+                    taotlusteAeg = procedure.taotlusteAeg;
+                    pakkumusteAeg = procedure.pakkumusteAeg;
+                }
+
+                const details = [
+                    { step: "Riigihanke alusdokumentide koostamine", days: `kuni ${settings.documentPreparationDays} tööpäeva` },
+                    { step: "Taotluste esitamine RHRis", days: taotlusteAeg ? `${taotlusteAeg} päeva` : "Ei kohaldu antud menetluses." },
+                    { step: "Pakkumuste esitamine RHRis", days: pakkumusteAeg ? `${pakkumusteAeg} päeva` : "Ei kohaldu antud menetluses." },
+                    { step: "Pakkumuste hindamine", days: `${settings.offerEvaluationDays} päeva` },
+                    { step: "Vastavaks ja edukaks tunnistamise otsus", days: `${settings.decisionDays} päeva` },
+                    { step: "Pakkujate hindamine", days: `${settings.bidderEvaluationDays} päeva` },
+                    { step: "Eduka kõrvaldamata jätmine ja kval", days: `${settings.successfulBidderDays} päeva` },
+                    { step: "Hankija ei või anda nõustumust sõlmida hankeleping enne 14 päeva möödumist peale otsust 2 (Jah, seal sees on ka 10 päevane ooteaeg)", days: `${settings.waitingPeriodDays} päeva` }
+                ];
+                return details;
+            }
+
+            calculateRequestSubmissionDate() {
+                const submissionDate = new Date(this.contractSigningDate);
+                submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
+                return submissionDate.toISOString().split('T')[0]; // Return date in YYYY-MM-DD format
+            }
+
+            generateHTML() {
+                const detailsHTML = this.procedureDetails.map((detail, index) => `
+                    <li>
+                        ${detail.step}: 
+                        <span id="days-${index}">${detail.days}</span>
+                        <div class="adjust-buttons">
+                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-2 py-1 rounded">-</button>
+                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-2 py-1 rounded">+</button>
+                        </div>
+                    </li>
+                `).join('');
+
+                const errorMessage = new Date(this.requestSubmissionDate) < new Date() ? 
+                    '<p class="error-message text-red-500 font-bold">NB! Oled hiljaks jäänud, palun tutvu menetlusele kuluva ajaga ja korrigeeri lepingu sõlmimise kuupäeva</p>' : '';
+
+                return `
+                    <div class="result-card bg-white p-6 rounded max-w-lg">
+                        <h2 class="text-2xl font-bold text-black-500 mb-4">Riigihanke Andmed</h2>
+                        <p><strong>Riigihanke Taotluse Esitamise Kuupäev:</strong> <span id="requestSubmissionDate">${this.requestSubmissionDate}</span></p>
+                        ${errorMessage}
+                        <p><strong>Nimi:</strong> ${this.name}</p>
+                        <p><strong>Maksumus:</strong> ${this.cost}</p>
+                        <p><strong>Riigihanke menetlusliik:</strong> ${this.procedureType}</p>
+                        <p><strong>Lepingu Allkirjastamise Kuupäev:</strong> ${this.contractSigningDate.toISOString().split('T')[0]}</p>
+                        <p><strong>Eeldatav riigihanke menetlusaeg päevades:</strong> <span id="totalDuration">${this.procedureDuration}</span> päeva</p>
+                        <ul class="list-none p-0">
+                            ${detailsHTML}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            generateTableRow(index) {
+                return `
+                    <tr>
+                        <td class="border p-2">${this.name}</td>
+                        <td class="border p-2">${this.procedureType}</td>
+                        <td class="border p-2">${this.cost}</td>
+                        <td class="border p-2">${this.procedureDuration} päeva</td>
+                        <td class="border p-2">${this.requestSubmissionDate}</td>
+                        <td class="border p-2">${this.contractSigningDate.toISOString().split('T')[0]}</td>
+                        <td class="border p-2"><button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded" onclick="editSearch(${index})">Muuda</button></td>
+                        <td class="border p-2"><button class="delete-button bg-red-500 text-white px-2 py-1 rounded" onclick="deleteSearch(${index})">Kustuta</button></td>
+                    </tr>
+                `;
+            }
+        }
+
+        function adjustDays(index, adjustment) {
+            const daysElement = document.getElementById(`days-${index}`);
+            let daysText = daysElement.innerText;
+            let days = parseInt(daysText.match(/\d+/)[0]);
+            days += adjustment;
+            daysElement.innerText = daysText.replace(/\d+/, days);
+
+            // Update total duration
+            const totalDurationElement = document.getElementById('totalDuration');
+            let totalDuration = parseInt(totalDurationElement.innerText);
+            totalDuration += adjustment;
+            totalDurationElement.innerText = totalDuration;
+
+            // Store updated total duration in the PublicProcurement object
+            const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
+            if (procurement) {
+                procurement.procedureDuration = totalDuration;
+                procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+            }
+        }
+
+        const savedSearches = [];
+        const history = [];
+
+        document.getElementById('procurementForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const cost = parseFloat(document.getElementById('cost').value);
+            const procedureType = document.getElementById('procedureType').value;
+            const contractSigningDate = document.getElementById('contractSigningDate').value;
+
+            const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
+            document.getElementById('result').innerHTML = procurement.generateHTML(); // Ensure the result is displayed
+
+            if (savedSearches.length < 15) {
+                savedSearches.push(procurement);
+                updateSavedSearchesTable();
+            } else {
+                alert("Maksimaalne salvestatud otsingute arv on 15.");
+            }
+
+            // Save to history
+            if (history.length >= 500) {
+                history.shift(); // Remove the oldest entry if history exceeds 500
+            }
+            history.push(procurement);
+            saveHistory(); // Save history immediately
+        });
+
+        document.getElementById('clearFields').addEventListener('click', function() {
+            document.getElementById('procurementForm').reset();
+            document.getElementById('result').innerHTML = '';
+        });
+
+        document.getElementById('saveFields').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const cost = parseFloat(document.getElementById('cost').value);
+            const procedureType = document.getElementById('procedureType').value;
+            const contractSigningDate = document.getElementById('contractSigningDate').value;
+
+            const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
+
+            // Update procedure details with adjusted days
+            procurement.procedureDetails.forEach((detail, index) => {
+                const daysElement = document.getElementById(`days-${index}`);
+                let daysText = daysElement.innerText;
+                let days = parseInt(daysText.match(/\d+/)[0]);
+                detail.days = `${days} päeva`;
+            });
+
+            // Capture the adjusted procedureDuration value
+            procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
+            procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+
+            // Update the displayed result
+            document.getElementById('result').innerHTML = procurement.generateHTML();
+
+            // Save the updated procurement
+            const existingIndex = savedSearches.findIndex(p => p.name === name);
+            if (existingIndex !== -1) {
+                savedSearches[existingIndex] = procurement;
+            } else {
+                if (savedSearches.length < 15) {
+                    savedSearches.push(procurement);
+                } else {
+                    alert("Maksimaalne salvestatud otsingute arv on 15.");
+                }
+            }
+            updateSavedSearchesTable();
+        });
+
+        document.getElementById('refreshFields').addEventListener('click', function() {
+            const procurement = new PublicProcurement(
+                document.getElementById('name').value,
+                parseFloat(document.getElementById('cost').value),
+                document.getElementById('procedureType').value,
+                document.getElementById('contractSigningDate').value
+            );
+
+            procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
+            procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+            document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+            updateSavedSearchesTable();
+        });
+
+        document.getElementById('saveToExcel').addEventListener('click', function() {
+            if (savedSearches.length === 0) {
+                alert("Salvestatud otsinguid ei ole.");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Nimi,Maksumus,Menetluse Tüüp,Lepingu Allkirjastamise Kuupäev,Menetlusele kuluv aeg\n";
+
+            savedSearches.forEach(procurement => {
+                const row = [
+                    procurement.name,
+                    procurement.cost,
+                    procurement.procedureType,
+                    procurement.contractSigningDate.toISOString().split('T')[0],
+                    procurement.procedureDuration
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "riigihanke_andmed.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        document.getElementById('showForm').addEventListener('click', function() {
+            document.getElementById('toolTab').classList.remove('hidden');
+            document.getElementById('formContainer').classList.remove('hidden');
+            document.getElementById('savedSearchesContainer').classList.add('hidden');
+            document.getElementById('historyContainer').classList.add('hidden');
+            document.getElementById('settingsContainer').classList.add('hidden');
+            setActiveTab(this);
+        });
+
+        document.getElementById('showSavedSearches').addEventListener('click', function() {
+            document.getElementById('toolTab').classList.add('hidden');
+            document.getElementById('formContainer').classList.add('hidden');
+            document.getElementById('savedSearchesContainer').classList.remove('hidden');
+            document.getElementById('historyContainer').classList.add('hidden');
+            document.getElementById('settingsContainer').classList.add('hidden');
+            updateSavedSearchesTable();
+            setActiveTab(this);
+        });
+
+        document.getElementById('showHistory').addEventListener('click', function() {
+            showPasswordPrompt(() => {
+                document.getElementById('toolTab').classList.add('hidden');
+                document.getElementById('formContainer').classList.add('hidden');
+                document.getElementById('savedSearchesContainer').classList.add('hidden');
+                document.getElementById('settingsContainer').classList.add('hidden');
+                document.getElementById('historyContainer').classList.remove('hidden');
+                loadHistory();
+                setActiveTab(this);
+            });
+        });
+
+        function setActiveTab(button) {
+            const navButtons = document.querySelectorAll('.nav button');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+        function updateSavedSearchesTable() {
+            const tableBody = document.getElementById('savedSearchesTableBody');
+            tableBody.innerHTML = '';
+            savedSearches.forEach((procurement, index) => {
+                tableBody.innerHTML += procurement.generateTableRow(index);
+            });
+            adjustTableColumns();
+        }
+
+        function deleteSearch(index) {
+            savedSearches.splice(index, 1);
+            updateSavedSearchesTable();
+        }
+
+        function editSearch(index) {
+            const procurement = savedSearches[index];
+            document.getElementById('name').value = procurement.name;
+            document.getElementById('cost').value = procurement.cost;
+            document.getElementById('procedureType').value = procurement.procedureType;
+            document.getElementById('contractSigningDate').value = procurement.contractSigningDate.toISOString().split('T')[0];
+            deleteSearch(index);
+            document.getElementById('toolTab').classList.remove('hidden');
+            document.getElementById('formContainer').classList.remove('hidden');
+            document.getElementById('savedSearchesContainer').classList.add('hidden');
+            document.getElementById('historyContainer').classList.add('hidden');
+            document.getElementById('settingsContainer').classList.add('hidden');
+            setActiveTab(document.getElementById('showForm'));
+        }
+
+        function refreshDuration(index) {
+            const procurement = savedSearches[index];
+            procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
+            procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+            document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+            updateSavedSearchesTable();
+        }
+
+        async function saveHistory() {
+            try {
+                const response = await fetch('http://localhost:3000/save-history', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(history)
+                });
+                if (!response.ok) {
+                    console.error('Failed to save history');
+                }
+            } catch (error) {
+                console.error('Error saving history:', error);
+            }
+        }
+
+        async function loadHistory() {
+            try {
+                const response = await fetch('http://localhost:8080/history.json');
+                if (response.ok) {
+                    const savedHistory = await response.json();
+                    console.log('Fetched history:', savedHistory); // Debugging statement
+                    history.length = 0; // Clear current history
+                    savedHistory.forEach(item => {
+                        const procurement = new PublicProcurement(
+                            item.name,
+                            item.cost,
+                            item.procedureType,
+                            item.contractSigningDate
+                        );
+                        procurement.procedureDuration = item.procedureDuration;
+                        procurement.procedureDetails = item.procedureDetails;
+                        procurement.requestSubmissionDate = item.requestSubmissionDate;
+                        history.push(procurement);
+                    });
+                    updateHistoryTable();
+                    populateFilterOptions();
+                } else {
+                    console.error('Failed to load history:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching history:', error);
+            }
+        }
+
+        function updateHistoryTable() {
+            const tableBody = document.getElementById('historyTableBody');
+            tableBody.innerHTML = '';
+            history.forEach((procurement, index) => {
+                console.log('Adding row for:', procurement); // Debugging statement
+                tableBody.innerHTML += procurement.generateTableRow(index);
+            });
+            adjustTableColumns();
+        }
+
+        function populateFilterOptions() {
+            const filterSelect = document.getElementById('filterByDate');
+            const dates = [...new Set(history.map(procurement => procurement.contractSigningDate.toISOString().split('T')[0]))];
+            filterSelect.innerHTML = '<option value="all">Kõik</option>';
+            dates.forEach(date => {
+                filterSelect.innerHTML += `<option value="${date}">${date}</option>`;
+            });
+        }
+
+        document.getElementById('filterByDate').addEventListener('change', function() {
+            const selectedDate = this.value;
+            const filteredHistory = selectedDate === 'all' ? history : history.filter(procurement => procurement.contractSigningDate.toISOString().split('T')[0] === selectedDate);
+            const tableBody = document.getElementById('historyTableBody');
+            tableBody.innerHTML = '';
+            filteredHistory.forEach((procurement, index) => {
+                tableBody.innerHTML += procurement.generateTableRow(index);
+            });
+            adjustTableColumns();
+        });
+
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        function updateDateTime() {
+            const now = new Date();
+            const dateTimeString = now.toLocaleString('et-EE', { dateStyle: 'full', timeStyle: 'medium' });
+            document.getElementById('currentDateTime').innerText = dateTimeString;
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        loadHistory();
+
+        function adjustTableColumns() {
+            const tables = document.querySelectorAll('table');
+            tables.forEach(table => {
+                const columns = table.querySelectorAll('th');
+                columns.forEach((column, index) => {
+                    let maxWidth = 0;
+                    const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
+                    cells.forEach(cell => {
+                        const cellWidth = cell.offsetWidth;
+                        if (cellWidth > maxWidth) {
+                            maxWidth = cellWidth;
+                        }
+                    });
+                    column.style.width = `${maxWidth}px`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
