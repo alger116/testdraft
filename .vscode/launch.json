@@ -17,6 +17,12 @@
             "request": "launch",
             "name": "Open index.html",
             "file": "${workspaceFolder}/index.html"
+        },
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Launch index.html",
+            "file": "${workspaceFolder}/index.html"
         }
     ]
 }
