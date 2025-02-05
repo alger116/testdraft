@@ -5,8 +5,8 @@ baseurl: "/hanked" # the subpath of your site, e.g. /blog
 url: "https://alger116.github.io" # the base hostname & protocol for your site
 
 # Build settings
-markdown: "kramdown"
-theme: "minima"
+markdown: kramdown
+theme: minima
 
 # Exclude these files and directories from the site build
 exclude:
