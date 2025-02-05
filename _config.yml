@@ -1,7 +1,7 @@
 # filepath: /Users/viljarpartel/Desktop/test/_config.yml
 title: My Jekyll Site
 description: A simple Jekyll site
-baseurl: "/hanked" # the subpath of your site, e.g. /blog
+baseurl: "/testdraft" # the subpath of your site, e.g. /blog
 url: "https://alger116.github.io" # the base hostname & protocol for your site
 
 # Build settings
