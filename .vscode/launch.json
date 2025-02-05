@@ -16,7 +16,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "file": "${workspaceFolder}/index.html"
+            "url": "file://${workspaceFolder}/index.html"
         },
         {
             "type": "msedge",
