@@ -25,7 +25,7 @@
             "file": "${workspaceFolder}/index.html"
         },
         {
-            "type": "pwa-chrome",
+            "type": "chrome",
             "request": "launch",
             "name": "Launch index.html",
             "file": "${workspaceFolder}/index.html"
