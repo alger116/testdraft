@@ -50,19 +50,31 @@
     </style>
 </head>
 <body class="flex justify-center items-center h-screen bg-gray-100">
-    <div class="nav absolute top-2 left-2 flex space-x-2">
-        <button id="showForm" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center active" aria-label="Show Form">
-            <i class="fas fa-tools mr-2"></i> Tööriist
-        </button>
-        <button id="showSavedSearches" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show Saved Searches">
-            <i class="fas fa-folder-open mr-2"></i> Hanked
-        </button>
-        <button id="showHistory" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show History">
-            <i class="fas fa-history mr-2"></i> Ajalugu
-        </button>
-        <button id="settingsButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show Settings">
-            <i class="fas fa-cog mr-2"></i> Sätted
-        </button>
+    <div class="nav absolute top-2 left-2">
+        <div class="relative inline-block text-left">
+            <button id="dropdownButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-haspopup="true" aria-expanded="true">
+                <i class="fas fa-bars mr-2"></i> Menüü
+            </button>
+            <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
+                    <button id="showForm" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
+                        <i class="fas fa-tools mr-2"></i> Tööriist
+                    </button>
+                    <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
+                        <i class="fas fa-folder-open mr-2"></i> Hanked
+                    </button>
+                    <button id="showHistory" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
+                        <i class="fas fa-history mr-2"></i> Ajalugu
+                    </button>
+                    <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
+                        <i class="fas fa-cog mr-2"></i> Sätted
+                    </button>
+                    <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
+                        <i class="fas fa-moon mr-2"></i> Dark Mode
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="currentDateTime" class="absolute bottom-2 right-2 bg-white p-2 rounded shadow text-gray-800"></div>
     <div id="toolTab" class="flex space-x-4">
@@ -70,11 +82,11 @@
             <h2 class="text-2xl font-bold text-center mb-4">Riigihanke andmed</h2>
             <form id="procurementForm" class="space-y-4">
                 <div>
-                    <label for="name" class="block text-gray-700">Nimi:</label>
+                    <label for="name" class="block text-gray-700">Riigihanke nimetus:</label>
                     <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
                 </div>
                 <div>
-                    <label for="cost" class="block text-gray-700">Maksumus:</label>
+                    <label for="cost" class="block text-gray-700">Riigihanke maksumus:</label>
                     <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
                 </div>
                 <div>
@@ -102,7 +114,7 @@
                     </select>
                 </div>
                 <div>
-                    <label for="contractSigningDate" class="block text-gray-700">Lepingu Allkirjastamise Kuupäev:</label>
+                    <label for="contractSigningDate" class="block text-gray-700">Lepingu allkirjastamise kuupäev:</label>
                     <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
                 </div>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center">
@@ -212,7 +224,6 @@
             </tbody>
         </table>
     </div>
-    <button id="toggleDarkMode" class="absolute bottom-2 left-2 bg-blue-500 text-white px-4 py-2 rounded">Toggle Dark Mode</button>
     <div class="password-prompt hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-80 text-center" id="passwordPrompt">
         <h3 class="text-xl font-bold mb-4">Enter Password</h3>
         <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
@@ -508,7 +519,7 @@
                     { step: "Vastavaks ja edukaks tunnistamise otsus", days: `${settings.decisionDays} päeva` },
                     { step: "Pakkujate hindamine", days: `${settings.bidderEvaluationDays} päeva` },
                     { step: "Eduka kõrvaldamata jätmine ja kval", days: `${settings.successfulBidderDays} päeva` },
-                    { step: "Hankija ei või anda nõustumust sõlmida hankeleping enne 14 päeva möödumist peale otsust 2 (Jah, seal sees on ka 10 päevane ooteaeg)", days: `${settings.waitingPeriodDays} päeva` }
+                    { step: "Hankija ei või anda nõustumust sõlmida hankeleping enne 14 päeva möödumist peale edukaks tunnistamise otsuse teatavaks tegemist", days: `${settings.waitingPeriodDays} päeva` }
                 ];
                 return details;
             }
@@ -536,13 +547,13 @@
 
                 return `
                     <div class="result-card bg-white p-6 rounded max-w-lg">
-                        <h2 class="text-2xl font-bold text-black-500 mb-4">Riigihanke Andmed</h2>
-                        <p><strong>Riigihanke Taotluse Esitamise Kuupäev:</strong> <span id="requestSubmissionDate">${this.requestSubmissionDate}</span></p>
+                        <h2 class="text-2xl font-bold text-black-500 mb-4">Riigihanke andmed</h2>
+                        <p><strong>Riigihanke taotluse esitamise kuupäev:</strong> <span id="requestSubmissionDate">${this.requestSubmissionDate}</span></p>
                         ${errorMessage}
                         <p><strong>Nimi:</strong> ${this.name}</p>
                         <p><strong>Maksumus:</strong> ${this.cost}</p>
                         <p><strong>Riigihanke menetlusliik:</strong> ${this.procedureType}</p>
-                        <p><strong>Lepingu Allkirjastamise Kuupäev:</strong> ${this.contractSigningDate.toISOString().split('T')[0]}</p>
+                        <p><strong>Lepingu allkirjastamise kuupäev:</strong> ${this.contractSigningDate.toISOString().split('T')[0]}</p>
                         <p><strong>Eeldatav riigihanke menetlusaeg päevades:</strong> <span id="totalDuration">${this.procedureDuration}</span> päeva</p>
                         <ul class="list-none p-0">
                             ${detailsHTML}
@@ -886,6 +897,19 @@
                 });
             });
         }
+
+        document.getElementById('dropdownButton').addEventListener('click', function() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function(event) {
+            const dropdownButton = document.getElementById('dropdownButton');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (!dropdownButton.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
