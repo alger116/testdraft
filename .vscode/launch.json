@@ -23,6 +23,12 @@
             "request": "launch",
             "name": "Launch index.html",
             "file": "${workspaceFolder}/index.html"
+        },
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "Launch index.html",
+            "file": "${workspaceFolder}/index.html"
         }
     ]
 }
