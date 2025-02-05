@@ -622,6 +622,7 @@
         document.getElementById('clearFields').addEventListener('click', function() {
             document.getElementById('procurementForm').reset();
             document.getElementById('result').innerHTML = '';
+            document.getElementById('resultContainer').classList.add('hidden'); // Hide the result container
         });
 
         document.getElementById('saveFields').addEventListener('click', function() {
