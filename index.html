@@ -548,7 +548,15 @@
                 return `
                     <div class="result-card bg-white p-6 rounded max-w-lg">
                         <h2 class="text-2xl font-bold text-black-500 mb-4">Riigihanke andmed</h2>
-                        <p><strong>Riigihanke taotluse esitamise kuupäev:</strong> <span id="requestSubmissionDate">${this.requestSubmissionDate}</span></p>
+                        <p><strong>Riigihanke taotluse esitamise kuupäev:</strong> 
+                            <span id="requestSubmissionDate">${this.requestSubmissionDate}</span>
+                            <span class="relative group">
+                                <i class="fas fa-exclamation-circle text-red-500 ml-2 cursor-pointer"></i>
+                                <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-32 bg-gray-800 text-white text-xs rounded py-1 px-2 hidden group-hover:block">
+                                    Teade
+                                </span>
+                            </span>
+                        </p>
                         ${errorMessage}
                         <p><strong>Nimi:</strong> ${this.name}</p>
                         <p><strong>Maksumus:</strong> ${this.cost}</p>
