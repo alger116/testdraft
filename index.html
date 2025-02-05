@@ -328,11 +328,11 @@
 
         document.getElementById('settingsButton').addEventListener('click', function() {
             showPasswordPrompt(() => {
-                document.getElementById('settingsContainer').classList.toggle('hidden');
-                document.getElementById('formContainer').classList.add('hidden');
-                document.getElementById('savedSearchesContainer').classList.add('hidden');
+                closeAllTabs();
+                document.getElementById('settingsContainer').classList.remove('hidden');
                 loadSettings();
                 loadProcedureTypes();
+                setActiveTab(this);
             });
         });
 
@@ -512,7 +512,7 @@
                 }
 
                 const details = [
-                    { step: "Riigihanke alusdokumentide koostamine", days: `kuni ${settings.documentPreparationDays} tööpäeva` },
+                    { step: "Riigihanke alusdokumentide koostamine", days: ` ${settings.documentPreparationDays} päeva` },
                     { step: "Taotluste esitamine RHRis", days: taotlusteAeg ? `${taotlusteAeg} päeva` : "Ei kohaldu antud menetluses." },
                     { step: "Pakkumuste esitamine RHRis", days: pakkumusteAeg ? `${pakkumusteAeg} päeva` : "Ei kohaldu antud menetluses." },
                     { step: "Pakkumuste hindamine", days: `${settings.offerEvaluationDays} päeva` },
@@ -604,6 +604,7 @@
             if (procurement) {
                 procurement.procedureDuration = totalDuration;
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+                document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
             }
         }
 
@@ -725,30 +726,21 @@
         });
 
         document.getElementById('showForm').addEventListener('click', function() {
-            document.getElementById('toolTab').classList.remove('hidden');
+            closeAllTabs();
             document.getElementById('formContainer').classList.remove('hidden');
-            document.getElementById('savedSearchesContainer').classList.add('hidden');
-            document.getElementById('historyContainer').classList.add('hidden');
-            document.getElementById('settingsContainer').classList.add('hidden');
             setActiveTab(this);
         });
 
         document.getElementById('showSavedSearches').addEventListener('click', function() {
-            document.getElementById('toolTab').classList.add('hidden');
-            document.getElementById('formContainer').classList.add('hidden');
+            closeAllTabs();
             document.getElementById('savedSearchesContainer').classList.remove('hidden');
-            document.getElementById('historyContainer').classList.add('hidden');
-            document.getElementById('settingsContainer').classList.add('hidden');
             updateSavedSearchesTable();
             setActiveTab(this);
         });
 
         document.getElementById('showHistory').addEventListener('click', function() {
             showPasswordPrompt(() => {
-                document.getElementById('toolTab').classList.add('hidden');
-                document.getElementById('formContainer').classList.add('hidden');
-                document.getElementById('savedSearchesContainer').classList.add('hidden');
-                document.getElementById('settingsContainer').classList.add('hidden');
+                closeAllTabs();
                 document.getElementById('historyContainer').classList.remove('hidden');
                 loadHistory();
                 setActiveTab(this);
@@ -759,6 +751,14 @@
             const navButtons = document.querySelectorAll('.nav button');
             navButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
+        }
+
+        function closeAllTabs() {
+            document.getElementById('formContainer').classList.add('hidden');
+            document.getElementById('savedSearchesContainer').classList.add('hidden');
+            document.getElementById('historyContainer').classList.add('hidden');
+            document.getElementById('settingsContainer').classList.add('hidden');
+            document.getElementById('resultContainer').classList.add('hidden'); // Ensure result container is hidden
         }
 
         function updateSavedSearchesTable() {
@@ -782,11 +782,8 @@
             document.getElementById('procedureType').value = procurement.procedureType;
             document.getElementById('contractSigningDate').value = procurement.contractSigningDate.toISOString().split('T')[0];
             deleteSearch(index);
-            document.getElementById('toolTab').classList.remove('hidden');
+            closeAllTabs();
             document.getElementById('formContainer').classList.remove('hidden');
-            document.getElementById('savedSearchesContainer').classList.add('hidden');
-            document.getElementById('historyContainer').classList.add('hidden');
-            document.getElementById('settingsContainer').classList.add('hidden');
             setActiveTab(document.getElementById('showForm'));
         }
 

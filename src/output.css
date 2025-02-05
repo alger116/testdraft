@@ -157,6 +157,7 @@
   display: block;
   -webkit-box-orient: horizontal;
   -webkit-line-clamp: unset;
+  line-clamp: unset;
 }
 .block {
   display: block;
@@ -1441,9 +1442,6 @@
 }
 .forced-color-adjust-none {
   forced-color-adjust: none;
-}
-.\[keywords\:node-addon-api\] {
-  keywords: node-addon-api;
 }
 .backface-hidden {
   backface-visibility: hidden;
