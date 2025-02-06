@@ -789,18 +789,22 @@
 
             // Send data to the iframe
             const iframe = document.getElementById('dataBarIframe');
-            const data = {
-                type: "updateDataBar",
-                data: {
-                    documentPreparationDays: settings.documentPreparationDays,
-                    offerEvaluationDays: settings.offerEvaluationDays,
-                    decisionDays: settings.decisionDays,
-                    bidderEvaluationDays: settings.bidderEvaluationDays,
-                    successfulBidderDays: settings.successfulBidderDays,
-                    waitingPeriodDays: settings.waitingPeriodDays
-                }
-            };
-            iframe.contentWindow.postMessage(data, '*');
+            iframe.addEventListener('load', () => {
+                const data = {
+                    type: "updateDataBar",
+                    data: {
+                        documentPreparationDays: settings.documentPreparationDays,
+                        offerEvaluationDays: settings.offerEvaluationDays,
+                        decisionDays: settings.decisionDays,
+                        bidderEvaluationDays: settings.bidderEvaluationDays,
+                        successfulBidderDays: settings.successfulBidderDays,
+                        waitingPeriodDays: settings.waitingPeriodDays,
+                        procedureData: procedureData,
+                        internationalProcedureData: internationalProcedureData
+                    }
+                };
+                iframe.contentWindow.postMessage(data, '*');
+            });
         });
         
         function setActiveTab(button) {
