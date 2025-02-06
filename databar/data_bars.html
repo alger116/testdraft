@@ -1,118 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progressive Data Bars</title>
-    <style>
-        *, *:before, *:after {
-            box-sizing: border-box;
-        }
+document.addEventListener('DOMContentLoaded', function() {
+  const data = [
+    { label: 'HTML', value: 52.2, color: 'blue' },
+    { label: 'CSS', value: 45.9, color: 'green' },
+    { label: 'JavaScript', value: 1.7, color: 'red' },
+    { label: 'Ruby', value: 0.2, color: 'purple' }
+  ];
 
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            font-weight: 300;
-            font-size: 14px;
-            padding: 30px;
-            background: #eaeaea;
-        }
+  const barsContainer = document.getElementById('bars');
 
-        a.button {
-            padding: 6px 14px;
-            background-color: #888;
-            color: #FFF;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 1em;
-        }
+  data.forEach(item => {
+    const barWrap = document.createElement('div');
+    barWrap.className = 'bar-wrap';
 
-        a.button:hover {
-            background-color: #3a3a3a;
-        }
+    const label = document.createElement('label');
+    label.textContent = item.label;
 
-        h1 {
-            color: #6a6a6a;
-            line-height: 1.2em;
-            margin: 10px 0;
-            font-weight: 300;
-            font-size: 3em;
-        }
+    const bar = document.createElement('div');
+    bar.className = `bar ${item.color}`;
+    bar.setAttribute('data-percentage', item.value);
+    bar.style.width = item.value + '%';
 
-        section.data {
-            position: relative;
-            overflow: hidden;
-            padding: 0 0 30px 0;
-            margin: 0 0 40px 0;
-        }
+    barWrap.appendChild(label);
+    barWrap.appendChild(bar);
+    barsContainer.appendChild(barWrap);
+  });
 
-        div.measure {
-            position: absolute;
-            height: 100%;
-            border-right: 2px dashed #888;
-            margin: 0 0 35px 0;
-        }
+  document.querySelectorAll('.bar').forEach(drawElement);
+  document.querySelectorAll('.measure').forEach(drawElement);
+  
+  document.querySelectorAll('a.redraw').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.bar').forEach(randomiseElement);
+      document.querySelectorAll('.measure').forEach(randomiseElement);
+    });
+  });
 
-        div.measure:after {
-            content: "Measure " attr(data-percentage) "%";
-            position: absolute;
-            bottom: 0px;
-            right: -3px;
-            background-color: #888;
-            color: #FFF;
-            padding: 4px 16px 4px 8px;
-        }
+  function drawElement(elem) {
+    let percentage = parseInt(elem.dataset.percentage, 10);
+    if (isNaN(percentage)) return;
+    percentage = Math.min(100, percentage);
+    elem.style.width = percentage + '%';
+  }
 
-        div.bar-wrap {
-            width: 100%;
-            display: block;
-            margin: 0 0 20px 0;
-            overflow: hidden;
-        }
-
-        div.bar-wrap label {
-            font-size: 0.8em;
-            color: #8a8a8a;
-            text-transform: uppercase;
-            margin: 0 0 2px 0;
-            display: block;
-        }
-
-        div.bar {
-            height: 40px;
-            width: 0;
-            position: relative;
-        }
-
-        div.bar:after {
-            content: attr(data-percentage) "%";
-            display: block;
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 40px;
-            padding: 10px;
-            color: #FFF;
-        }
-
-        div.bar.blue {
-            background-color: #61a7c4;
-        }
-
-        div.bar.green {
-            background-color: #61c471;
-        }
-
-        div.bar.red {
-            background-color: #c46161;
-        }
-
-        div.bar.purple {
-            background-color: #a461c4;
-        }
-    </style>
-</head>
-<body>
-    <div id="bars"></div>
-    <script src="data_bars.js"></script>
-</body>
-</html>
+  function randomiseElement(elem) {
+    const width = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+    elem.style.width = width + '%';
+    elem.dataset.percentage = width;
+  }
+});
