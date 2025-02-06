@@ -5,69 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        @import "tailwindcss";
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        .dark-mode .container {
-            background-color: #1e1e1e;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-        .dark-mode input, .dark-mode select, .dark-mode button {
-            background-color: #333;
-            color: #e0e0e0;
-            border: 1px solid #555;
-        }
-        .dark-mode button {
-            background-color: #007bff;
-        }
-        .dark-mode button:hover {
-            background-color: #0056b3;
-        }
-        .dark-mode th {
-            background-color: #007bff;
-        }
-        .dark-mode td {
-            background-color: #2e2e2e;
-        }
-        .dark-mode tr:nth-child(even) {
-            background-color: #3a3a3a;
-        }
-        .dark-mode .delete-button {
-            background-color: #dc3545;
-        }
-        .dark-mode .delete-button:hover {
-            background-color: #c82333;
-        }
-        .dark-mode .edit-button {
-            background-color: #ffc107;
-        }
-        .dark-mode .edit-button:hover {
-            background-color: #e0a800;
-        }
-        .chart-container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .bar {
-            height: 30px;
-            margin: 10px 0;
-            background: #61a7c4;
-            color: white;
-            text-align: right;
-            padding-right: 10px;
-            line-height: 30px;
-            border-radius: 5px;
-            transition: width 0.5s;
-        }
-    </style>
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body class="flex justify-center items-center h-screen bg-gray-100">
     <div class="nav absolute top-2 left-2">
@@ -105,9 +43,6 @@
             <h2 class="text-2xl font-bold text-center mb-4">Riigihanke andmed</h2>
             <form id="procurementForm" class="space-y-4">
                 <div>
-        <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="dataBarContainer">
-            <iframe src="databar/data_bars.html" class="w-full h-screen" id="dataBarIframe"></iframe>
-                </div>
                     <label for="name" class="block text-gray-700">Riigihanke nimetus:</label>
                     <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
                 </div>
@@ -162,15 +97,11 @@
         <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
             <div id="result" class="result-card"></div>
         </div>
-        <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="dataBarContainer">
-            <iframe src="databar/data_bars.html" class="w-full h-screen" id="dataBarIframe"></iframe>
-        </div>
-        <!-- Add hidden class to DataBar container -->
+        <!-- Remove iframe and add DataBar container directly -->
         <div class="chart-container hidden" id="dataBarVisual">
             <h2>DataBar Visual</h2>
             <div id="bars"></div>
         </div>
-        <iframe id="dataBarIframe" src="/databar/data_bars.html"></iframe>
     </div>
 
     <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
@@ -379,8 +310,22 @@
             settings.bidderEvaluationDays = parseInt(document.getElementById('bidderEvaluationDays').value);
             settings.successfulBidderDays = parseInt(document.getElementById('successfulBidderDays').value);
             settings.waitingPeriodDays = parseInt(document.getElementById('waitingPeriodDays').value);
-            saveSettings();
-            alert('Settings saved successfully!');
+
+            // Send updated settings to DataBar
+            const data = {
+                type: "updateDataBar",
+                data: {
+                    documentPreparationDays: settings.documentPreparationDays,
+                    offerEvaluationDays: settings.offerEvaluationDays,
+                    decisionDays: settings.decisionDays,
+                    bidderEvaluationDays: settings.bidderEvaluationDays,
+                    successfulBidderDays: settings.successfulBidderDays,
+                    waitingPeriodDays: settings.waitingPeriodDays,
+                    procedureData: procedureData,
+                    internationalProcedureData: internationalProcedureData
+                }
+            };
+            window.postMessage(data, '*');
         });
 
         document.getElementById('addProcedureTypeButton').addEventListener('click', function() {
@@ -784,30 +729,26 @@
 
         document.getElementById('showDataBar').addEventListener('click', function() {
             closeAllTabs();
-            document.getElementById('dataBarContainer').classList.remove('hidden');
             document.getElementById('dataBarVisual').classList.remove('hidden'); // Show DataBar visual
             setActiveTab(this);
 
-            // Send data to the iframe
-            const iframe = document.getElementById('dataBarIframe');
-            iframe.addEventListener('load', () => {
-                const data = {
-                    type: "updateDataBar",
-                    data: {
-                        documentPreparationDays: settings.documentPreparationDays,
-                        offerEvaluationDays: settings.offerEvaluationDays,
-                        decisionDays: settings.decisionDays,
-                        bidderEvaluationDays: settings.bidderEvaluationDays,
-                        successfulBidderDays: settings.successfulBidderDays,
-                        waitingPeriodDays: settings.waitingPeriodDays,
-                        procedureData: procedureData,
-                        internationalProcedureData: internationalProcedureData
-                    }
-                };
-                iframe.contentWindow.postMessage(data, '*');
-            });
+            // Send data to the DataBar section
+            const data = {
+                type: "updateDataBar",
+                data: {
+                    documentPreparationDays: settings.documentPreparationDays,
+                    offerEvaluationDays: settings.offerEvaluationDays,
+                    decisionDays: settings.decisionDays,
+                    bidderEvaluationDays: settings.bidderEvaluationDays,
+                    successfulBidderDays: settings.successfulBidderDays,
+                    waitingPeriodDays: settings.waitingPeriodDays,
+                    procedureData: procedureData,
+                    internationalProcedureData: internationalProcedureData
+                }
+            };
+            window.postMessage(data, '*');
         });
-        
+
         function setActiveTab(button) {
             const navButtons = document.querySelectorAll('.nav button');
             navButtons.forEach(btn => btn.classList.remove('active'));
@@ -819,7 +760,6 @@
             document.getElementById('savedSearchesContainer').classList.add('hidden');
             document.getElementById('historyContainer').classList.add('hidden');
             document.getElementById('settingsContainer').classList.add('hidden');
-            document.getElementById('dataBarContainer').classList.add('hidden');
             document.getElementById('dataBarVisual').classList.add('hidden'); // Ensure DataBar visual is hidden
             document.getElementById('resultContainer').classList.add('hidden'); // Ensure result container is hidden
         }
