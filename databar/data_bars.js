@@ -15,12 +15,17 @@ function createDataBars(data) {
         const barContainer = document.createElement('div');
         barContainer.className = 'bar-container';
 
+        const label = document.createElement('span');
+        label.className = 'label';
+        label.textContent = item.label;
+
         const bar = document.createElement('div');
         bar.className = 'bar';
         bar.style.width = item.value + '%';
         bar.style.backgroundColor = item.color;
-        bar.textContent = `${item.label} (${item.value}%)`;
+        bar.textContent = `${item.value}%`;
 
+        barContainer.appendChild(label);
         barContainer.appendChild(bar);
         barsContainer.appendChild(barContainer);
     });
@@ -30,7 +35,16 @@ function createDataBars(data) {
 createDataBars(data);
 
 // Example of updating data bars dynamically
-// You can call this function with new data to update the bars
 function updateDataBars(newData) {
-    createDataBars(newData);
+    data.push(newData);
+    createDataBars(data);
 }
+
+// Form submission handler
+document.getElementById('dataForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const label = document.getElementById('label').value;
+    const value = document.getElementById('value').value;
+    const color = document.getElementById('color').value;
+    updateDataBars({ label, value, color });
+});
