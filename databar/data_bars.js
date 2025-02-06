@@ -1,50 +1,50 @@
-// Example data
-const data = [
-    { label: 'HTML', value: 52.2, color: '#e44d26' },
-    { label: 'CSS', value: 45.9, color: '#264de4' },
-    { label: 'JavaScript', value: 1.7, color: '#f0db4f' },
-    { label: 'Ruby', value: 0.2, color: '#701516' }
-];
-
-// Function to create data bars
-function createDataBars(data) {
-    const barsContainer = document.getElementById('bars');
-    barsContainer.innerHTML = '';
-
-    data.forEach(item => {
-        const barContainer = document.createElement('div');
-        barContainer.className = 'bar-container';
-
-        const label = document.createElement('span');
-        label.className = 'label';
-        label.textContent = item.label;
-
-        const bar = document.createElement('div');
-        bar.className = 'bar';
-        bar.style.width = item.value + '%';
-        bar.style.backgroundColor = item.color;
-        bar.textContent = `${item.value}%`;
-
-        barContainer.appendChild(label);
-        barContainer.appendChild(bar);
-        barsContainer.appendChild(barContainer);
+$(document).ready(function(){
+  $('.bar').each(function(i, elem){
+    drawBar(elem);
+  });
+  
+  $('.measure').each(function(i, elem){
+    drawMeasure(elem);
+  });
+  
+  $('a.redraw').click(function(e){
+    e.preventDefault();
+    $('.bar').each(function(i, elem){
+      randomiseBar(elem);
     });
-}
-
-// Initial render
-createDataBars(data);
-
-// Example of updating data bars dynamically
-function updateDataBars(newData) {
-    data.push(newData);
-    createDataBars(data);
-}
-
-// Form submission handler
-document.getElementById('dataForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const label = document.getElementById('label').value;
-    const value = document.getElementById('value').value;
-    const color = document.getElementById('color').value;
-    updateDataBars({ label, value, color });
+    $('.measure').each(function(i, elem){
+      randomiseMeasure(elem);
+    });
+  
+  });
+  
+  function drawBar(bar) {
+    var percentage = $(bar).data('percentage');
+    if(percentage > 100){
+      percentage = 100;
+    }
+    $(bar).animate({'width': percentage + '%'}, 'slow');
+  }
+  
+  function randomiseBar(bar) {
+    var width =  Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+    $(bar).animate({'width': width + '%'}, 'slow');
+    $(bar).attr('data-percentage', width);
+  }
+  
+  function drawMeasure(measure) {
+    var percentage = $(measure).data('percentage');
+    if(percentage > 100){
+      percentage = 100;
+    }
+    $(measure).animate({'width': percentage + '%'}, 'slow');
+  }
+  
+  function randomiseMeasure(measure) {
+    var width =  Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+    $(measure).animate({'width': width + '%'}, 'slow');
+    $(measure).attr('data-percentage', width);
+  }
+  
+  
 });
