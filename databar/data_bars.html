@@ -46,10 +46,10 @@
                 const barsContainer = document.getElementById("bars");
                 barsContainer.innerHTML = "";
 
-                const maxDays = data.documentPreparationDays; // First bar sets max
+                const maxDays = Math.max(...Object.values(data)); // Calculate max dynamically
 
                 Object.entries(data).forEach(([key, days]) => {
-                    let percentage = Math.round((days / maxDays) * 100);
+                    let percentage = maxDays > 0 ? Math.round((days / maxDays) * 100) : 0;
                     let bar = document.createElement("div");
                     bar.className = "bar";
                     bar.style.width = percentage + "%";
