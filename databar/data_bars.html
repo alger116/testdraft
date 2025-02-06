@@ -1,225 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="et">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menetluse ajaline jaotus</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <title>Riigihanke Andmed</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         :root {
             --primary-color: #61a7c4;
-            --success-color: #61c471;
-            --danger-color: #c46161;
-            --purple-color: #a461c4;
-            --background: #f0f3f5;
-            --text-color: #4a4a4a;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
+            --dark-bg: #121212;
+            --dark-text: #e0e0e0;
+            --light-bg: #f0f3f5;
+            --light-text: #4a4a4a;
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-weight: 300;
-            padding: 2rem;
-            background: var(--background);
-            color: var(--text-color);
+            background-color: var(--light-bg);
+            color: var(--light-text);
             transition: background 0.5s, color 0.5s;
         }
 
-        .dashboard {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: background 0.5s;
+        .dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
         }
 
-        .controls {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+        .dark-mode .container {
+            background-color: #1e1e1e;
         }
 
-        .button {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
+        .table-container {
+            overflow-x: auto;
+            max-width: 100%;
         }
 
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(97, 167, 196, 0.3);
-        }
-
-        .chart-container {
-            margin: 2rem 0;
-        }
-
-        .bar-wrapper {
-            margin: 1rem 0;
-            cursor: grab;
-        }
-
-        .bar-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            font-size: 0.9em;
-            color: #6a6a6a;
-        }
-
-        .bar-container {
-            height: 40px;
-            background: #f0f3f5;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .bar {
-            height: 100%;
-            width: 0;
-            transition: width 0.8s ease-in-out;
-            background: linear-gradient(90deg, var(--bar-color), color-mix(in srgb, var(--bar-color) 80%, black));
-        }
-
-        .bar::after {
-            content: attr(data-percentage) "%";
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            font-weight: 600;
-        }
-
-        .percentage-input {
-            border: none;
-            background: none;
-            font-size: 1em;
-            font-weight: 600;
-            text-align: right;
-            width: 50px;
-            color: inherit;
-        }
-
-        .theme-switcher {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .theme-dot {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="dashboard">
-        <div class="theme-switcher">
-            <div class="theme-dot" style="background: #f0f3f5" data-theme="light"></div>
-            <div class="theme-dot" style="background: #1a1a1a" data-theme="dark"></div>
+        <div class="theme-switcher absolute top-2 right-2">
+            <button id="toggleDarkMode" class="bg-blue-500 text-white px-4 py-2 rounded">Dark Mode</button>
         </div>
 
-        <h1>Menetluse ajaline jaotus</h1>
+        <h1 class="text-2xl font-bold text-center mb-4">Riigihanke Andmed</h1>
         
-        <div class="controls">
-            <button class="button" id="randomizeBtn">Randomize Data</button>
+        <div class="controls flex justify-center gap-4">
+            <button class="button bg-green-500 text-white px-4 py-2 rounded" id="fetchDataBtn">Uuenda DataBar</button>
         </div>
 
-        <div class="chart-container" id="chartContainer"></div>
+        <div class="chart-container mt-6">
+            <iframe id="dataBarFrame" src="databar/data_bars.html" class="w-full h-64 border rounded"></iframe>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const chartContainer = document.getElementById('chartContainer');
-            const colors = ['primary', 'success', 'danger', 'purple'];
-            let metricCount = 0;
+        // ✅ Persist Dark Mode Preference
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
+        });
 
-            const metrics = [
-                { name: "Riigihanke alusdokumentide koostamine", days: 120 }, // Max value
-                { name: "Taotluste esitamine RHRis", days: 30 },
-                { name: "Pakkumuste esitamine RHRi", days: 40 },
-                { name: "Pakkumuste hindamine", days: 20 },
-                { name: "Vastavaks ja edukaks tunnistamise otsus", days: 10 },
-                { name: "Pakkujate hindamine", days: 25 },
-                { name: "Eduka kõrvaldamata jätmine ja kva", days: 15 },
-                { name: "Ooteaeg", days: 30 }
-            ];
-
-            generateBars();
-
-            document.getElementById('randomizeBtn').addEventListener('click', randomizeBars);
-
-            document.querySelectorAll('.theme-dot').forEach(theme => {
-                theme.addEventListener('click', setTheme);
-            });
-
-            function generateBars() {
-                const maxDays = metrics[0].days;
-
-                metrics.forEach((metric, i) => {
-                    createBar({
-                        name: metric.name,
-                        percentage: Math.round((metric.days / maxDays) * 100),
-                        color: colors[i % colors.length]
-                    });
-                });
+        window.onload = function() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
             }
+        };
 
-            function createBar(config) {
-                const barWrapper = document.createElement('div');
-                barWrapper.classList.add('bar-wrapper');
+        // ✅ Fetch Data for DataBar
+        document.getElementById('fetchDataBtn').addEventListener('click', function() {
+            const settings = {
+                documentPreparationDays: parseInt(localStorage.getItem('documentPreparationDays')) || 120,
+                offerEvaluationDays: parseInt(localStorage.getItem('offerEvaluationDays')) || 30,
+                decisionDays: parseInt(localStorage.getItem('decisionDays')) || 10,
+                waitingPeriodDays: parseInt(localStorage.getItem('waitingPeriodDays')) || 30
+            };
 
-                const barLabel = document.createElement('div');
-                barLabel.classList.add('bar-label');
-                barLabel.innerHTML = `<span>${config.name}</span> <span>${config.percentage}%</span>`;
+            document.getElementById('dataBarFrame').contentWindow.postMessage({
+                type: 'updateDataBar',
+                data: settings
+            }, '*');
+        });
 
-                const barContainer = document.createElement('div');
-                barContainer.classList.add('bar-container');
-
-                const bar = document.createElement('div');
-                bar.classList.add('bar');
-                bar.style.width = `${config.percentage}%`;
-                bar.style.setProperty('--bar-color', `var(--${config.color}-color)`);
-                bar.dataset.percentage = config.percentage;
-
-                barContainer.appendChild(bar);
-                barWrapper.appendChild(barLabel);
-                barWrapper.appendChild(barContainer);
-                chartContainer.appendChild(barWrapper);
-            }
-
-            function randomizeBars() {
-                document.querySelectorAll('.bar').forEach(bar => {
-                    const newValue = Math.floor(Math.random() * 80 + 20);
-                    bar.style.width = `${newValue}%`;
-                    bar.dataset.percentage = newValue;
-                });
-            }
-
-            function setTheme(e) {
-                document.body.className = e.target.dataset.theme;
+        // ✅ Close Dropdown When Clicking Outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (dropdown && !document.getElementById('dropdownButton').contains(event.target)) {
+                dropdown.classList.add('hidden');
             }
         });
+
     </script>
 </body>
 </html>
