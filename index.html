@@ -165,8 +165,8 @@
         <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="dataBarContainer">
             <iframe src="databar/data_bars.html" class="w-full h-screen"></iframe>
         </div>
-        <!-- Add DataBar HTML here -->
-        <div class="chart-container">
+        <!-- Add hidden class to DataBar container -->
+        <div class="chart-container hidden" id="dataBarVisual">
             <h2>DataBar Visual</h2>
             <div id="bars"></div>
         </div>
@@ -784,6 +784,7 @@
         document.getElementById('showDataBar').addEventListener('click', function() {
             closeAllTabs();
             document.getElementById('dataBarContainer').classList.remove('hidden');
+            document.getElementById('dataBarVisual').classList.remove('hidden'); // Show DataBar visual
             setActiveTab(this);
         });
         
@@ -799,6 +800,7 @@
             document.getElementById('historyContainer').classList.add('hidden');
             document.getElementById('settingsContainer').classList.add('hidden');
             document.getElementById('dataBarContainer').classList.add('hidden');
+            document.getElementById('dataBarVisual').classList.add('hidden'); // Ensure DataBar visual is hidden
             document.getElementById('resultContainer').classList.add('hidden'); // Ensure result container is hidden
         }
 
