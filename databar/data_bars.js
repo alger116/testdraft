@@ -1,50 +1,49 @@
-$(document).ready(function(){
-  $('.bar').each(function(i, elem){
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.bar').forEach(function(elem) {
     drawBar(elem);
   });
   
-  $('.measure').each(function(i, elem){
+  document.querySelectorAll('.measure').forEach(function(elem) {
     drawMeasure(elem);
   });
   
-  $('a.redraw').click(function(e){
-    e.preventDefault();
-    $('.bar').each(function(i, elem){
-      randomiseBar(elem);
+  document.querySelectorAll('a.redraw').forEach(function(elem) {
+    elem.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.bar').forEach(function(elem) {
+        randomiseBar(elem);
+      });
+      document.querySelectorAll('.measure').forEach(function(elem) {
+        randomiseMeasure(elem);
+      });
     });
-    $('.measure').each(function(i, elem){
-      randomiseMeasure(elem);
-    });
-  
   });
   
   function drawBar(bar) {
-    var percentage = $(bar).data('percentage');
-    if(percentage > 100){
+    var percentage = bar.dataset.percentage;
+    if (percentage > 100) {
       percentage = 100;
     }
-    $(bar).animate({'width': percentage + '%'}, 'slow');
+    bar.style.width = percentage + '%';
   }
   
   function randomiseBar(bar) {
-    var width =  Math.floor(Math.random() * (100 - 20 + 1)) + 20;
-    $(bar).animate({'width': width + '%'}, 'slow');
-    $(bar).attr('data-percentage', width);
+    var width = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+    bar.style.width = width + '%';
+    bar.dataset.percentage = width;
   }
   
   function drawMeasure(measure) {
-    var percentage = $(measure).data('percentage');
-    if(percentage > 100){
+    var percentage = measure.dataset.percentage;
+    if (percentage > 100) {
       percentage = 100;
     }
-    $(measure).animate({'width': percentage + '%'}, 'slow');
+    measure.style.width = percentage + '%';
   }
   
   function randomiseMeasure(measure) {
-    var width =  Math.floor(Math.random() * (100 - 20 + 1)) + 20;
-    $(measure).animate({'width': width + '%'}, 'slow');
-    $(measure).attr('data-percentage', width);
+    var width = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+    measure.style.width = width + '%';
+    measure.dataset.percentage = width;
   }
-  
-  
 });
