@@ -47,6 +47,26 @@
         .dark-mode .edit-button:hover {
             background-color: #e0a800;
         }
+        .chart-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .bar {
+            height: 30px;
+            margin: 10px 0;
+            background: #61a7c4;
+            color: white;
+            text-align: right;
+            padding-right: 10px;
+            line-height: 30px;
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
     </style>
 </head>
 <body class="flex justify-center items-center h-screen bg-gray-100">
@@ -141,6 +161,14 @@
         </div>
         <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
             <div id="result" class="result-card"></div>
+        </div>
+        <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="dataBarContainer">
+            <iframe src="databar/data_bars.html" class="w-full h-screen"></iframe>
+        </div>
+        <!-- Add DataBar HTML here -->
+        <div class="chart-container">
+            <h2>DataBar Visual</h2>
+            <div id="bars"></div>
         </div>
     </div>
 
@@ -926,6 +954,25 @@
             const dropdownMenu = document.getElementById('dropdownMenu');
             if (!dropdownButton.contains(event.target)) {
                 dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        window.addEventListener("message", (event) => {
+            if (event.data.type === "updateDataBar") {
+                const data = event.data.data;
+                const barsContainer = document.getElementById("bars");
+                barsContainer.innerHTML = "";
+
+                const maxDays = data.documentPreparationDays; // First bar sets max
+
+                Object.entries(data).forEach(([key, days]) => {
+                    let percentage = Math.round((days / maxDays) * 100);
+                    let bar = document.createElement("div");
+                    bar.className = "bar";
+                    bar.style.width = percentage + "%";
+                    bar.textContent = key.replace(/Days$/, '') + " (" + days + " päeva)";
+                    barsContainer.appendChild(bar);
+                });
             }
         });
     </script>
