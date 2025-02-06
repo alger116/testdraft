@@ -3,98 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riigihanke Andmed</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>DataBar</title>
     <style>
-        :root {
-            --primary-color: #61a7c4;
-            --dark-bg: #121212;
-            --dark-text: #e0e0e0;
-            --light-bg: #f0f3f5;
-            --light-text: #4a4a4a;
-        }
-
         body {
-            background-color: var(--light-bg);
-            color: var(--light-text);
-            transition: background 0.5s, color 0.5s;
+            font-family: 'Arial', sans-serif;
+            background: #f8f8f8;
+            padding: 20px;
         }
 
-        .dark-mode {
-            background-color: var(--dark-bg);
-            color: var(--dark-text);
+        .chart-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .dark-mode .container {
-            background-color: #1e1e1e;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            max-width: 100%;
-        }
-
-        @media (max-width: 600px) {
-            .controls {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
+        .bar {
+            height: 30px;
+            margin: 10px 0;
+            background: #61a7c4;
+            color: white;
+            text-align: right;
+            padding-right: 10px;
+            line-height: 30px;
+            border-radius: 5px;
+            transition: width 0.5s;
         }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="theme-switcher absolute top-2 right-2">
-            <button id="toggleDarkMode" class="bg-blue-500 text-white px-4 py-2 rounded">Dark Mode</button>
-        </div>
-
-        <h1 class="text-2xl font-bold text-center mb-4">Riigihanke Andmed</h1>
-        
-        <div class="controls flex justify-center gap-4">
-            <button class="button bg-green-500 text-white px-4 py-2 rounded" id="fetchDataBtn">Uuenda DataBar</button>
-        </div>
-
-        <div class="chart-container mt-6">
-            <iframe id="dataBarFrame" src="/testdraft/databar/data_bars.html"></iframe>
-        </div>
+    <div class="chart-container">
+        <h2>DataBar Visual</h2>
+        <div id="bars"></div>
     </div>
 
     <script>
-        // ✅ Persist Dark Mode Preference
-        document.getElementById('toggleDarkMode').addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
-        });
+        window.addEventListener("message", (event) => {
+            if (event.data.type === "updateDataBar") {
+                const data = event.data.data;
+                const barsContainer = document.getElementById("bars");
+                barsContainer.innerHTML = "";
 
-        window.onload = function() {
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                document.body.classList.add('dark-mode');
-            }
-        };
+                const maxDays = data.documentPreparationDays; // First bar sets max
 
-        // ✅ Fetch Data for DataBar
-        document.getElementById('fetchDataBtn').addEventListener('click', function() {
-            const settings = {
-                documentPreparationDays: parseInt(localStorage.getItem('documentPreparationDays')) || 120,
-                offerEvaluationDays: parseInt(localStorage.getItem('offerEvaluationDays')) || 30,
-                decisionDays: parseInt(localStorage.getItem('decisionDays')) || 10,
-                waitingPeriodDays: parseInt(localStorage.getItem('waitingPeriodDays')) || 30
-            };
-
-            document.getElementById('dataBarFrame').contentWindow.postMessage({
-                type: 'updateDataBar',
-                data: settings
-            }, '*');
-        });
-
-        // ✅ Close Dropdown When Clicking Outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('dropdownMenu');
-            if (dropdown && !document.getElementById('dropdownButton').contains(event.target)) {
-                dropdown.classList.add('hidden');
+                Object.entries(data).forEach(([key, days]) => {
+                    let percentage = Math.round((days / maxDays) * 100);
+                    let bar = document.createElement("div");
+                    bar.className = "bar";
+                    bar.style.width = percentage + "%";
+                    bar.textContent = key.replace(/Days$/, '') + " (" + days + " päeva)";
+                    barsContainer.appendChild(bar);
+                });
             }
         });
-
     </script>
 </body>
 </html>
