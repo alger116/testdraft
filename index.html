@@ -617,7 +617,25 @@
             }
             history.push(procurement);
             saveHistory(); // Save history immediately
+
+            // Extract data and send to DataBar
+            sendDataToDataBar(procurement);
         });
+
+        function sendDataToDataBar(procurement) {
+            const data = {
+                documentPreparationDays: settings.documentPreparationDays,
+                offerEvaluationDays: settings.offerEvaluationDays,
+                decisionDays: settings.decisionDays,
+                bidderEvaluationDays: settings.bidderEvaluationDays,
+                successfulBidderDays: settings.successfulBidderDays,
+                waitingPeriodDays: settings.waitingPeriodDays,
+                procedureDuration: procurement.procedureDuration,
+                procedureDetails: procurement.procedureDetails
+            };
+            const dataBarIframe = document.getElementById('dataBarIframe');
+            dataBarIframe.contentWindow.postMessage({ type: 'updateDataBar', data: data }, '*');
+        }
 
         document.getElementById('clearFields').addEventListener('click', function() {
             document.getElementById('procurementForm').reset();
@@ -746,7 +764,8 @@
                     internationalProcedureData: internationalProcedureData
                 }
             };
-            window.postMessage(data, '*');
+            const dataBarIframe = document.getElementById('dataBarIframe');
+            dataBarIframe.contentWindow.postMessage(data, '*');
         });
 
         function setActiveTab(button) {
