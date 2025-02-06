@@ -15,34 +15,30 @@
             --text-color: #4a4a4a;
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
+        body.dark-mode {
+            --background: #1a1a1a;
+            --text-color: #ffffff;
         }
 
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-weight: 300;
-            padding: 2rem;
+            font-family: 'Inter', sans-serif;
             background: var(--background);
             color: var(--text-color);
-            transition: background 0.5s, color 0.5s;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
         .dashboard {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 2rem auto;
             background: white;
             padding: 2rem;
             border-radius: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: background 0.5s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .controls {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+        .controls { display: flex; gap: 1rem; margin-bottom: 2rem; }
 
         .button {
             padding: 0.75rem 1.5rem;
@@ -55,179 +51,120 @@
             font-weight: 500;
         }
 
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(97, 167, 196, 0.3);
-        }
+        .button:hover { transform: translateY(-2px); }
 
-        .chart-container {
-            margin: 2rem 0;
-        }
+        .chart-container { margin: 2rem 0; }
 
-        .bar-wrapper {
-            margin: 1.5rem 0;
-            cursor: grab;
-        }
+        .bar-wrapper { margin: 1rem 0; cursor: grab; }
 
         .bar-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            font-size: 0.9em;
-            color: #6a6a6a;
+            display: flex; justify-content: space-between;
+            font-size: 0.9em; color: #6a6a6a;
         }
 
         .bar-container {
-            height: 40px;
-            background: #f0f3f5;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            height: 40px; background: #f0f3f5;
+            border-radius: 8px; overflow: hidden;
         }
 
         .bar {
-            height: 100%;
-            width: 0;
-            transition: width 0.8s ease-in-out;
-            background: linear-gradient(90deg, var(--bar-color), color-mix(in srgb, var(--bar-color) 80%, black));
+            height: 100%; width: 0; transition: width 1s ease;
+            background: var(--primary-color);
         }
 
-        .bar::after {
-            content: attr(data-percentage) "%";
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            font-weight: 600;
+        .bar-label input {
+            width: 50px; text-align: center;
+            font-weight: bold; border: none;
+            background: transparent; color: inherit;
         }
 
-        .percentage-input {
-            border: none;
-            background: none;
-            font-size: 1em;
-            font-weight: 600;
-            text-align: right;
-            width: 50px;
-            color: inherit;
-        }
-
-        .theme-switcher {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .theme-dot {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
+        .theme-toggle {
+            position: fixed; top: 1rem; right: 1rem;
+            padding: 0.5rem 1rem; background: var(--danger-color);
+            color: white; border-radius: 0.5rem;
             cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="theme-switcher">
-            <div class="theme-dot" style="background: #f0f3f5" data-theme="light"></div>
-            <div class="theme-dot" style="background: #1a1a1a" data-theme="dark"></div>
-        </div>
+    <button class="theme-toggle">Toggle Dark Mode</button>
 
+    <div class="dashboard">
         <h1>Data Visualization Dashboard</h1>
-        
         <div class="controls">
             <button class="button" id="randomizeBtn">Randomize Data</button>
             <button class="button" id="addBarBtn">Add New Bar</button>
-            <button class="button" id="sortBtn">Sort by Value</button>
+            <button class="button" id="sortBarsBtn">Sort by Value</button>
         </div>
-
         <div class="chart-container" id="chartContainer"></div>
     </div>
-
-    <template id="barTemplate">
-        <div class="bar-wrapper">
-            <div class="bar-label">
-                <span class="metric-name">Loading...</span>
-                <input type="text" class="percentage-input" value="0%">
-                <button class="delete-bar">Delete</button>
-            </div>
-            <div class="bar-container">
-                <div class="bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        </div>
-    </template>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const chartContainer = document.getElementById('chartContainer');
-            const colors = ['primary', 'success', 'danger', 'purple'];
+            const colors = ['#61a7c4', '#61c471', '#c46161', '#a461c4'];
             let metricCount = 0;
 
-            generateRandomBars();
+            function createBar(name, percentage) {
+                const barWrapper = document.createElement('div');
+                barWrapper.classList.add('bar-wrapper');
+                barWrapper.innerHTML = `
+                    <div class="bar-label">
+                        <span>${name}</span>
+                        <input type="number" min="0" max="100" value="${percentage}" class="metric-value">%
+                        <button onclick="this.parentElement.parentElement.remove()">Delete</button>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar" style="width: ${percentage}%; background: ${colors[metricCount % colors.length]};"></div>
+                    </div>
+                `;
+                
+                const input = barWrapper.querySelector('.metric-value');
+                const bar = barWrapper.querySelector('.bar');
+                input.addEventListener('input', (e) => {
+                    let newVal = Math.min(100, Math.max(0, e.target.value));
+                    bar.style.width = `${newVal}%`;
+                });
+                
+                chartContainer.appendChild(barWrapper);
+                metricCount++;
+            }
 
-            document.getElementById('randomizeBtn').addEventListener('click', randomizeAll);
-            document.getElementById('addBarBtn').addEventListener('click', addNewBar);
-            document.getElementById('sortBtn').addEventListener('click', sortBars);
-
-            document.querySelectorAll('.theme-dot').forEach(theme => {
-                theme.addEventListener('click', setTheme);
-            });
-
-            new Sortable(chartContainer, { animation: 150 });
-
-            function generateRandomBars() {
-                ['Sales', 'Growth', 'Revenue', 'Satisfaction'].forEach((metric, i) => {
-                    createBar({
-                        name: metric,
-                        percentage: Math.floor(Math.random() * 80 + 20),
-                        color: colors[i % colors.length]
-                    });
+            function randomizeAll() {
+                document.querySelectorAll('.bar').forEach(bar => {
+                    let newValue = Math.floor(Math.random() * 80 + 20);
+                    bar.style.width = `${newValue}%`;
+                    bar.parentElement.previousElementSibling.querySelector('.metric-value').value = newValue;
                 });
             }
 
-            function createBar(config) {
-                const template = document.getElementById('barTemplate').content.cloneNode(true);
-                const barWrapper = template.querySelector('.bar-wrapper');
-                const bar = template.querySelector('.bar');
-                const percentageInput = template.querySelector('.percentage-input');
-
-                metricCount++;
-                barWrapper.id = `metric-${metricCount}`;
-                template.querySelector('.metric-name').textContent = config.name;
-                percentageInput.value = `${config.percentage}%`;
-
-                percentageInput.addEventListener('input', () => updateBar(bar, percentageInput));
-
-                template.querySelector('.delete-bar').addEventListener('click', () => barWrapper.remove());
-
-                bar.style.width = `${config.percentage}%`;
-                bar.dataset.percentage = config.percentage;
-
-                chartContainer.appendChild(template);
-            }
-
-            function updateBar(bar, input) {
-                let newValue = parseInt(input.value);
-                if (isNaN(newValue) || newValue < 0 || newValue > 100) return;
-                bar.style.width = `${newValue}%`;
-                bar.dataset.percentage = newValue;
-            }
-
             function sortBars() {
-                [...chartContainer.children].sort((a, b) => 
-                    b.querySelector('.bar').dataset.percentage - a.querySelector('.bar').dataset.percentage
-                ).forEach(bar => chartContainer.appendChild(bar));
+                let bars = Array.from(chartContainer.children);
+                bars.sort((a, b) => {
+                    return b.querySelector('.metric-value').value - a.querySelector('.metric-value').value;
+                });
+                bars.forEach(bar => chartContainer.appendChild(bar));
             }
 
-            function setTheme(e) {
-                document.body.className = e.target.dataset.theme;
+            document.getElementById('randomizeBtn').addEventListener('click', randomizeAll);
+            document.getElementById('addBarBtn').addEventListener('click', () => createBar(`Metric ${metricCount + 1}`, Math.floor(Math.random() * 80 + 20)));
+            document.getElementById('sortBarsBtn').addEventListener('click', sortBars);
+            
+            new Sortable(chartContainer, { animation: 150 });
+
+            document.querySelector('.theme-toggle').addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            });
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
             }
+
+            createBar('Sales Performance', 75);
+            createBar('User Growth', 60);
+            createBar('Revenue', 85);
+            createBar('Customer Satisfaction', 50);
         });
     </script>
 </body>
