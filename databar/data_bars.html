@@ -154,7 +154,6 @@
         <div class="controls">
             <button class="button" id="randomizeBtn">Randomize Data</button>
             <button class="button" id="addBarBtn">Add New Bar</button>
-            <button class="button" id="deleteBarBtn">Delet Bar</button>
         </div>
 
         <div class="chart-container" id="chartContainer"></div>
@@ -164,7 +163,7 @@
         <div class="bar-wrapper">
             <div class="bar-label">
                 <span class="metric-name">Loading...</span>
-                <span class="metric-value">0%</</span>
+                <span class="metric-value">0%</span>
                 <button class="delete-bar">Delete</button>
             </div>
             <div class="bar-container">
@@ -187,7 +186,6 @@
             // Event Listeners
             document.getElementById('randomizeBtn').addEventListener('click', randomizeAll);
             document.getElementById('addBarBtn').addEventListener('click', addNewBar);
-            document.getElementById('deleteBarBtn').addEventListener('click', deletBar);
             
             document.querySelectorAll('.theme-dot').forEach(theme => {
                 theme.addEventListener('click', setTheme);
