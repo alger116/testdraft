@@ -1,49 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.bar').forEach(function(elem) {
-    drawBar(elem);
-  });
-  
-  document.querySelectorAll('.measure').forEach(function(elem) {
-    drawMeasure(elem);
-  });
-  
-  document.querySelectorAll('a.redraw').forEach(function(elem) {
-    elem.addEventListener('click', function(e) {
+  const bars = document.querySelectorAll('.bar');
+  const measures = document.querySelectorAll('.measure');
+  const redrawButtons = document.querySelectorAll('a.redraw');
+
+  bars.forEach(drawElement);
+  measures.forEach(drawElement);
+
+  redrawButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
       e.preventDefault();
-      document.querySelectorAll('.bar').forEach(function(elem) {
-        randomiseBar(elem);
-      });
-      document.querySelectorAll('.measure').forEach(function(elem) {
-        randomiseMeasure(elem);
-      });
+      bars.forEach(randomiseElement);
+      measures.forEach(randomiseElement);
     });
   });
-  
-  function drawBar(bar) {
-    var percentage = bar.dataset.percentage;
-    if (percentage > 100) {
-      percentage = 100;
-    }
-    bar.style.width = percentage + '%';
+
+  function drawElement(elem) {
+    let percentage = parseInt(elem.dataset.percentage, 10);
+    if (isNaN(percentage)) return;
+    percentage = Math.min(100, percentage);
+    elem.style.width = percentage + '%';
   }
-  
-  function randomiseBar(bar) {
-    var width = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
-    bar.style.width = width + '%';
-    bar.dataset.percentage = width;
-  }
-  
-  function drawMeasure(measure) {
-    var percentage = measure.dataset.percentage;
-    if (percentage > 100) {
-      percentage = 100;
-    }
-    measure.style.width = percentage + '%';
-  }
-  
-  function randomiseMeasure(measure) {
-    var width = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
-    measure.style.width = width + '%';
-    measure.dataset.percentage = width;
+
+  function randomiseElement(elem) {
+    const width = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+    elem.style.width = width + '%';
+    elem.dataset.percentage = width;
   }
 });
