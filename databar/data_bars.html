@@ -163,13 +163,15 @@
         <div class="bar-wrapper">
             <div class="bar-label">
                 <span class="metric-name">Loading...</span>
-                <span class="metric-value">0%</span>
+                <span class="metric-value">0%</</span>
             </div>
             <div class="bar-container">
                 <div class="bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
     </template>
+
+    <script src="data_bars.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -257,6 +259,6 @@
                 document.body.className = theme;
             }
         });
-    <script src="data_bars.js"></script>
+    </script>
 </body>
 </html>
