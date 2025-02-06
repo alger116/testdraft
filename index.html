@@ -27,9 +27,6 @@
                     <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
                         <i class="fas fa-cog mr-2"></i> Sätted
                     </button>
-                    <button id="showDataBar" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
-                        <i class="fas fa-chart-bar mr-2"></i> DataBar
-                    </button>
                     <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
                         <i class="fas fa-moon mr-2"></i> Dark Mode
                     </button>
@@ -96,11 +93,6 @@
         </div>
         <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
             <div id="result" class="result-card"></div>
-        </div>
-        <!-- Remove iframe and add DataBar container directly -->
-        <div class="chart-container hidden" id="dataBarVisual">
-            <h2>DataBar Visual</h2>
-            <div id="bars"></div>
         </div>
     </div>
 
@@ -199,7 +191,7 @@
         </div>
         <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
     <script>
         const procedureData = {
@@ -310,22 +302,6 @@
             settings.bidderEvaluationDays = parseInt(document.getElementById('bidderEvaluationDays').value);
             settings.successfulBidderDays = parseInt(document.getElementById('successfulBidderDays').value);
             settings.waitingPeriodDays = parseInt(document.getElementById('waitingPeriodDays').value);
-
-            // Send updated settings to DataBar
-            const data = {
-                type: "updateDataBar",
-                data: {
-                    documentPreparationDays: settings.documentPreparationDays,
-                    offerEvaluationDays: settings.offerEvaluationDays,
-                    decisionDays: settings.decisionDays,
-                    bidderEvaluationDays: settings.bidderEvaluationDays,
-                    successfulBidderDays: settings.successfulBidderDays,
-                    waitingPeriodDays: settings.waitingPeriodDays,
-                    procedureData: procedureData,
-                    internationalProcedureData: internationalProcedureData
-                }
-            };
-            window.postMessage(data, '*');
         });
 
         document.getElementById('addProcedureTypeButton').addEventListener('click', function() {
@@ -568,6 +544,11 @@
 
         function adjustDays(index, adjustment) {
             const daysElement = document.getElementById(`days-${index}`);
+            if (!daysElement) {
+                console.error(`Element with id days-${index} not found`);
+                return;
+            }
+
             let daysText = daysElement.innerText;
             let days = parseInt(daysText.match(/\d+/)[0]);
             days += adjustment;
@@ -575,9 +556,13 @@
 
             // Update total duration
             const totalDurationElement = document.getElementById('totalDuration');
-            let totalDuration = parseInt(totalDurationElement.innerText);
-            totalDuration += adjustment;
-            totalDurationElement.innerText = totalDuration;
+            if (totalDurationElement) {
+                let totalDuration = parseInt(totalDurationElement.innerText);
+                totalDuration += adjustment;
+                totalDurationElement.innerText = totalDuration;
+            } else {
+                console.error('Element with id totalDuration not found');
+            }
 
             // Store updated total duration in the PublicProcurement object
             const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
@@ -617,25 +602,7 @@
             }
             history.push(procurement);
             saveHistory(); // Save history immediately
-
-            // Extract data and send to DataBar
-            sendDataToDataBar(procurement);
         });
-
-        function sendDataToDataBar(procurement) {
-            const data = {
-                documentPreparationDays: settings.documentPreparationDays,
-                offerEvaluationDays: settings.offerEvaluationDays,
-                decisionDays: settings.decisionDays,
-                bidderEvaluationDays: settings.bidderEvaluationDays,
-                successfulBidderDays: settings.successfulBidderDays,
-                waitingPeriodDays: settings.waitingPeriodDays,
-                procedureDuration: procurement.procedureDuration,
-                procedureDetails: procurement.procedureDetails
-            };
-            const dataBarIframe = document.getElementById('dataBarIframe');
-            dataBarIframe.contentWindow.postMessage({ type: 'updateDataBar', data: data }, '*');
-        }
 
         document.getElementById('clearFields').addEventListener('click', function() {
             document.getElementById('procurementForm').reset();
@@ -745,29 +712,6 @@
             });
         });
 
-        document.getElementById('showDataBar').addEventListener('click', function() {
-            closeAllTabs();
-            document.getElementById('dataBarVisual').classList.remove('hidden'); // Show DataBar visual
-            setActiveTab(this);
-
-            // Send data to the DataBar section
-            const data = {
-                type: "updateDataBar",
-                data: {
-                    documentPreparationDays: settings.documentPreparationDays,
-                    offerEvaluationDays: settings.offerEvaluationDays,
-                    decisionDays: settings.decisionDays,
-                    bidderEvaluationDays: settings.bidderEvaluationDays,
-                    successfulBidderDays: settings.successfulBidderDays,
-                    waitingPeriodDays: settings.waitingPeriodDays,
-                    procedureData: procedureData,
-                    internationalProcedureData: internationalProcedureData
-                }
-            };
-            const dataBarIframe = document.getElementById('dataBarIframe');
-            dataBarIframe.contentWindow.postMessage(data, '*');
-        });
-
         function setActiveTab(button) {
             const navButtons = document.querySelectorAll('.nav button');
             navButtons.forEach(btn => btn.classList.remove('active'));
@@ -779,7 +723,6 @@
             document.getElementById('savedSearchesContainer').classList.add('hidden');
             document.getElementById('historyContainer').classList.add('hidden');
             document.getElementById('settingsContainer').classList.add('hidden');
-            document.getElementById('dataBarVisual').classList.add('hidden'); // Ensure DataBar visual is hidden
             document.getElementById('resultContainer').classList.add('hidden'); // Ensure result container is hidden
         }
 
@@ -935,25 +878,6 @@
             const dropdownMenu = document.getElementById('dropdownMenu');
             if (!dropdownButton.contains(event.target)) {
                 dropdownMenu.classList.add('hidden');
-            }
-        });
-
-        window.addEventListener("message", (event) => {
-            if (event.data.type === "updateDataBar") {
-                const data = event.data.data;
-                const barsContainer = document.getElementById("bars");
-                barsContainer.innerHTML = "";
-
-                const maxDays = data.documentPreparationDays; // First bar sets max
-
-                Object.entries(data).forEach(([key, days]) => {
-                    let percentage = Math.round((days / maxDays) * 100);
-                    let bar = document.createElement("div");
-                    bar.className = "bar";
-                    bar.style.width = percentage + "%";
-                    bar.textContent = key.replace(/Days$/, '') + " (" + days + " päeva)";
-                    barsContainer.appendChild(bar);
-                });
             }
         });
     </script>
