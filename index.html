@@ -106,7 +106,7 @@
             <form id="procurementForm" class="space-y-4">
                 <div>
         <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="dataBarContainer">
-            <iframe src="databar/data_bars.html" class="w-full h-screen"></iframe>
+            <iframe src="databar/data_bars.html" class="w-full h-screen" id="dataBarIframe"></iframe>
                 </div>
                     <label for="name" class="block text-gray-700">Riigihanke nimetus:</label>
                     <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
@@ -163,7 +163,7 @@
             <div id="result" class="result-card"></div>
         </div>
         <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="dataBarContainer">
-            <iframe src="databar/data_bars.html" class="w-full h-screen"></iframe>
+            <iframe src="databar/data_bars.html" class="w-full h-screen" id="dataBarIframe"></iframe>
         </div>
         <!-- Add hidden class to DataBar container -->
         <div class="chart-container hidden" id="dataBarVisual">
@@ -786,6 +786,21 @@
             document.getElementById('dataBarContainer').classList.remove('hidden');
             document.getElementById('dataBarVisual').classList.remove('hidden'); // Show DataBar visual
             setActiveTab(this);
+
+            // Send data to the iframe
+            const iframe = document.getElementById('dataBarIframe');
+            const data = {
+                type: "updateDataBar",
+                data: {
+                    documentPreparationDays: settings.documentPreparationDays,
+                    offerEvaluationDays: settings.offerEvaluationDays,
+                    decisionDays: settings.decisionDays,
+                    bidderEvaluationDays: settings.bidderEvaluationDays,
+                    successfulBidderDays: settings.successfulBidderDays,
+                    waitingPeriodDays: settings.waitingPeriodDays
+                }
+            };
+            iframe.contentWindow.postMessage(data, '*');
         });
         
         function setActiveTab(button) {
