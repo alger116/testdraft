@@ -567,24 +567,22 @@
             // Store updated total duration in the PublicProcurement object
             const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
             
-            if (procurement !== -1) {
+            if (procurement) {
                 procurement.procedureDuration = totalDuration;
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
                 document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
 
-                // Update total duration and recalculate request submission date
+    
                 procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
 
-                // Update the UI with the new request submission date
-                document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
-
-                // **UUENDA KOHE NÄIDATAVAT KUUPÄEVA**
-                document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
-
-                savedSearches[procurement] = procurement;
-
-                // **UUENDA SALVESTATUD ANDMETE TABEL**
+                const requestDateElement = document.getElementById('requestSubmissionDate');
+                if (requestDateElement) {
+                    requestDateElement.innerText = procurement.requestSubmissionDate;
+                } else {
+                    console.error("Element with id 'requestSubmissionDate' not found.");
+                }
+                
                 updateSavedSearchesTable();
             }
         }
