@@ -566,16 +566,11 @@
             
             // Store updated total duration in the PublicProcurement object
             const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
-            
             if (procurement) {
                 procurement.procedureDuration = totalDuration;
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-                document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
 
-    
-                procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
-                procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-
+                // Update the UI with the new request submission date
                 const requestDateElement = document.getElementById('requestSubmissionDate');
                 if (requestDateElement) {
                     requestDateElement.innerText = procurement.requestSubmissionDate;
