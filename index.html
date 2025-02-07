@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
 </head>
 <body class="flex justify-center items-center h-screen bg-gray-100">
     <div class="nav absolute top-2 left-2">
@@ -481,7 +480,11 @@
             }
 
             calculateRequestSubmissionDate() {
+                console.log("Contract Signing Date:", this.contractSigningDate); // Add this line for debugging
                 const submissionDate = new Date(this.contractSigningDate);
+                if (isNaN(submissionDate)) {
+                    throw new RangeError("Invalid contract signing date");
+                }
                 submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
                 return submissionDate.toISOString().split('T')[0]; // Return date in YYYY-MM-DD format
             }
