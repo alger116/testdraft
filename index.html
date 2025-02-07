@@ -570,6 +570,12 @@
                 procurement.procedureDuration = totalDuration;
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
                 document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+
+                // **UUENDA KOHE NÄIDATAVAT KUUPÄEVA**
+                document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+
+                // **UUENDA SALVESTATUD ANDMETE TABEL**
+                updateSavedSearchesTable();
             }
         }
 
