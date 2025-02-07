@@ -545,6 +545,14 @@
             }
         }
 
+        function refreshFields() {
+            document.getElementById('refreshFields').click();
+        }
+
+        function saveFields() {
+            document.getElementById('saveFields').click();
+        }
+        
         function adjustDays(index, adjustment) {
             const daysElement = document.getElementById(`days-${index}`);
             if (!daysElement) {
@@ -586,6 +594,8 @@
             
             // Trigger refreshFields and saveFields
             refreshFields();
+                document.getElementById('refreshFields').click();
+}
             saveFields();
         }
 
