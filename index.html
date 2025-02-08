@@ -500,8 +500,8 @@
 
                 const details = [
                     { step: "Riigihanke alusdokumentide koostamine", days: ` ${settings.documentPreparationDays} päeva` },
-                    { step: "Taotluste esitamine RHRis", days: taotlusteAeg ? `${taotlusteAeg} päeva` : "Ei kohaldu antud menetluses." },
-                    { step: "Pakkumuste esitamine RHRis", days: pakkumusteAeg ? `${pakkumusteAeg} päeva` : "Ei kohaldu antud menetluses." },
+                    { step: "Taotluste esitamine RHRis", days: taotlusteAeg ? `${taotlusteAeg} päeva` : "Ei kohaldu" },
+                    { step: "Pakkumuste esitamine RHRis", days: pakkumusteAeg ? `${pakkumusteAeg} päeva` : "Ei kohaldu" },
                     { step: "Hindamine 1", days: `${settings.offerEvaluationDays} päeva` },
                     { step: "Otsus 1", days: `${settings.decisionDays} päeva` },
                     { step: "Hindamine 2", days: `${settings.bidderEvaluationDays} päeva` },
@@ -543,12 +543,13 @@
 
             generateHTML() {
                 const detailsHTML = this.procedureDetails.map((detail, index) => `
-                    <li class="flex items-center justify-between">
-                        ${detail.step}: 
-                        <span id="days-${index}">${detail.days}</span>
-                        <div class="adjust-buttons flex space-x-1">
-                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-2 py-0.8 rounded text-xs">-</button>
-                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-2 py-0.8 rounded text-xs">+</button>
+                    <li class="flex justify-between items-center py-1">
+                        <span class="w-3/4">${detail.step}:</span>
+                        <span id="days-${index}" class="w-16 text-center font-medium whitespace-nowrap">${detail.days}</span>
+                        <div class="flex gap-1 ml-6">
+                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs">-</button>
+                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs">+</button>
+
                         </div>
                     </li>
                 `).join('');
