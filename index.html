@@ -616,11 +616,11 @@
             // Store updated total duration in the PublicProcurement object
             const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
             if (procurement) {
-                procurement.procedureDuration = totalDuration;
+                procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
                 document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
             } else {
-                console.error("Invalid contract signing date for adjustment.");
+                console.error("Could not find procurement object for real-time update.");
             }
         }
 
