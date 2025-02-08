@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body class="flex justify-center items-center h-screen bg-gray-100">
     <div class="nav absolute top-2 left-2">
@@ -142,7 +143,7 @@
                 <input type="number" id="successfulBidderDays" name="successfulBidderDays" class="w-full p-2 border rounded" required>
             </div>
             <div>
-                <label for="waitingPeriodDays" class="block text-gray-700">Ootaeg (päevad):</label>
+                <label for="waitingPeriodDays" class="block text-gray-700">Ooteaeg (päevad):</label>
                 <input type="number" id="waitingPeriodDays" name="waitingPeriodDays" class="w-full p-2 border rounded" required>
             </div>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Salvesta</button>
@@ -193,6 +194,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
     <script>
+        // Utility function for formatting dates to "dd.mm.yyyy"
+        function formatDate(date) {
+            const d = new Date(date);
+            
+            if (isNaN(d.getTime())) {
+                console.error("Invalid date:", date);
+                return "Invalid date";  // Prevents errors
+            }
+
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+
+            return `${day}.${month}.${year}`;
+        }
+
         const procedureData = {
             "Lihthankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
             "Lihthankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
@@ -259,6 +276,7 @@
             if (passwordValidUntil && now < passwordValidUntil) {
                 callback();
                 return;
+            }
 
             const passwordPrompt = document.getElementById('passwordPrompt');
             const passwordInput = document.getElementById('passwordInput');
@@ -419,10 +437,25 @@
 
         class PublicProcurement {
             constructor(name, cost, procedureType, contractSigningDate) {
+                // Ensure the date is valid before any conversion logic
+                if (!contractSigningDate || isNaN(new Date(contractSigningDate).getTime())) {
+                    console.error("Invalid contract signing date:", contractSigningDate);
+                    this.contractSigningDate = null; // Avoid breaking further calculations
+                } else {
+                    // Convert dd.mm.yyyy to YYYY-MM-DD if necessary
+                    if (typeof contractSigningDate === "string" && contractSigningDate.includes(".")) {
+                        const parts = contractSigningDate.split(".");
+                        if (parts.length === 3) {
+                            contractSigningDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        }
+                    }
+                    this.contractSigningDate = new Date(contractSigningDate);
+                }
+
                 this.name = name;
                 this.cost = cost;
                 this.procedureType = procedureType;
-                this.contractSigningDate = new Date(contractSigningDate);
+                this.contractSigningDate = new Date(contractSigningDate); null;
                 this.procedureDuration = this.calculateProcedureDuration();
                 this.procedureDetails = this.calculateProcedureDetails();
                 this.requestSubmissionDate = this.calculateRequestSubmissionDate();
@@ -469,33 +502,53 @@
                     { step: "Riigihanke alusdokumentide koostamine", days: ` ${settings.documentPreparationDays} päeva` },
                     { step: "Taotluste esitamine RHRis", days: taotlusteAeg ? `${taotlusteAeg} päeva` : "Ei kohaldu antud menetluses." },
                     { step: "Pakkumuste esitamine RHRis", days: pakkumusteAeg ? `${pakkumusteAeg} päeva` : "Ei kohaldu antud menetluses." },
-                    { step: "Pakkumuste hindamine", days: `${settings.offerEvaluationDays} päeva` },
-                    { step: "Vastavaks ja edukaks tunnistamise otsus", days: `${settings.decisionDays} päeva` },
-                    { step: "Pakkujate hindamine", days: `${settings.bidderEvaluationDays} päeva` },
-                    { step: "Eduka kõrvaldamata jätmine ja kval", days: `${settings.successfulBidderDays} päeva` },
-                    { step: "Hankija ei või anda nõustumust sõlmida hankeleping enne 14 päeva möödumist peale edukaks tunnistamise otsuse teatavaks tegemist", days: `${settings.waitingPeriodDays} päeva` }
+                    { step: "Hindamine 1", days: `${settings.offerEvaluationDays} päeva` },
+                    { step: "Otsus 1", days: `${settings.decisionDays} päeva` },
+                    { step: "Hindamine 2", days: `${settings.bidderEvaluationDays} päeva` },
+                    { step: "Otsus 2", days: `${settings.successfulBidderDays} päeva` },
+                    { step: "Ooteaeg", days: `${settings.waitingPeriodDays} päeva` }
                 ];
                 return details;
             }
 
             calculateRequestSubmissionDate() {
-                console.log("Contract Signing Date:", this.contractSigningDate); // Add this line for debugging
-                const submissionDate = new Date(this.contractSigningDate);
-                if (isNaN(submissionDate)) {
-                    throw new RangeError("Invalid contract signing date");
+                // Step 1: Ensure contractSigningDate is in YYYY-MM-DD format
+                if (typeof this.contractSigningDate === "string" && this.contractSigningDate.includes(".")) {
+                    const parts = this.contractSigningDate.split(".");
+                    if (parts.length === 3) {
+                         this.contractSigningDate = typeof this.contractSigningDate === "string" ? `${parts[2]}-${parts[1]}-${parts[0]}` : this.contractSigningDate; // Convert dd.mm.yyyy → YYYY-MM-DD only if it's a string
+                    }
                 }
-                submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
-                return submissionDate.toISOString().split('T')[0]; // Return date in YYYY-MM-DD format
+
+                // Step 2: Validate contractSigningDate before using it
+                if (!this.contractSigningDate || isNaN(new Date(this.contractSigningDate).getTime())) {
+                    console.error("Invalid contract signing date:", this.contractSigningDate);
+                    return "Invalid date"; // Prevent further errors
+                }
+
+                // Step 3: Calculate the request submission date
+                const submissionDate = new Date(this.contractSigningDate);
+                if (!isNaN(this.procedureDuration)) {
+                    submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
+                if (isNaN(submissionDate.getTime())) {
+                    console.error("Invalid submission date:", submissionDate);
+                    return "Invalid date"; // Prevents errors
+                }
+                return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+                    console.error("Invalid procedure duration:", this.procedureDuration);
+                }
+
+                return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
             }
 
             generateHTML() {
                 const detailsHTML = this.procedureDetails.map((detail, index) => `
-                    <li>
+                    <li class="flex items-center justify-between">
                         ${detail.step}: 
                         <span id="days-${index}">${detail.days}</span>
-                        <div class="adjust-buttons">
-                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-2 py-1 rounded">-</button>
-                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-2 py-1 rounded">+</button>
+                        <div class="adjust-buttons flex space-x-1">
+                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-2 py-0.8 rounded text-xs">-</button>
+                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-2 py-0.8 rounded text-xs">+</button>
                         </div>
                     </li>
                 `).join('');
@@ -507,19 +560,13 @@
                     <div class="result-card bg-white p-6 rounded max-w-lg">
                         <h2 class="text-2xl font-bold text-black-500 mb-4">Riigihanke andmed</h2>
                         <p><strong>Riigihanke taotluse esitamise kuupäev:</strong> 
-                            <span id="requestSubmissionDate">${this.requestSubmissionDate}</span>
-                            <span class="relative group">
-                                <i class="fas fa-exclamation-circle text-red-500 ml-2 cursor-pointer"></i>
-                                <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-32 bg-gray-800 text-white text-xs rounded py-1 px-2 hidden group-hover:block">
-                                    Teade
-                                </span>
-                            </span>
+                            <span id="requestSubmissionDate">${formatDate(this.requestSubmissionDate)}</span>
                         </p>
                         ${errorMessage}
                         <p><strong>Nimi:</strong> ${this.name}</p>
                         <p><strong>Maksumus:</strong> ${this.cost}</p>
                         <p><strong>Riigihanke menetlusliik:</strong> ${this.procedureType}</p>
-                        <p><strong>Lepingu allkirjastamise kuupäev:</strong> ${this.contractSigningDate.toISOString().split('T')[0]}</p>
+                        <p><strong>Lepingu allkirjastamise kuupäev:</strong> ${formatDate(this.contractSigningDate)}</p>
                         <p><strong>Eeldatav riigihanke menetlusaeg päevades:</strong> <span id="totalDuration">${this.procedureDuration}</span> päeva</p>
                         <ul class="list-none p-0">
                             ${detailsHTML}
@@ -535,8 +582,8 @@
                         <td class="border p-2">${this.procedureType}</td>
                         <td class="border p-2">${this.cost}</td>
                         <td class="border p-2">${this.procedureDuration} päeva</td>
-                        <td class="border p-2">${this.requestSubmissionDate}</td>
-                        <td class="border p-2">${this.contractSigningDate.toISOString().split('T')[0]}</td>
+                        <td class="border p-2">${formatDate(this.requestSubmissionDate)}</td>
+                        <td class="border p-2">${formatDate(this.contractSigningDate)}</td>
                         <td class="border p-2"><button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded" onclick="editSearch(${index})">Muuda</button></td>
                         <td class="border p-2"><button class="delete-button bg-red-500 text-white px-2 py-1 rounded" onclick="deleteSearch(${index})">Kustuta</button></td>
                     </tr>
@@ -544,14 +591,6 @@
             }
         }
 
-        function refreshFields() {
-            document.getElementById('refreshFields').click();
-        }
-
-        function saveFields() {
-            document.getElementById('saveFields').click();
-        }
-        
         function adjustDays(index, adjustment) {
             const daysElement = document.getElementById(`days-${index}`);
             if (!daysElement) {
@@ -560,42 +599,29 @@
             }
 
             let daysText = daysElement.innerText;
-            let days = parseInt(daysText.match(/\d+/)[0]);
+            let days = parseInt(daysText.match(/\d+/)?.[0] || "0", 10);  // Avoid NaN
             days += adjustment;
             daysElement.innerText = daysText.replace(/\d+/, days);
 
             // Update total duration
             const totalDurationElement = document.getElementById('totalDuration');
             if (totalDurationElement) {
-                let totalDuration = parseInt(totalDurationElement.innerText);
+                let totalDuration = parseInt(totalDurationElement.innerText || "0", 10);
                 totalDuration += adjustment;
                 totalDurationElement.innerText = totalDuration;
             } else {
                 console.error('Element with id totalDuration not found');
             }
-            
+
             // Store updated total duration in the PublicProcurement object
             const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
             if (procurement) {
                 procurement.procedureDuration = totalDuration;
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-
-                // Update the UI with the new request submission date
-                const requestDateElement = document.getElementById('requestSubmissionDate');
-                if (requestDateElement) {
-                    requestDateElement.innerText = procurement.requestSubmissionDate;
-                } else {
-                    console.error("Element with id 'requestSubmissionDate' not found.");
-                }
-                
-                updateSavedSearchesTable();
+                document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
+            } else {
+                console.error("Invalid contract signing date for adjustment.");
             }
-            
-            // Trigger refreshFields and saveFields
-            refreshFields();
-                document.getElementById('refreshFields').click();
-}
-            saveFields();
         }
 
         const savedSearches = [];
@@ -646,13 +672,28 @@
             // Update procedure details with adjusted days
             procurement.procedureDetails.forEach((detail, index) => {
                 const daysElement = document.getElementById(`days-${index}`);
-                let daysText = daysElement.innerText;
-                let days = parseInt(daysText.match(/\d+/)[0]);
-                detail.days = `${days} päeva`;
+                if (daysElement) {
+                    let daysText = daysElement.innerText;
+                    let match = daysText.match(/\d+/);
+                    if (match) {
+                        let days = parseInt(match[0]);
+                        detail.days = `${days} päeva`;
+                    } else {
+                        console.error("No days found in text:", daysText);
+                    }
+                } else {
+                    console.error("Element not found for index:", index);
+                }
             });
 
             // Capture the adjusted procedureDuration value
-            procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
+            const totalDurationElement = document.getElementById('totalDuration');
+            if (totalDurationElement) {
+                procurement.procedureDuration = parseInt(totalDurationElement.innerText);
+            } else {
+                console.error("Total duration element not found");
+            }
+
             procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
 
             // Update the displayed result
@@ -669,7 +710,13 @@
                     alert("Maksimaalne salvestatud otsingute arv on 15.");
                 }
             }
-            updateSavedSearchesTable();
+
+            // Save to history
+            if (history.length >= 500) {
+                history.shift(); // Remove the oldest entry if history exceeds 500
+            }
+            history.push(procurement);
+            saveHistory(); // Save history immediately
         });
 
         document.getElementById('refreshFields').addEventListener('click', function() {
@@ -682,7 +729,7 @@
 
             procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
             procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-            document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+            document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
             updateSavedSearchesTable();
         });
 
@@ -700,7 +747,7 @@
                     procurement.name,
                     procurement.cost,
                     procurement.procedureType,
-                    procurement.contractSigningDate.toISOString().split('T')[0],
+                    formatDate(procurement.contractSigningDate),
                     procurement.procedureDuration
                 ].join(",");
                 csvContent += row + "\n";
@@ -781,7 +828,7 @@
             const procurement = savedSearches[index];
             procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
             procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-            document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+            document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
             updateSavedSearchesTable();
         }
 
