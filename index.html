@@ -17,6 +17,7 @@
                 <a href="#" id="showSavedSearches" class="hover:text-gray-200 transition">Hanked</a>
                 <a href="#" id="showHistory" class="hover:text-gray-200 transition">Ajalugu</a>
                 <a href="#" id="settingsButton" class="hover:text-gray-200 transition">Sätted</a>
+                <a href="#" onclick="toggleDashboard()" class="hover:text-gray-200 transition">Toggle Dashboard</a>
                 <label class="flex items-center cursor-pointer">
                     <span class="mr-2">Dark Mode</span>
                     <input type="checkbox" id="darkModeToggle" class="hidden">
@@ -29,7 +30,7 @@
     </header>
 
     <main class="container mx-auto p-6 pt-32">
-        <div id="dashboard" class="tab-content">
+        <div id="dashboard" class="tab-content hidden">
             <!-- Dashboard content goes here -->
         </div>
         <div class="nav hidden">
@@ -141,6 +142,15 @@
                 </tbody>
             </table>
             <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Salvesta Excelisse</button>
+            <!-- Button to Show Chart -->
+            <button onclick="toggleChart()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
+                Näita Graafikut
+            </button>
+
+            <!-- Chart Container (Initially Hidden) -->
+            <div id="chartContainer" class="hidden mt-4 w-full max-w-lg mx-auto">
+                <canvas id="procurementChart" class="w-full"></canvas>
+            </div>
         </div>
         <div class="container bg-white p-6 rounded shadow max-w-lg hidden" id="settingsContainer">
             <h2 class="text-2xl font-bold text-center mb-4">Settings</h2>
@@ -216,11 +226,6 @@
             <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
         </div>
 
-        <!-- Buttons with Hover Effects -->
-        <button class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition transform hover:scale-105">
-            Click Me
-        </button>
-
         <!-- Modern Table -->
         <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden mt-4">
             <thead class="bg-blue-500 text-white">
@@ -244,7 +249,6 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
     <script>
         // Utility function for formatting dates to "dd.mm.yyyy"
         function formatDate(date) {
@@ -737,7 +741,7 @@
                 } else {
                     console.error("Element not found for index:", index);
                 }
-            });
+            })
 
             // Capture the adjusted procedureDuration value
             const totalDurationElement = document.getElementById('totalDuration');
@@ -1023,46 +1027,120 @@
         }
         // Function to switch tabs correctly and hide the dashboard when needed
         function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
+            gsap.to(".container", { opacity: 0, duration: 0.5, onComplete: () => {
+                document.querySelectorAll(".container").forEach(tab => tab.classList.add("hidden"));
+                document.getElementById(tabId).classList.remove("hidden");
+                gsap.to("#" + tabId, { opacity: 1, duration: 0.5 });
+            }});
+        }
+
+        function toggleChart() {
+            const chartContainer = document.getElementById("chartContainer");
+            chartContainer.classList.toggle("hidden");
+
+            // Ensure table has data before rendering
+            if (!chartContainer.classList.contains("hidden")) {
+                setTimeout(() => {
+                    if (document.querySelectorAll("#savedSearchesTableBody tr").length > 0) {
+                        renderChart();
+                    } else {
+                        console.warn("⚠ No saved searches found, chart cannot be displayed.");
+                    }
+                }, 300);
+            }
+        }
+
+        function renderChart() {
+            const canvas = document.getElementById("procurementChart");
+            if (!canvas) {
+                console.error("❌ Chart canvas not found!");
+                return;
+            }
+
+            const ctx = canvas.getContext("2d");
+
+            // Destroy previous chart if it exists
+            if (window.procurementChart) {
+                window.procurementChart.destroy();
+            }
+
+            // Extract data from savedSearchesTableBody
+            const rows = document.querySelectorAll("#savedSearchesTableBody tr");
+            const labels = [];
+            const costs = [];
+            const totalDays = [];
+
+            rows.forEach(row => {
+                const columns = row.querySelectorAll("td");
+                if (columns.length >= 5) {  // Ensure there are enough columns
+                    const name = columns[0].innerText.trim();
+                    const cost = parseFloat(columns[2].innerText.replace("€", "").trim()); // Remove € sign
+                    const days = parseInt(columns[3].innerText.trim(), 10); // Convert to integer
+
+                    if (!isNaN(cost) && !isNaN(days)) { // Ensure valid data
+                        labels.push(name);
+                        costs.push(cost);
+                        totalDays.push(days);
+                    }
+                }
             });
 
-            /// Show the selected section
-            const activeTab = document.getElementById(tabId);
-            if (activeTab) {
-                activeTab.classList.remove('hidden');
-            } else {
-                console.error(`Section with ID '${tabId}' not found.`);
+            // If no valid data, show a warning and prevent chart initialization
+            if (labels.length === 0) {
+                console.warn("⚠ No valid data found for the chart.");
+                return;
             }
 
-            // Hide dashboard when switching away from the main content tab
-            const dashboard = document.getElementById('dashboard');
-            if (dashboard) {
-                dashboard.style.display = (tabId === 'formContainer') ? 'block' : 'none';
-            } else {
-                console.warn("⚠️ No 'dashboard' element found in HTML.");    
-            }
-        }       
+            // Create the chart
+            window.procurementChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Hanke Maksumus (€)",
+                            data: costs,
+                            backgroundColor: "rgba(75, 192, 192, 0.6)",
+                            borderColor: "rgba(75, 192, 192, 1)",
+                            borderWidth: 1
+                        },
+                        {
+                            label: "Menetlusaeg (päevad)",
+                            data: totalDays,
+                            backgroundColor: "rgba(153, 102, 255, 0.6)",
+                            borderColor: "rgba(153, 102, 255, 1)",
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: { enabled: true }
+                    }
+                }
+            });
+        }
 
         // Attach event listeners to navbar buttons
         document.addEventListener("DOMContentLoaded", function () {
-            function showTab(tabId) {
-                // Hide all sections
-                document.querySelectorAll('.container').forEach(tab => {
-                tab.classList.add('hidden');
-                });
+            document.getElementById("nav-tool").addEventListener("click", () => showTab('formContainer'));
+            document.getElementById("nav-hanked").addEventListener("click", () => showTab('savedSearchesContainer'));
+            document.getElementById("nav-history").addEventListener("click", () => showTab('historyContainer'));
+            document.getElementById("nav-settings").addEventListener("click", () => showTab('settingsContainer'));
 
-                // Show the selected section
-                document.getElementById(tabId).classList.remove('hidden');
-            }
-
-    // Attach event listeners to both navbar and dropdown buttons
-            document.getElementById("nav-tool").addEventListener("click", () => showTab('tools-page'));
-            document.getElementById("nav-hanked").addEventListener("click", () => showTab('hanked-page'));
-            document.getElementById("nav-history").addEventListener("click", () => showTab('history-page'));
-            document.getElementById("nav-settings").addEventListener("click", () => showTab('settings-page'));
-            document.getElementById("nav-main").addEventListener("click", () => showTab('main-content'));
+            // Initialize Chart.js
+            renderChart();
         });
+        function toggleDashboard() {
+            const dashboard = document.getElementById("dashboard");
+            dashboard.classList.toggle("hidden");
+        }
     </script>
 
     <style>
@@ -1074,7 +1152,6 @@
         background-color: rgba(254, 233, 233, 0.2);
         transform: scale(1.05);
     }
-
     /* Navbar styling */
     .navbar {
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
