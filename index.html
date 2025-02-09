@@ -7,190 +7,242 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
 </head>
-<body class="flex justify-center items-center h-screen bg-gray-100">
-    <div class="nav absolute top-2 left-2">
-        <div class="relative inline-block text-left">
-            <button id="dropdownButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-haspopup="true" aria-expanded="true">
-                <i class="fas fa-bars mr-2"></i> Menüü
-            </button>
-            <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
-                    <button id="showForm" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
-                        <i class="fas fa-tools mr-2"></i> Tööriist
-                    </button>
-                    <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
-                        <i class="fas fa-folder-open mr-2"></i> Hanked
-                    </button>
-                    <button id="showHistory" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
-                        <i class="fas fa-history mr-2"></i> Ajalugu
-                    </button>
-                    <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
-                        <i class="fas fa-cog mr-2"></i> Sätted
-                    </button>
-                    <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left" role="menuitem">
-                        <i class="fas fa-moon mr-2"></i> Dark Mode
-                    </button>
-                </div>
-            </div>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Modern Navbar with Dark Mode Toggle -->
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full fixed top-0 left-0">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Riigihanke andmed</h1>
+            <nav class="flex space-x-6">
+                <a href="#" id="showForm" class="hover:text-gray-200 transition">Tööriist</a>
+                <a href="#" id="showSavedSearches" class="hover:text-gray-200 transition">Hanked</a>
+                <a href="#" id="showHistory" class="hover:text-gray-200 transition">Ajalugu</a>
+                <a href="#" id="settingsButton" class="hover:text-gray-200 transition">Sätted</a>
+                <label class="flex items-center cursor-pointer">
+                    <span class="mr-2">Dark Mode</span>
+                    <input type="checkbox" id="darkModeToggle" class="hidden">
+                    <div class="w-10 h-5 bg-gray-300 rounded-full p-1 flex items-center">
+                        <div class="w-4 h-4 bg-white rounded-full shadow-md transition transform"></div>
+                    </div>
+                </label>
+            </nav>
         </div>
-    </div>
-    <div id="currentDateTime" class="absolute bottom-2 right-2 bg-white p-2 rounded shadow text-gray-800"></div>
-    <div id="toolTab" class="flex space-x-4">
-        <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
-            <h2 class="text-2xl font-bold text-center mb-4">Riigihanke andmed</h2>
-            <form id="procurementForm" class="space-y-4">
-                <div>
-                    <label for="name" class="block text-gray-700">Riigihanke nimetus:</label>
-                    <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="cost" class="block text-gray-700">Riigihanke maksumus:</label>
-                    <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="procedureType" class="block text-gray-700">Riigihanke menetlusliik:</label>
-                    <select id="procedureType" name="procedureType" class="w-full p-2 border rounded" required>
-                        <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Avatud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Avatud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Piiratud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Võistlev dialoog asjade hankelepingu sõlmimiseks</option>
-                        <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Võistlev dialoog teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Võistlev dialoog ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Kontsessioonimenetlus koos eraldi taotluse esitamisega</option>
-                        <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Kontsessioonimenetlus ilma eraldi taotlust esitamata</option>
-                        <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
-                        <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="contractSigningDate" class="block text-gray-700">Lepingu allkirjastamise kuupäev:</label>
-                    <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
-                </div>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center">
-                    <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
-                </button>
-            </form>
-            <div class="flex space-x-2 mt-4">
-                <button id="clearFields" class="clear-button bg-red-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center">
-                    <i class="fas fa-broom mr-2"></i> Puhasta
-                </button>
-                <button id="saveFields" class="save-button bg-green-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center">
-                    <i class="fas fa-save mr-2"></i> Salvesta
-                </button>
-                <button id="refreshFields" class="refresh-button bg-yellow-500 text-black px-4 py-2 rounded flex-1 flex items-center justify-center">
-                    <i class="fas fa-sync-alt mr-2"></i> Uuenda
-                </button>
-            </div>
-        </div>
-        <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
-            <div id="result" class="result-card"></div>
-        </div>
-    </div>
+    </header>
 
-    <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
-    <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
-        <h2 class="text-2xl font-bold text-center mb-4">Salvestatud Hanked</h2>
-        <table class="w-full border-collapse table-auto">
-            <thead>
-                <tr>
-                    <th class="border p-2 bg-blue-500 text-white">Nimi</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
-                    <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
-                    <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
-                    <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
-                    <th class="border p-2 bg-blue-500 text-white">Muuda</th>
-                    <th class="border p-2 bg-blue-500 text-white">Kustuta</th>
-                </tr>
-            </thead>
-            <tbody id="savedSearchesTableBody">
-                <!-- Saved searches will be inserted here -->
-            </tbody>
-        </table>
-        <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4">Salvesta Excelisse</button>
-    </div>
-    <div class="container bg-white p-6 rounded shadow max-w-lg hidden" id="settingsContainer">
-        <h2 class="text-2xl font-bold text-center mb-4">Settings</h2>
-        <form id="settingsForm" class="space-y-4">
-            <h3 class="text-xl font-semibold">Menetlusliigi sätted</h3>
-            <div>
-                <label for="documentPreparationDays" class="block text-gray-700">Riigihanke alusdokumentide koostamine (päevad):</label>
-                <input type="number" id="documentPreparationDays" name="documentPreparationDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="offerEvaluationDays" class="block text-gray-700">Pakkumuste hindamine (päevad):</label>
-                <input type="number" id="offerEvaluationDays" name="offerEvaluationDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="decisionDays" class="block text-gray-700">Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
-                <input type="number" id="decisionDays" name="decisionDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="bidderEvaluationDays" class="block text-gray-700">Pakkujate hindamine (päevad):</label>
-                <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="successfulBidderDays" class="block text-gray-700">Eduka kõrvaldamata jätmine ja kval (päevad):</label>
-                <input type="number" id="successfulBidderDays" name="successfulBidderDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="waitingPeriodDays" class="block text-gray-700">Ooteaeg (päevad):</label>
-                <input type="number" id="waitingPeriodDays" name="waitingPeriodDays" class="w-full p-2 border rounded" required>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Salvesta</button>
-        </form>
-        <h3 class="text-xl font-semibold mt-6">Menetlusliigid</h3>
-        <select id="procedureTypeSelect" class="w-full p-2 border rounded mt-2">
-            <!-- Options will be populated dynamically -->
-        </select>
-        <div id="procedureTypeSettings" class="mt-4 space-y-4">
-            <!-- Procedure type settings will be displayed here -->
+    <main class="container mx-auto p-6 pt-32">
+        <div id="dashboard" class="tab-content">
+            <!-- Dashboard content goes here -->
         </div>
-        <button id="addProcedureTypeButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Lisa Menetlusliik</button>
-    </div>
-    <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
-        <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
-        <div class="filter-container mb-4">
-            <label for="filterByDate" class="block text-gray-700">Filtreeri kuupäeva järgi:</label>
-            <select id="filterByDate" class="w-full p-2 border rounded">
-                <option value="all">Kõik</option>
+        <div class="nav absolute top-2 left-2">
+            <div class="relative inline-block text-left">
+                <button id="dropdownButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
+                    <i class="fas fa-bars mr-2"></i> Menüü
+                </button>
+                <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
+                        <button id="showForm" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-tools mr-2"></i> Tööriist
+                        </button>
+                        <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-folder-open mr-2"></i> Hanked
+                        </button>
+                        <button id="showHistory" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-history mr-2"></i> Ajalugu
+                        </button>
+                        <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-cog mr-2"></i> Sätted
+                        </button>
+                        <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-moon mr-2"></i> Dark Mode
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="currentDateTime" class="absolute bottom-2 right-2 bg-white p-2 rounded shadow text-gray-800"></div>
+        <div id="toolTab" class="flex space-x-4">
+            <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
+                <h2 class="text-2xl font-bold text-center mb-4">Sisesta andmed</h2>
+                <form id="procurementForm" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-gray-700">Riigihanke nimetus:</label>
+                        <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label for="cost" class="block text-gray-700">Riigihanke maksumus:</label>
+                        <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label for="procedureType" class="block text-gray-700">Riigihanke menetlusliik:</label>
+                        <select id="procedureType" name="procedureType" class="w-full p-2 border rounded" required>
+                            <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Avatud hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Avatud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Piiratud hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Võistlev dialoog asjade hankelepingu sõlmimiseks</option>
+                            <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Võistlev dialoog teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Võistlev dialoog ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Kontsessioonimenetlus koos eraldi taotluse esitamisega</option>
+                            <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Kontsessioonimenetlus ilma eraldi taotlust esitamata</option>
+                            <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
+                            <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="contractSigningDate" class="block text-gray-700">Lepingu allkirjastamise kuupäev:</label>
+                        <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center hover:bg-blue-600 transition transform hover:scale-105">
+                        <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
+                    </button>
+                </form>
+                <div class="flex space-x-2 mt-4">
+                    <button id="clearFields" class="clear-button bg-red-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-red-600 transition transform hover:scale-105">
+                        <i class="fas fa-broom mr-2"></i> Puhasta
+                    </button>
+                    <button id="saveFields" class="save-button bg-green-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-green-600 transition transform hover:scale-105">
+                        <i class="fas fa-save mr-2"></i> Salvesta
+                    </button>
+                    <button id="refreshFields" class="refresh-button bg-yellow-500 text-black px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-yellow-600 transition transform hover:scale-105">
+                        <i class="fas fa-sync-alt mr-2"></i> Uuenda
+                    </button>
+                </div>
+            </div>
+            <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
+                <div id="result" class="result-card"></div>
+            </div>
+        </div>
+
+        <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
+        <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
+            <h2 class="text-2xl font-bold text-center mb-4">Salvestatud Hanked</h2>
+            <table class="w-full border-collapse table-auto">
+                <thead>
+                    <tr>
+                        <th class="border p-2 bg-blue-500 text-white">Nimi</th>
+                        <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
+                        <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
+                        <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
+                        <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
+                        <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
+                        <th class="border p-2 bg-blue-500 text-white">Muuda</th>
+                        <th class="border p-2 bg-blue-500 text-white">Kustuta</th>
+                    </tr>
+                </thead>
+                <tbody id="savedSearchesTableBody">
+                    <!-- Saved searches will be inserted here -->
+                </tbody>
+            </table>
+            <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Salvesta Excelisse</button>
+        </div>
+        <div class="container bg-white p-6 rounded shadow max-w-lg hidden" id="settingsContainer">
+            <h2 class="text-2xl font-bold text-center mb-4">Settings</h2>
+            <form id="settingsForm" class="space-y-4">
+                <h3 class="text-xl font-semibold">Menetlusliigi sätted</h3>
+                <div>
+                    <label for="documentPreparationDays" class="block text-gray-700">Riigihanke alusdokumentide koostamine (päevad):</label>
+                    <input type="number" id="documentPreparationDays" name="documentPreparationDays" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="offerEvaluationDays" class="block text-gray-700">Pakkumuste hindamine (päevad):</label>
+                    <input type="number" id="offerEvaluationDays" name="offerEvaluationDays" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="decisionDays" class="block text-gray-700">Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
+                    <input type="number" id="decisionDays" name="decisionDays" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="bidderEvaluationDays" class="block text-gray-700">Pakkujate hindamine (päevad):</label>
+                    <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="successfulBidderDays" class="block text-gray-700">Eduka kõrvaldamata jätmine ja kval (päevad):</label>
+                    <input type="number" id="successfulBidderDays" name="successfulBidderDays" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="waitingPeriodDays" class="block text-gray-700">Ooteaeg (päevad):</label>
+                    <input type="number" id="waitingPeriodDays" name="waitingPeriodDays" class="w-full p-2 border rounded" required>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
+            </form>
+            <h3 class="text-xl font-semibold mt-6">Menetlusliigid</h3>
+            <select id="procedureTypeSelect" class="w-full p-2 border rounded mt-2">
                 <!-- Options will be populated dynamically -->
             </select>
+            <div id="procedureTypeSettings" class="mt-4 space-y-4">
+                <!-- Procedure type settings will be displayed here -->
+            </div>
+            <button id="addProcedureTypeButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">Lisa Menetlusliik</button>
         </div>
-        <table class="w-full border-collapse table-auto">
-            <thead>
+        <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
+            <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
+            <div class="filter-container mb-4">
+                <label for="filterByDate" class="block text-gray-700">Filtreeri kuupäeva järgi:</label>
+                <select id="filterByDate" class="w-full p-2 border rounded">
+                    <option value="all">Kõik</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            <table class="w-full border-collapse table-auto">
+                <thead>
+                    <tr>
+                        <th class="border p-2 bg-blue-500 text-white">Nimi</th>
+                        <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
+                        <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
+                        <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
+                        <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
+                        <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <!-- History entries will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="password-prompt hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-80 text-center" id="passwordPrompt">
+            <h3 class="text-xl font-bold mb-4">Enter Password</h3>
+            <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
+            <div class="flex justify-center space-x-2">
+                <button id="passwordSubmit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Submit</button>
+                <button id="passwordClose" class="close-button bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Close</button>
+            </div>
+            <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
+        </div>
+
+        <!-- Buttons with Hover Effects -->
+        <button class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition transform hover:scale-105">
+            Click Me
+        </button>
+
+        <!-- Modern Table -->
+        <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden mt-4">
+            <thead class="bg-blue-500 text-white">
                 <tr>
-                    <th class="border p-2 bg-blue-500 text-white">Nimi</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
-                    <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
-                    <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
-                    <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
+                    <th class="p-3">Nimi</th>
+                    <th class="p-3">Menetlusliik</th>
+                    <th class="p-3">Maksumus</th>
+                    <th class="p-3">Menetlusaeg</th>
+                    <th class="p-3">Taotluse Kuupäev</th>
                 </tr>
             </thead>
-            <tbody id="historyTableBody">
-                <!-- History entries will be inserted here -->
+            <tbody id="recentCalculations">
+                <!-- Last 3 calculations will be dynamically inserted here -->
             </tbody>
         </table>
-    </div>
-    <div class="password-prompt hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-80 text-center" id="passwordPrompt">
-        <h3 class="text-xl font-bold mb-4">Enter Password</h3>
-        <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
-        <div class="flex justify-center space-x-2">
-            <button id="passwordSubmit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
-            <button id="passwordClose" class="close-button bg-red-500 text-white px-4 py-2 rounded">Close</button>
+
+        <!-- Notification System -->
+        <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-md hidden">
+            ✅ Success!
         </div>
-        <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
-    </div>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
     <script>
@@ -376,8 +428,8 @@
                     <input type="number" id="offerDays" value="${procedure.pakkumusteAeg}" required><br><br>
                     <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
                     <input type="checkbox" id="useInternationalThreshold" ${procedure.useInternational ? 'checked' : ''} onchange="toggleInternationalThreshold('${type}')"><br><br>
-                    <button onclick="deleteProcedureType('${type}')" class="bg-red-500 text-white px-4 py-2 rounded">Kustuta</button>
-                    <button onclick="saveProcedureType('${type}')" class="bg-blue-500 text-white px-4 py-2 rounded">Salvesta</button>
+                    <button onclick="deleteProcedureType('${type}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Kustuta</button>
+                    <button onclick="saveProcedureType('${type}')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
                 </div>
             `;
         }
@@ -394,7 +446,7 @@
                     <input type="number" id="offerDays" required><br><br>
                     <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
                     <input type="checkbox" id="useInternationalThreshold" onchange="toggleInternationalThreshold()"><br><br>
-                    <button onclick="saveNewProcedureType()" class="bg-blue-500 text-white px-4 py-2 rounded">Salvesta</button>
+                    <button onclick="saveNewProcedureType()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
                 </div>
             `;
         }
@@ -547,8 +599,8 @@
                         <span class="w-3/4">${detail.step}:</span>
                         <span id="days-${index}" class="w-16 text-center font-medium whitespace-nowrap">${detail.days}</span>
                         <div class="flex gap-1 ml-6">
-                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs">-</button>
-                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs">+</button>
+                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition transform hover:scale-105">-</button>
+                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition transform hover:scale-105">+</button>
 
                         </div>
                     </li>
@@ -585,8 +637,8 @@
                         <td class="border p-2">${this.procedureDuration} päeva</td>
                         <td class="border p-2">${formatDate(this.requestSubmissionDate)}</td>
                         <td class="border p-2">${formatDate(this.contractSigningDate)}</td>
-                        <td class="border p-2"><button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded" onclick="editSearch(${index})">Muuda</button></td>
-                        <td class="border p-2"><button class="delete-button bg-red-500 text-white px-2 py-1 rounded" onclick="deleteSearch(${index})">Kustuta</button></td>
+                        <td class="border p-2"><button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition transform hover:scale-105" onclick="editSearch(${index})">Muuda</button></td>
+                        <td class="border p-2"><button class="delete-button bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition transform hover:scale-105" onclick="deleteSearch(${index})">Kustuta</button></td>
                     </tr>
                 `;
             }
@@ -953,6 +1005,75 @@
                 dropdownMenu.classList.add('hidden');
             }
         });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('bg-gray-900');
+            document.body.classList.toggle('text-white');
+        });
+
+        // Show Notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.innerText = message;
+            notification.className = `fixed bottom-4 right-4 p-3 rounded-lg shadow-md ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+            notification.classList.remove('hidden');
+            setTimeout(() => notification.classList.add('hidden'), 3000);
+        }
+        // Function to switch tabs correctly and hide the dashboard when needed
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+
+            /// Show the selected section
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) {
+                activeTab.classList.remove('hidden');
+            } else {
+                console.error(`Section with ID '${tabId}' not found.`);
+            }
+
+            // Hide dashboard when switching away from the main content tab
+            const dashboard = document.getElementById('dashboard');
+            if (dashboard) {
+                dashboard.style.display = (tabId === 'formContainer') ? 'block' : 'none';
+            } else {
+                console.warn("⚠️ No 'dashboard' element found in HTML.");    
+            }
+        }       
+
+        // Attach event listeners to navbar buttons
+        document.addEventListener("DOMContentLoaded", function () {
+            function showTab(tabId) {
+                // Hide all sections
+                document.querySelectorAll('.container').forEach(tab => {
+                tab.classList.add('hidden');
+                });
+
+                // Show the selected section
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+
+    // Attach event listeners to both navbar and dropdown buttons
+            document.getElementById("nav-tool").addEventListener("click", () => showTab('tools-page'));
+            document.getElementById("nav-hanked").addEventListener("click", () => showTab('hanked-page'));
+            document.getElementById("nav-history").addEventListener("click", () => showTab('history-page'));
+            document.getElementById("nav-settings").addEventListener("click", () => showTab('settings-page'));
+            document.getElementById("nav-main").addEventListener("click", () => showTab('main-content'));
+        });
     </script>
+
+    <style>
+    /* Navbar button hover effect */
+    .nav-button {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .nav-button:hover {
+        background-color: rgba(254, 233, 233, 0.2);
+        transform: scale(1.05);
+    }
+    </style>
 </body>
 </html>
