@@ -17,7 +17,7 @@
                 <a href="#" id="showSavedSearches" class="hover:text-gray-200 transition">Hanked</a>
                 <a href="#" id="showHistory" class="hover:text-gray-200 transition">Ajalugu</a>
                 <a href="#" id="settingsButton" class="hover:text-gray-200 transition">Sätted</a>
-                <a href="#" onclick="toggleDashboard()" class="hover:text-gray-200 transition">Toggle Dashboard</a>
+                <a href="#" onclick="toggleDashboard()" class="hover:text-gray-200 transition">Toggle 3</a>
                 <label class="flex items-center cursor-pointer">
                     <span class="mr-2">Dark Mode</span>
                     <input type="checkbox" id="darkModeToggle" class="hidden">
@@ -227,18 +227,18 @@
         </div>
 
         <!-- Modern Table -->
-        <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden mt-4">
+        <table id="recentCalculationsTable" class="w-full border-collapse shadow-lg rounded-lg overflow-hidden mt-4 hidden">
             <thead class="bg-blue-500 text-white">
-                <tr>
-                    <th class="p-3">Nimi</th>
-                    <th class="p-3">Menetlusliik</th>
-                    <th class="p-3">Maksumus</th>
-                    <th class="p-3">Menetlusaeg</th>
-                    <th class="p-3">Taotluse Kuupäev</th>
-                </tr>
+            <tr>
+                <th class="p-3">Nimi</th>
+                <th class="p-3">Menetlusliik</th>
+                <th class="p-3">Maksumus</th>
+                <th class="p-3">Menetlusaeg</th>
+                <th class="p-3">Taotluse Kuupäev</th>
+            </tr>
             </thead>
             <tbody id="recentCalculations">
-                <!-- Last 3 calculations will be dynamically inserted here -->
+            <!-- Last 3 calculations will be dynamically inserted here -->
             </tbody>
         </table>
 
@@ -1139,7 +1139,9 @@
         });
         function toggleDashboard() {
             const dashboard = document.getElementById("dashboard");
+            const recentCalculationsTable = document.getElementById("recentCalculationsTable");
             dashboard.classList.toggle("hidden");
+            recentCalculationsTable.classList.toggle("hidden");
         }
     </script>
 
