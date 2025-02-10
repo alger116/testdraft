@@ -244,7 +244,7 @@
 
         <!-- Notification System -->
         <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-md hidden">
-            ✅ Success!
+            ✅ !
         </div>
     </main>
 
@@ -1026,12 +1026,25 @@
         });
 
         // Show Notification
-        function showNotification(message, type = 'success') {
+        function showNotification(message, duration = 3000) {
             const notification = document.getElementById('notification');
-            notification.innerText = message;
-            notification.className = `fixed bottom-4 right-4 p-3 rounded-lg shadow-md ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+            notification.textContent = message;
             notification.classList.remove('hidden');
-            setTimeout(() => notification.classList.add('hidden'), 3000);
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, duration);
+        }
+
+        document.getElementById('saveFields').addEventListener('click', function() {
+            // Your save logic here
+            showNotification('Salvestatud edukalt!');
+        });
+    
+        document.getElementById('refreshFields').addEventListener('click', function() {
+            // Your update logic here
+            showNotification('Uuendatud edukalt!');
+        });
+
         }
         // Function to switch tabs correctly and hide the dashboard when needed
         function showTab(tabId) {
