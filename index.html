@@ -862,6 +862,14 @@
                 tableBody.innerHTML += procurement.generateTableRow(index);
             });
             adjustTableColumns();
+
+            // Update modern table with the last 3 saved searches
+            const recentTableBody = document.getElementById('savedSearchesTableBody');
+            const recentSearches = savedSearches.slice(-3); // Get the last 3 searches
+            recentTableBody.innerHTML = '';
+            recentSearches.forEach((procurement, index) => {
+                recentTableBody.innerHTML += procurement.generateTableRow(index);
+            });
         }
 
         function deleteSearch(index) {
