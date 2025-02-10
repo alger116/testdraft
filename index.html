@@ -6,61 +6,9 @@
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
-    <script src="bundle.js"></script>
 
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
-    <!-- 🔐 Authentication Container (Login Screen) -->
-    <div id="authContainer" class="container bg-white p-6 rounded shadow-lg max-w-md mx-auto text-center mt-32">
-        <h2 class="text-2xl font-bold mb-4">🔑 Logi sisse</h2>
-
-        <input type="email" id="email" placeholder="📧 Email"
-            class="w-full p-3 border rounded-lg mb-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-        
-        <input type="password" id="password" placeholder="🔒 Salasõna"
-            class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-        <button id="loginBtn" class="bg-blue-500 text-white p-3 w-full rounded-lg mt-4 hover:bg-blue-600">
-            🚀 Logi sisse
-        </button>
-
-        <p class="mt-2 text-gray-600">Või looge uus konto:</p>
-
-        <button id="registerBtn" class="bg-green-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-green-600">
-            ✍️ Registreeru
-        </button>
-
-        <button id="logoutBtn" class="bg-red-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-red-600 hidden">
-            🚪 Logi välja
-        </button>
-    </div>
-
-    <!-- 🚀 Main Content (Hidden until login) -->
-    <main class="container mx-auto p-6 pt-32 hidden">
-        <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full fixed top-0 left-0">
-            <div class="container mx-auto flex justify-between items-center">
-                <h1 class="text-2xl font-bold ml-4">Riigihanke andmed</h1>
-                <nav class="flex space-x-6">
-                    <a href="#" id="showForm" class="hover:text-gray-200 transition">Tööriist</a>
-                    <a href="#" id="showSavedSearches" class="hover:text-gray-200 transition">Hanked</a>
-                    <a href="#" id="showHistory" class="hover:text-gray-200 transition">Ajalugu</a>
-                    <a href="#" id="settingsButton" class="hover:text-gray-200 transition">Sätted</a>
-                    <a href="#" onclick="toggleDashboard()" class="hover:text-gray-200 transition">Toggle Dashboard</a>
-                </nav>
-            </div>
-        </header>
-
-        <!-- Dashboard -->
-        <div id="dashboard" class="tab-content hidden">
-            <h2 class="text-xl font-bold">📊 Dashboard</h2>
-        </div>
-
-        <!-- Other Sections -->
-        <div id="formContainer" class="container hidden"></div>
-        <div id="savedSearchesContainer" class="container hidden"></div>
-        <div id="historyContainer" class="container hidden"></div>
-        <div id="settingsContainer" class="container hidden"></div>
-    </main>
     <!-- Modern Navbar with Dark Mode Toggle -->
     <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full fixed top-0 left-0">
         <div class="container mx-auto flex justify-between items-center">
@@ -413,7 +361,7 @@
 
         let settings = { ...defaultSettings };
 
-        const correctPassword = 'admin';
+        const correctPassword = '123';
         let passwordValidUntil = null;
 
         function showPasswordPrompt(callback) {
@@ -446,13 +394,11 @@
         }
 
         document.getElementById('settingsButton').addEventListener('click', function() {
-            showPasswordPrompt(() => {
-                closeAllTabs();
-                document.getElementById('settingsContainer').classList.remove('hidden');
-                loadSettings();
-                loadProcedureTypes();
-                setActiveTab(this);
-            });
+            closeAllTabs();
+            document.getElementById('settingsContainer').classList.remove('hidden');
+            loadSettings();
+            loadProcedureTypes();
+            setActiveTab(this);
         });
 
         document.getElementById('settingsForm').addEventListener('submit', function(event) {
@@ -922,12 +868,10 @@
         });
 
         document.getElementById('showHistory').addEventListener('click', function() {
-            showPasswordPrompt(() => {
-                closeAllTabs();
-                document.getElementById('historyContainer').classList.remove('hidden');
-                loadHistory();
-                setActiveTab(this);
-            });
+            closeAllTabs();
+            document.getElementById('historyContainer').classList.remove('hidden');
+            loadHistory();
+            setActiveTab(this);
         });
 
         function setActiveTab(button) {
@@ -1133,15 +1077,6 @@
             // Your update logic here
             showNotification('Uuendatud edukalt!');
         });
-        
-        // Function to switch tabs correctly and hide the dashboard when needed
-        function showTab(tabId) {
-            gsap.to(".container", { opacity: 0, duration: 0.5, onComplete: () => {
-                document.querySelectorAll(".container").forEach(tab => tab.classList.add("hidden"));
-                document.getElementById(tabId).classList.remove("hidden");
-                gsap.to("#" + tabId, { opacity: 1, duration: 0.5 });
-            }});
-        }
 
         function toggleChart() {
             const chartContainer = document.getElementById("chartContainer");
@@ -1246,7 +1181,25 @@
             if (navTool) navTool.addEventListener("click", () => showTab('formContainer'));
             if (navHanked) navHanked.addEventListener("click", () => showTab('savedSearchesContainer'));
             if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
             if (navSettings) navSettings.addEventListener("click", () => showTab('settingsContainer'));
+
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
 
             // Initialize Chart.js
             renderChart();
@@ -1259,8 +1212,8 @@
         }
 
         // Ensure the container fades in on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            gsap.to(".container", { opacity: 1, duration: 0.5 });
+        document.addEventListener("DOMContentLoaded", () => {
+        gsap.from("body", { opacity: 0, duration: 0.3});
         });
     </script>
 
@@ -1286,6 +1239,7 @@
         z-index: 1000;
     }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="auth.js"></script> <!-- You will create this file next -->
 </body>
