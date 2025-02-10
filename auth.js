@@ -2,8 +2,26 @@ import { auth } from "./firebase-config.js";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
+// Function to show/hide authentication screen
+function toggleAuthScreen(user) {
+    const authContainer = document.getElementById("authContainer");
+    const mainContent = document.querySelector("main");
+
+    if (user) {
+        authContainer.classList.add("hidden"); // Hide login screen
+        mainContent.classList.remove("hidden"); // Show main content
+        document.getElementById("logoutBtn").classList.remove("hidden");
+        console.log(`✅ Kasutaja sisse logitud: ${user.email}`);
+    } else {
+        authContainer.classList.remove("hidden"); // Show login screen
+        mainContent.classList.add("hidden"); // Hide main content
+        document.getElementById("logoutBtn").classList.add("hidden");
+        console.log("❌ Kasutaja välja logitud.");
+    }
+}
+
 // 🔹 Register User
-export function register() {
+function register() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
@@ -13,7 +31,7 @@ export function register() {
 }
 
 // 🔹 Log In User
-export function login() {
+function login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
@@ -23,29 +41,16 @@ export function login() {
 }
 
 // 🔹 Log Out User
-export function logout() {
+function logout() {
     signOut(auth)
         .then(() => alert("👋 Olete välja logitud!"))
         .catch(error => alert(`❌ Viga: ${error.message}`));
 }
 
 // 🔹 Track User Authentication State
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        document.getElementById("logoutBtn").classList.remove("hidden");
-        console.log(`✅ Kasutaja sisse logitud: ${user.email}`);
-    } else {
-        document.getElementById("logoutBtn").classList.add("hidden");
-        console.log("❌ Kasutaja välja logitud.");
-    }
-});
+onAuthStateChanged(auth, toggleAuthScreen);
 
-// ✅ Attach functions to `window` so `onclick` works in `index.html`
+// ✅ Attach functions to `window` so they work with event listeners
 window.register = register;
 window.login = login;
 window.logout = logout;
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("loginBtn")?.addEventListener("click", login);
-    document.getElementById("registerBtn")?.addEventListener("click", register);
-    document.getElementById("logoutBtn")?.addEventListener("click", logout);
-});

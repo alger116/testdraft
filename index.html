@@ -6,8 +6,61 @@
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+    <script src="bundle.js"></script>
+
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- 🔐 Authentication Container (Login Screen) -->
+    <div id="authContainer" class="container bg-white p-6 rounded shadow-lg max-w-md mx-auto text-center mt-32">
+        <h2 class="text-2xl font-bold mb-4">🔑 Logi sisse</h2>
+
+        <input type="email" id="email" placeholder="📧 Email"
+            class="w-full p-3 border rounded-lg mb-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        
+        <input type="password" id="password" placeholder="🔒 Salasõna"
+            class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+        <button id="loginBtn" class="bg-blue-500 text-white p-3 w-full rounded-lg mt-4 hover:bg-blue-600">
+            🚀 Logi sisse
+        </button>
+
+        <p class="mt-2 text-gray-600">Või looge uus konto:</p>
+
+        <button id="registerBtn" class="bg-green-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-green-600">
+            ✍️ Registreeru
+        </button>
+
+        <button id="logoutBtn" class="bg-red-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-red-600 hidden">
+            🚪 Logi välja
+        </button>
+    </div>
+
+    <!-- 🚀 Main Content (Hidden until login) -->
+    <main class="container mx-auto p-6 pt-32 hidden">
+        <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full fixed top-0 left-0">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold ml-4">Riigihanke andmed</h1>
+                <nav class="flex space-x-6">
+                    <a href="#" id="showForm" class="hover:text-gray-200 transition">Tööriist</a>
+                    <a href="#" id="showSavedSearches" class="hover:text-gray-200 transition">Hanked</a>
+                    <a href="#" id="showHistory" class="hover:text-gray-200 transition">Ajalugu</a>
+                    <a href="#" id="settingsButton" class="hover:text-gray-200 transition">Sätted</a>
+                    <a href="#" onclick="toggleDashboard()" class="hover:text-gray-200 transition">Toggle Dashboard</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="tab-content hidden">
+            <h2 class="text-xl font-bold">📊 Dashboard</h2>
+        </div>
+
+        <!-- Other Sections -->
+        <div id="formContainer" class="container hidden"></div>
+        <div id="savedSearchesContainer" class="container hidden"></div>
+        <div id="historyContainer" class="container hidden"></div>
+        <div id="settingsContainer" class="container hidden"></div>
+    </main>
     <!-- Modern Navbar with Dark Mode Toggle -->
     <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full fixed top-0 left-0">
         <div class="container mx-auto flex justify-between items-center">
@@ -281,31 +334,6 @@
         <!-- Notification System -->
         <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-md hidden">
             ✅ !
-        </div>
-
-        <!-- Authentication Container -->
-        <div id="authContainer" class="container bg-white p-6 rounded shadow-lg max-w-md mx-auto text-center">
-            <h2 class="text-2xl font-bold mb-4">🔑 Logi sisse</h2>
-
-            <input type="email" id="email" placeholder="📧 Email"
-                class="w-full p-3 border rounded-lg mb-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            
-            <input type="password" id="password" placeholder="🔒 Salasõna"
-                class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-            <button id="loginBtn" class="bg-blue-500 text-white p-3 w-full rounded-lg mt-4 hover:bg-blue-600">
-                🚀 Logi sisse
-            </button>
-
-            <p class="mt-2 text-gray-600">Või looge uus konto:</p>
-
-            <button onclick="register()" class="bg-green-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-green-600">
-                ✍️ Registreeru
-            </button>
-
-            <button onclick="logout()" class="bg-red-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-red-600 hidden" id="logoutBtn">
-                🚪 Logi välja
-            </button>
         </div>
     </main>
 
