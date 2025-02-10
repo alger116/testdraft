@@ -152,44 +152,80 @@
                 <canvas id="procurementChart" class="w-full"></canvas>
             </div>
         </div>
-        <div class="container bg-white p-6 rounded shadow max-w-lg hidden" id="settingsContainer">
-            <h2 class="text-2xl font-bold text-center mb-4">Settings</h2>
-            <form id="settingsForm" class="space-y-4">
-                <h3 class="text-xl font-semibold">Menetlusliigi sätted</h3>
-                <div>
-                    <label for="documentPreparationDays" class="block text-gray-700">Riigihanke alusdokumentide koostamine (päevad):</label>
-                    <input type="number" id="documentPreparationDays" name="documentPreparationDays" class="w-full p-2 border rounded" required>
+        <!-- Settings Container -->
+        <div class="container bg-white p-6 rounded-lg shadow-lg max-w-2xl hidden" id="settingsContainer">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">⚙️ Seaded</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Form Section -->
+                <form id="settingsForm" class="space-y-6 bg-gray-50 p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-800">📑 Menetlusliigi sätted</h3>
+
+                    <div class="relative">
+                        <label for="documentPreparationDays" class="block text-gray-700 mb-1">📄 Riigihanke alusdokumentide koostamine (päevad):</label>
+                        <input type="number" id="documentPreparationDays" name="documentPreparationDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="offerEvaluationDays" class="block text-gray-700 mb-1">🧐 Pakkumuste hindamine (päevad):</label>
+                        <input type="number" id="offerEvaluationDays" name="offerEvaluationDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="decisionDays" class="block text-gray-700 mb-1">✅ Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
+                        <input type="number" id="decisionDays" name="decisionDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="bidderEvaluationDays" class="block text-gray-700 mb-1">📊 Pakkujate hindamine (päevad):</label>
+                        <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="successfulBidderDays" class="block text-gray-700 mb-1">🏆 Eduka kõrvaldamata jätmine ja kval (päevad):</label>
+                        <input type="number" id="successfulBidderDays" name="successfulBidderDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="waitingPeriodDays" class="block text-gray-700 mb-1">⏳ Ooteaeg (päevad):</label>
+                        <input type="number" id="waitingPeriodDays" name="waitingPeriodDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition transform hover:scale-105">
+                        💾 Salvesta
+                    </button>
+                </form>
+
+                <!-- Procedure Type Selection -->
+                <div class="bg-gray-50 p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">🛠️ Menetlusliigid</h3>
+                    <select id="procedureTypeSelect"
+                        class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <div id="procedureTypeSettings" class="mt-4 space-y-4">
+                        <!-- Procedure type settings will be displayed here -->
+                    </div>
+                    <button id="addProcedureTypeButton"
+                        class="w-full bg-green-500 text-white p-3 rounded-lg mt-4 hover:bg-green-600 transition transform hover:scale-105">
+                        ➕ Lisa Menetlusliik
+                    </button>
                 </div>
-                <div>
-                    <label for="offerEvaluationDays" class="block text-gray-700">Pakkumuste hindamine (päevad):</label>
-                    <input type="number" id="offerEvaluationDays" name="offerEvaluationDays" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="decisionDays" class="block text-gray-700">Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
-                    <input type="number" id="decisionDays" name="decisionDays" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="bidderEvaluationDays" class="block text-gray-700">Pakkujate hindamine (päevad):</label>
-                    <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="successfulBidderDays" class="block text-gray-700">Eduka kõrvaldamata jätmine ja kval (päevad):</label>
-                    <input type="number" id="successfulBidderDays" name="successfulBidderDays" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="waitingPeriodDays" class="block text-gray-700">Ooteaeg (päevad):</label>
-                    <input type="number" id="waitingPeriodDays" name="waitingPeriodDays" class="w-full p-2 border rounded" required>
-                </div>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
-            </form>
-            <h3 class="text-xl font-semibold mt-6">Menetlusliigid</h3>
-            <select id="procedureTypeSelect" class="w-full p-2 border rounded mt-2">
-                <!-- Options will be populated dynamically -->
-            </select>
-            <div id="procedureTypeSettings" class="mt-4 space-y-4">
-                <!-- Procedure type settings will be displayed here -->
             </div>
-            <button id="addProcedureTypeButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">Lisa Menetlusliik</button>
+        </div>
         </div>
         <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
             <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
@@ -245,6 +281,31 @@
         <!-- Notification System -->
         <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-md hidden">
             ✅ !
+        </div>
+
+        <!-- Authentication Container -->
+        <div id="authContainer" class="container bg-white p-6 rounded shadow-lg max-w-md mx-auto text-center">
+            <h2 class="text-2xl font-bold mb-4">🔑 Logi sisse</h2>
+
+            <input type="email" id="email" placeholder="📧 Email"
+                class="w-full p-3 border rounded-lg mb-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            
+            <input type="password" id="password" placeholder="🔒 Salasõna"
+                class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+            <button id="loginBtn" class="bg-blue-500 text-white p-3 w-full rounded-lg mt-4 hover:bg-blue-600">
+                🚀 Logi sisse
+            </button>
+
+            <p class="mt-2 text-gray-600">Või looge uus konto:</p>
+
+            <button onclick="register()" class="bg-green-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-green-600">
+                ✍️ Registreeru
+            </button>
+
+            <button onclick="logout()" class="bg-red-500 text-white p-3 w-full rounded-lg mt-2 hover:bg-red-600 hidden" id="logoutBtn">
+                🚪 Logi välja
+            </button>
         </div>
     </main>
 
@@ -865,7 +926,7 @@
 
             // Update modern table with the last 3 saved searches
             const recentTableBody = document.getElementById('savedSearchesTableBody');
-            const recentSearches = savedSearches.slice(-3); // Get the last 3 searches
+            const recentSearches = savedSearches.slice(-10); // Get the last 3 searches
             recentTableBody.innerHTML = '';
             recentSearches.forEach((procurement, index) => {
                 recentTableBody.innerHTML += procurement.generateTableRow(index);
@@ -1080,7 +1141,7 @@
             const ctx = canvas.getContext("2d");
 
             // Destroy previous chart if it exists
-            if (window.procurementChart) {
+            if (window.procurementChart && typeof window.procurementChart.destroy === 'function') {
                 window.procurementChart.destroy();
             }
 
@@ -1118,15 +1179,14 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: "Hanke Maksumus (€)",
-                            data: costs,
-                            backgroundColor: "rgba(75, 192, 192, 0.6)",
-                            borderColor: "rgba(75, 192, 192, 1)",
-                            borderWidth: 1
-                        },
-                        {
                             label: "Menetlusaeg (päevad)",
-                            data: totalDays,
+                            data: totalDays.map(days => {
+                                const today = new Date();
+                                const submissionDate = new Date();
+                                submissionDate.setDate(today.getDate() + days);
+                                const timeDiff = submissionDate.getTime() - today.getTime();
+                                return Math.ceil(timeDiff / (1000 * 3600 * 24));
+                            }),
                             backgroundColor: "rgba(153, 102, 255, 0.6)",
                             borderColor: "rgba(153, 102, 255, 1)",
                             borderWidth: 1
@@ -1134,10 +1194,11 @@
                     ]
                 },
                 options: {
+                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: true }
+                        x: { beginAtZero: true }
                     },
                     plugins: {
                         legend: { display: true },
@@ -1149,10 +1210,15 @@
 
         // Attach event listeners to navbar buttons
         document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("nav-tool").addEventListener("click", () => showTab('formContainer'));
-            document.getElementById("nav-hanked").addEventListener("click", () => showTab('savedSearchesContainer'));
-            document.getElementById("nav-history").addEventListener("click", () => showTab('historyContainer'));
-            document.getElementById("nav-settings").addEventListener("click", () => showTab('settingsContainer'));
+            const navTool = document.getElementById("showForm");
+            const navHanked = document.getElementById("showSavedSearches");
+            const navHistory = document.getElementById("showHistory");
+            const navSettings = document.getElementById("settingsButton");
+
+            if (navTool) navTool.addEventListener("click", () => showTab('formContainer'));
+            if (navHanked) navHanked.addEventListener("click", () => showTab('savedSearchesContainer'));
+            if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
+            if (navSettings) navSettings.addEventListener("click", () => showTab('settingsContainer'));
 
             // Initialize Chart.js
             renderChart();
@@ -1163,6 +1229,11 @@
             dashboard.classList.toggle("hidden");
             recentCalculationsTable.classList.toggle("hidden");
         }
+
+        // Ensure the container fades in on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            gsap.to(".container", { opacity: 1, duration: 0.5 });
+        });
     </script>
 
     <style>
@@ -1179,6 +1250,15 @@
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         padding: 1rem;
     }
+    /* Ensure the clock is fixed in the corner */
+    #currentDateTime {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+    }
     </style>
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="auth.js"></script> <!-- You will create this file next -->
 </body>
 </html>
