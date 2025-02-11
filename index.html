@@ -286,7 +286,8 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-    <script>
+    <script type="module">
+        import { db } from './firebase-config.js';
         // Utility function for formatting dates to "dd.mm.yyyy"
         function formatDate(date) {
             const d = new Date(date);
