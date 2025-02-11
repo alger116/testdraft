@@ -8,8 +8,9 @@
     <link href="styles.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <!-- Add Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Dark Mode Toggle -->
@@ -289,7 +290,11 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-    <script>
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, getDocs, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        import { auth } from './auth.js';
+
         // Utility function for formatting dates to "dd.mm.yyyy"
         function formatDate(date) {
             const d = new Date(date);
@@ -935,45 +940,38 @@
 
         async function saveHistory() {
             try {
-                const response = await fetch('http://localhost:3000/save-history', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(history)
-                });
-                if (!response.ok) {
-                    console.error('Failed to save history');
-                }
+                const historyCollection = collection(db, "history");
+                await addDoc(historyCollection, { history });
+                console.log("History successfully saved!");
             } catch (error) {
-                console.error('Error saving history:', error);
+                console.error("Error saving history: ", error);
             }
         }
 
         async function loadHistory() {
             try {
-                const response = await fetch('http://localhost:8080/history.json');
-                if (response.ok) {
-                    const savedHistory = await response.json();
-                    console.log('Fetched history:', savedHistory); // Debugging statement
-                    history.length = 0; // Clear current history
-                    savedHistory.forEach(item => {
-                        const procurement = new PublicProcurement(
-                            item.name,
-                            item.cost,
-                            item.procedureType,
-                            item.contractSigningDate
-                        );
-                        procurement.procedureDuration = item.procedureDuration;
-                        procurement.procedureDetails = item.procedureDetails;
-                        procurement.requestSubmissionDate = item.requestSubmissionDate;
-                        history.push(procurement);
-                    });
-                    updateHistoryTable();
-                    populateFilterOptions();
-                } else {
-                    console.error('Failed to load history:', response.statusText);
-                }
+                const historyCollection = collection(db, "history");
+                const querySnapshot = await getDocs(historyCollection);
+                const savedHistory = [];
+                querySnapshot.forEach((doc) => {
+                    savedHistory.push(doc.data());
+                });
+                console.log('Fetched history:', savedHistory); // Debugging statement
+                history.length = 0; // Clear current history
+                savedHistory.forEach(item => {
+                    const procurement = new PublicProcurement(
+                        item.name,
+                        item.cost,
+                        item.procedureType,
+                        item.contractSigningDate
+                    );
+                    procurement.procedureDuration = item.procedureDuration;
+                    procurement.procedureDetails = item.procedureDetails;
+                    procurement.requestSubmissionDate = item.requestSubmissionDate;
+                    history.push(procurement);
+                });
+                updateHistoryTable();
+                populateFilterOptions();
             } catch (error) {
                 console.error('Error fetching history:', error);
             }

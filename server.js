@@ -1,10 +1,17 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
+const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const serviceAccount = require('./path/to/serviceAccountKey.json');
+
+initializeApp({
+  credential: cert(serviceAccount)
+});
+
+const db = getFirestore();
 
 const app = express();
 const PORT = 3000;
-const historyFilePath = path.join(__dirname, 'history.json');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -13,25 +20,27 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/load-history', (req, res) => {
-    fs.readFile(historyFilePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Failed to read history file', err);
-            return res.status(500).send('Failed to load history');
-        }
-        res.json(JSON.parse(data));
-    });
+app.get('/load-history', async (req, res) => {
+    try {
+        const historyCollection = db.collection('history');
+        const snapshot = await historyCollection.get();
+        const history = snapshot.docs.map(doc => doc.data());
+        res.json(history);
+    } catch (error) {
+        console.error('Failed to load history from Firestore', error);
+        res.status(500).send('Failed to load history');
+    }
 });
 
-app.post('/save-history', (req, res) => {
-    const historyData = JSON.stringify(req.body, null, 2);
-    fs.writeFile(historyFilePath, historyData, 'utf8', (err) => {
-        if (err) {
-            console.error('Failed to save history file', err);
-            return res.status(500).send('Failed to save history');
-        }
+app.post('/save-history', async (req, res) => {
+    try {
+        const historyCollection = db.collection('history');
+        await historyCollection.add(req.body);
         res.send('History saved successfully');
-    });
+    } catch (error) {
+        console.error('Failed to save history to Firestore', error);
+        res.status(500).send('Failed to save history');
+    }
 });
 
 app.listen(PORT, () => {
