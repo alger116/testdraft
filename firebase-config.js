@@ -6,7 +6,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyBnjmvUZ8T8rjd69YlvrwpMFwpAkONWm4E",
     authDomain: "Riigihankeproject.firebaseapp.com",
     projectId: "Riigihankeproject",
-    storageBucket: "Riigihankeproject.firebasestorage.app",
+    storageBucket: "Riigihankeproject.firebasestorage.com",
     messagingSenderId: "649897121077",
     appId: "1:649897121077:web:2ff628090dc51e4df8287c",
     measurementId: "G-CGK6YHSDQ4"
