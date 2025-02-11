@@ -337,8 +337,8 @@
         });
 
         // Call loadHistory on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            loadHistory();
+        document.addEventListener("DOMContentLoaded", async function () {
+            await loadHistory();
         });
 
         const procedureData = {
