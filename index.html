@@ -6,10 +6,7 @@
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <!-- Add Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Dark Mode Toggle -->
@@ -1217,94 +1214,6 @@
         // Ensure the container fades in on page load
         document.addEventListener("DOMContentLoaded", () => {
         gsap.from("body", { opacity: 0, duration: 0.3});
-        });
-
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Function to save settings to Firebase
-        function saveSettings(settings) {
-            db.collection("settings").doc("userSettings").set(settings)
-                .then(() => {
-                    console.log("Settings successfully saved!");
-                })
-                .catch((error) => {
-                    console.error("Error saving settings: ", error);
-                });
-        }
-
-        // Function to load settings from Firebase
-        function loadSettings() {
-            db.collection("settings").doc("userSettings").get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        const settings = doc.data();
-                        console.log("Settings successfully loaded!", settings);
-                        // Apply settings to your application
-                    } else {
-                        console.log("No such document!");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error loading settings: ", error);
-                });
-        }
-
-        // Function to save history to Firebase
-        function saveHistory(history) {
-            db.collection("history").add(history)
-                .then(() => {
-                    console.log("History successfully saved!");
-                })
-                .catch((error) => {
-                    console.error("Error saving history: ", error);
-                });
-        }
-
-        // Function to load history from Firebase
-        function loadHistory() {
-            db.collection("history").get()
-                .then((querySnapshot) => {
-                    const history = [];
-                    querySnapshot.forEach((doc) => {
-                        history.push(doc.data());
-                    });
-                    console.log("History successfully loaded!", history);
-                    // Update your application with the loaded history
-                })
-                .catch((error) => {
-                    console.error("Error loading history: ", error);
-                });
-        }
-
-        // Example usage
-        document.getElementById('saveFields').addEventListener('click', function() {
-            const settings = {
-                // Your settings data
-            };
-            saveSettings(settings);
-            showNotification('Salvestatud edukalt!');
-        });
-
-        document.getElementById('refreshFields').addEventListener('click', function() {
-            loadSettings();
-            showNotification('Uuendatud edukalt!');
-        });
-
-        // Call loadHistory on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            loadHistory();
         });
     </script>
 
