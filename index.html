@@ -230,7 +230,6 @@
                 </div>
             </div>
         </div>
-        </div>
         <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
             <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
             <div class="filter-container mb-4">
@@ -288,6 +287,7 @@
         </div>
     </main>
 
+    <script type="module"></script>
     <script type="module">
         import { db } from './firebase-config.js';
         import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
@@ -325,6 +325,8 @@
             };
             saveSettings(settings);
             showNotification('Salvestatud edukalt!');
+        }).catch(error => {
+            console.error('Error during DOMContentLoaded event:', error);
         });
 
         document.getElementById('refreshFields').addEventListener('click', function() {
@@ -755,11 +757,16 @@
 
         document.getElementById('procurementForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const name = document.getElementById('name').value;
+            const name = document.getElementById('name').value.trim();
             const cost = parseFloat(document.getElementById('cost').value);
             const procedureType = document.getElementById('procedureType').value;
             const contractSigningDate = document.getElementById('contractSigningDate').value;
-
+        
+            if (!name || isNaN(cost) || !procedureType || !contractSigningDate) {
+                alert("Please fill in all fields correctly.");
+                return;
+            }
+        
             const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
             document.getElementById('result').innerHTML = procurement.generateHTML(); // Ensure the result is displayed
             
@@ -936,8 +943,9 @@
             recentTableBody.innerHTML = '';
             recentSearches.forEach((procurement, index) => {
                 recentTableBody.innerHTML += procurement.generateTableRow(index);
-            });
-        }
+                });
+            }
+        
 
         function deleteSearch(index) {
             savedSearches.splice(index, 1);
@@ -964,22 +972,6 @@
             updateSavedSearchesTable();
         }
 
-        async function saveHistory() {
-            try {
-                const response = await fetch('http://localhost:3000/save-history', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(history)
-                });
-                if (!response.ok) {
-                    console.error('Failed to save history');
-                }
-            } catch (error) {
-                console.error('Error saving history:', error);
-            }
-        }
 
         async function loadHistory() {
             try {
@@ -997,36 +989,12 @@
                         );
                         procurement.procedureDuration = item.procedureDuration;
                         procurement.procedureDetails = item.procedureDetails;
-                        procurement.requestSubmissionDate = item.requestSubmissionDate;
                         history.push(procurement);
                     });
-                    updateHistoryTable();
-                    populateFilterOptions();
-                } else {
-                    console.error('Failed to load history:', response.statusText);
                 }
             } catch (error) {
-                console.error('Error fetching history:', error);
+                console.error('Error loading history:', error);
             }
-        }
-
-        function updateHistoryTable() {
-            const tableBody = document.getElementById('historyTableBody');
-            tableBody.innerHTML = '';
-            history.forEach((procurement, index) => {
-                console.log('Adding row for:', procurement); // Debugging statement
-                tableBody.innerHTML += procurement.generateTableRow(index);
-            });
-            adjustTableColumns();
-        }
-
-        function populateFilterOptions() {
-            const filterSelect = document.getElementById('filterByDate');
-            const dates = [...new Set(history.map(procurement => procurement.contractSigningDate.toISOString().split('T')[0]))];
-            filterSelect.innerHTML = '<option value="all">Kõik</option>';
-            dates.forEach(date => {
-                filterSelect.innerHTML += `<option value="${date}">${date}</option>`;
-            });
         }
 
         document.getElementById('filterByDate').addEventListener('change', function() {
@@ -1207,6 +1175,11 @@
 
         // Attach event listeners to navbar buttons
         document.addEventListener("DOMContentLoaded", function () {
+            initializeNavButtons();
+            renderChart();
+        });
+
+        function initializeNavButtons() {
             const navTool = document.getElementById("showForm");
             const navHanked = document.getElementById("showSavedSearches");
             const navHistory = document.getElementById("showHistory");
@@ -1215,29 +1188,13 @@
             if (navTool) navTool.addEventListener("click", () => showTab('formContainer'));
             if (navHanked) navHanked.addEventListener("click", () => showTab('savedSearchesContainer'));
             if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
-            function showTab(tabId) {
-                closeAllTabs();
-                document.getElementById(tabId).classList.remove('hidden');
-            }
-            function showTab(tabId) {
-                closeAllTabs();
-                document.getElementById(tabId).classList.remove('hidden');
-            }
-            function showTab(tabId) {
-                closeAllTabs();
-                document.getElementById(tabId).classList.remove('hidden');
-            }
-            if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
             if (navSettings) navSettings.addEventListener("click", () => showTab('settingsContainer'));
+        }
 
-            function showTab(tabId) {
-                closeAllTabs();
-                document.getElementById(tabId).classList.remove('hidden');
-            }
-
-            // Initialize Chart.js
-            renderChart();
-        });
+        function showTab(tabId) {
+            closeAllTabs();
+            document.getElementById(tabId).classList.remove('hidden');
+        }
         function toggleDashboard() {
             const dashboard = document.getElementById("dashboard");
             const recentCalculationsTable = document.getElementById("recentCalculationsTable");
@@ -1247,7 +1204,7 @@
 
         // Ensure the container fades in on page load
         document.addEventListener("DOMContentLoaded", () => {
-        gsap.from("body", { opacity: 0, duration: 0.3});
+            gsap.from("body", { opacity: 0, duration: 0.3});
         });
     </script>
 
@@ -1323,20 +1280,21 @@
             const stepData = extractStepDays();
             const totalDays = stepData.reduce((sum, step) => sum + step.days, 0);
 
-            let progressHTML = `<div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>`;
-
-            stepData.forEach((step) => {
-                const stepProgress = (step.days / totalDays) * 100;
-                progressHTML += `
-                    <div>
-                        <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
-                        <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
-                            <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
-                        </div>
-                    </div>
-                `;
-            });
-            progressHTML += `</div>`;
+            const progressHTML = `
+                <div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>
+                    ${stepData.map(step => {
+                        const stepProgress = (step.days / totalDays) * 100;
+                        return `
+                            <div>
+                                <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
+                                <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
+                                    <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
 
             resultContainer.innerHTML += progressHTML;
             animateProgressBars();
@@ -1353,9 +1311,7 @@
                 const resultContainer = document.getElementById('result');
                 const progressBars = document.getElementById('progressBars');
 
-                if (progressBars) {
-                    progressBars.remove();
-                } else {
+                if (!progressBars) {
                     const name = document.getElementById('name').value;
                     const cost = parseFloat(document.getElementById('cost').value);
                     const procedureType = document.getElementById('procedureType').value;
@@ -1363,8 +1319,8 @@
 
                     const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
                     resultContainer.innerHTML = procurement.generateHTML();
-                    generateProgressBars();
                 }
+                generateProgressBars();
             });
             procurementForm.appendChild(formButton);
         }
