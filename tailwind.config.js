@@ -20,8 +20,23 @@ module.exports = {
         buttonYellow: '#FFFF00',
         buttonPurple: '#800080',
       },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+      },
+      spacing: {
+        '128': '32rem',
+        '144': '36rem',
+      },
+      screens: {
+        'xs': '480px',
+        '3xl': '1600px',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }
-  
