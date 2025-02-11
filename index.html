@@ -319,14 +319,16 @@
         }
 
         // Example usage
-        document.getElementById('saveFields').addEventListener('click', function() {
-            const settings = {
+        document.getElementById('saveFields').addEventListener('click', async function() {
+            try {
+                const settings = {
                 // Your settings data
-            };
-            saveSettings(settings);
-            showNotification('Salvestatud edukalt!');
-        }).catch(error => {
-            console.error('Error during DOMContentLoaded event:', error);
+                };
+                await saveSettings(settings);  // Ensure settings are saved before proceeding
+                showNotification('Salvestatud edukalt!');
+            } catch (error) {
+                console.error('Error saving settings:', error);
+             }
         });
 
         document.getElementById('refreshFields').addEventListener('click', function() {
