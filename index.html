@@ -290,7 +290,7 @@
     <script type="module"></script>
     <script type="module">
         import { db } from './firebase-config.js';
-        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        import { collection, doc, setDoc, getDoc, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
         // Utility function for formatting dates to "dd.mm.yyyy"
         function formatDate(date) {
