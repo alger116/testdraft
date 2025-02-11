@@ -7,9 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-    <!-- Import Firebase Configuration -->
-    <script type="module" src="./firebase-config.js"></script>
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Dark Mode Toggle -->
@@ -230,6 +230,7 @@
                 </div>
             </div>
         </div>
+        </div>
         <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
             <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
             <div class="filter-container mb-4">
@@ -287,11 +288,8 @@
         </div>
     </main>
 
-    <script type="module"></script>
-    <script type="module">
-        import { db } from './firebase-config.js';
-        import { collection, doc, setDoc, getDoc, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script>
         // Utility function for formatting dates to "dd.mm.yyyy"
         function formatDate(date) {
             const d = new Date(date);
@@ -307,39 +305,6 @@
 
             return `${day}.${month}.${year}`;
         }
-
-        // Function to save history to Firebase
-        async function saveHistory(history) {
-            try {
-                await addDoc(collection(db, "history"), history);
-                console.log("History successfully saved!");
-            } catch (error) {
-                console.error("Error saving history: ", error);
-            }
-        }
-
-        // Example usage
-        document.getElementById('saveFields').addEventListener('click', async function() {
-            try {
-                const settings = {
-                // Your settings data
-                };
-                await saveSettings(settings);  // Ensure settings are saved before proceeding
-                showNotification('Salvestatud edukalt!');
-            } catch (error) {
-                console.error('Error saving settings:', error);
-             }
-        });
-
-        document.getElementById('refreshFields').addEventListener('click', function() {
-            loadSettings();
-            showNotification('Uuendatud edukalt!');
-        });
-
-        // Call loadHistory on page load
-        document.addEventListener("DOMContentLoaded", async function () {
-            await loadHistory();
-        });
 
         const procedureData = {
             "Lihthankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
@@ -759,16 +724,11 @@
 
         document.getElementById('procurementForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const name = document.getElementById('name').value.trim();
+            const name = document.getElementById('name').value;
             const cost = parseFloat(document.getElementById('cost').value);
             const procedureType = document.getElementById('procedureType').value;
             const contractSigningDate = document.getElementById('contractSigningDate').value;
-        
-            if (!name || isNaN(cost) || !procedureType || !contractSigningDate) {
-                alert("Please fill in all fields correctly.");
-                return;
-            }
-        
+
             const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
             document.getElementById('result').innerHTML = procurement.generateHTML(); // Ensure the result is displayed
             
@@ -945,9 +905,8 @@
             recentTableBody.innerHTML = '';
             recentSearches.forEach((procurement, index) => {
                 recentTableBody.innerHTML += procurement.generateTableRow(index);
-                });
-            }
-        
+            });
+        }
 
         function deleteSearch(index) {
             savedSearches.splice(index, 1);
@@ -974,29 +933,69 @@
             updateSavedSearchesTable();
         }
 
+        async function saveHistory() {
+            try {
+                const response = await fetch('http://localhost:3000/save-history', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(history)
+                });
+                if (!response.ok) {
+                    console.error('Failed to save history');
+                }
+            } catch (error) {
+                console.error('Error saving history:', error);
+            }
+        }
 
         async function loadHistory() {
             try {
-            const querySnapshot = await getDocs(collection(db, "history"));
-            history.length = 0; // Clear current history
-            
-            querySnapshot.forEach((doc) => {
-                const item = doc.data();
-                const procurement = new PublicProcurement(
-                item.name,
-                item.cost,
-                item.procedureType,
-                item.contractSigningDate
-                );
-                procurement.procedureDuration = item.procedureDuration || 0;
-                procurement.procedureDetails = item.procedureDetails || [];
-                history.push(procurement);
-            });
-            
-            console.log("Fetched history from Firestore:", history);
+                const response = await fetch('http://localhost:8080/history.json');
+                if (response.ok) {
+                    const savedHistory = await response.json();
+                    console.log('Fetched history:', savedHistory); // Debugging statement
+                    history.length = 0; // Clear current history
+                    savedHistory.forEach(item => {
+                        const procurement = new PublicProcurement(
+                            item.name,
+                            item.cost,
+                            item.procedureType,
+                            item.contractSigningDate
+                        );
+                        procurement.procedureDuration = item.procedureDuration;
+                        procurement.procedureDetails = item.procedureDetails;
+                        procurement.requestSubmissionDate = item.requestSubmissionDate;
+                        history.push(procurement);
+                    });
+                    updateHistoryTable();
+                    populateFilterOptions();
+                } else {
+                    console.error('Failed to load history:', response.statusText);
+                }
             } catch (error) {
-            console.error("Error loading history from Firestore:", error);
+                console.error('Error fetching history:', error);
             }
+        }
+
+        function updateHistoryTable() {
+            const tableBody = document.getElementById('historyTableBody');
+            tableBody.innerHTML = '';
+            history.forEach((procurement, index) => {
+                console.log('Adding row for:', procurement); // Debugging statement
+                tableBody.innerHTML += procurement.generateTableRow(index);
+            });
+            adjustTableColumns();
+        }
+
+        function populateFilterOptions() {
+            const filterSelect = document.getElementById('filterByDate');
+            const dates = [...new Set(history.map(procurement => procurement.contractSigningDate.toISOString().split('T')[0]))];
+            filterSelect.innerHTML = '<option value="all">Kõik</option>';
+            dates.forEach(date => {
+                filterSelect.innerHTML += `<option value="${date}">${date}</option>`;
+            });
         }
 
         document.getElementById('filterByDate').addEventListener('change', function() {
@@ -1177,11 +1176,6 @@
 
         // Attach event listeners to navbar buttons
         document.addEventListener("DOMContentLoaded", function () {
-            initializeNavButtons();
-            renderChart();
-        });
-
-        function initializeNavButtons() {
             const navTool = document.getElementById("showForm");
             const navHanked = document.getElementById("showSavedSearches");
             const navHistory = document.getElementById("showHistory");
@@ -1190,13 +1184,29 @@
             if (navTool) navTool.addEventListener("click", () => showTab('formContainer'));
             if (navHanked) navHanked.addEventListener("click", () => showTab('savedSearchesContainer'));
             if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
             if (navSettings) navSettings.addEventListener("click", () => showTab('settingsContainer'));
-        }
 
-        function showTab(tabId) {
-            closeAllTabs();
-            document.getElementById(tabId).classList.remove('hidden');
-        }
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+
+            // Initialize Chart.js
+            renderChart();
+        });
         function toggleDashboard() {
             const dashboard = document.getElementById("dashboard");
             const recentCalculationsTable = document.getElementById("recentCalculationsTable");
@@ -1206,7 +1216,95 @@
 
         // Ensure the container fades in on page load
         document.addEventListener("DOMContentLoaded", () => {
-            gsap.from("body", { opacity: 0, duration: 0.3});
+        gsap.from("body", { opacity: 0, duration: 0.3});
+        });
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Function to save settings to Firebase
+        function saveSettings(settings) {
+            db.collection("settings").doc("userSettings").set(settings)
+                .then(() => {
+                    console.log("Settings successfully saved!");
+                })
+                .catch((error) => {
+                    console.error("Error saving settings: ", error);
+                });
+        }
+
+        // Function to load settings from Firebase
+        function loadSettings() {
+            db.collection("settings").doc("userSettings").get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const settings = doc.data();
+                        console.log("Settings successfully loaded!", settings);
+                        // Apply settings to your application
+                    } else {
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error loading settings: ", error);
+                });
+        }
+
+        // Function to save history to Firebase
+        function saveHistory(history) {
+            db.collection("history").add(history)
+                .then(() => {
+                    console.log("History successfully saved!");
+                })
+                .catch((error) => {
+                    console.error("Error saving history: ", error);
+                });
+        }
+
+        // Function to load history from Firebase
+        function loadHistory() {
+            db.collection("history").get()
+                .then((querySnapshot) => {
+                    const history = [];
+                    querySnapshot.forEach((doc) => {
+                        history.push(doc.data());
+                    });
+                    console.log("History successfully loaded!", history);
+                    // Update your application with the loaded history
+                })
+                .catch((error) => {
+                    console.error("Error loading history: ", error);
+                });
+        }
+
+        // Example usage
+        document.getElementById('saveFields').addEventListener('click', function() {
+            const settings = {
+                // Your settings data
+            };
+            saveSettings(settings);
+            showNotification('Salvestatud edukalt!');
+        });
+
+        document.getElementById('refreshFields').addEventListener('click', function() {
+            loadSettings();
+            showNotification('Uuendatud edukalt!');
+        });
+
+        // Call loadHistory on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            loadHistory();
         });
     </script>
 
@@ -1233,6 +1331,7 @@
     }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="module" src="firebase-config.js"></script>
     <script type="module" src="auth.js"></script> <!-- You will create this file next -->
 <script>
     // Animated Progression Bars for Procurement Steps (Dynamic Data with Button Trigger)
@@ -1281,21 +1380,20 @@
             const stepData = extractStepDays();
             const totalDays = stepData.reduce((sum, step) => sum + step.days, 0);
 
-            const progressHTML = `
-                <div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>
-                    ${stepData.map(step => {
-                        const stepProgress = (step.days / totalDays) * 100;
-                        return `
-                            <div>
-                                <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
-                                <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
-                                    <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
+            let progressHTML = `<div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>`;
+
+            stepData.forEach((step) => {
+                const stepProgress = (step.days / totalDays) * 100;
+                progressHTML += `
+                    <div>
+                        <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
+                        <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
+                            <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
+                        </div>
+                    </div>
+                `;
+            });
+            progressHTML += `</div>`;
 
             resultContainer.innerHTML += progressHTML;
             animateProgressBars();
@@ -1312,7 +1410,9 @@
                 const resultContainer = document.getElementById('result');
                 const progressBars = document.getElementById('progressBars');
 
-                if (!progressBars) {
+                if (progressBars) {
+                    progressBars.remove();
+                } else {
                     const name = document.getElementById('name').value;
                     const cost = parseFloat(document.getElementById('cost').value);
                     const procedureType = document.getElementById('procedureType').value;
@@ -1320,8 +1420,8 @@
 
                     const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
                     resultContainer.innerHTML = procurement.generateHTML();
+                    generateProgressBars();
                 }
-                generateProgressBars();
             });
             procurementForm.appendChild(formButton);
         }
