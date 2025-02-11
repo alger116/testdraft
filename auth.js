@@ -31,23 +31,20 @@ function register() {
 }
 
 // 🔹 Log In User
-export async function signIn(email, password) {
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log("User signed in:", userCredential.user);
-    } catch (error) {
-        console.error("Error signing in:", error);
-    }
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then(() => alert("✅ Sisselogimine õnnestus!"))
+        .catch(error => alert(`❌ Viga: ${error.message}`));
 }
 
 // 🔹 Log Out User
-export async function signOutUser() {
-    try {
-        await signOut(auth);
-        console.log("User signed out");
-    } catch (error) {
-        console.error("Error signing out:", error);
-    }
+function logout() {
+    signOut(auth)
+        .then(() => alert("👋 Olete välja logitud!"))
+        .catch(error => alert(`❌ Viga: ${error.message}`));
 }
 
 // 🔹 Track User Authentication State
@@ -55,5 +52,5 @@ onAuthStateChanged(auth, toggleAuthScreen);
 
 // ✅ Attach functions to `window` so they work with event listeners
 window.register = register;
-window.login = signIn;
-window.logout = signOutUser;
+window.login = login;
+window.logout = logout;
