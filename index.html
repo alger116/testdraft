@@ -977,25 +977,25 @@
 
         async function loadHistory() {
             try {
-                const response = await fetch('http://localhost:8080/history.json');
-                if (response.ok) {
-                    const savedHistory = await response.json();
-                    console.log('Fetched history:', savedHistory); // Debugging statement
-                    history.length = 0; // Clear current history
-                    savedHistory.forEach(item => {
-                        const procurement = new PublicProcurement(
-                            item.name,
-                            item.cost,
-                            item.procedureType,
-                            item.contractSigningDate
-                        );
-                        procurement.procedureDuration = item.procedureDuration;
-                        procurement.procedureDetails = item.procedureDetails;
-                        history.push(procurement);
-                    });
-                }
+            const querySnapshot = await getDocs(collection(db, "history"));
+            history.length = 0; // Clear current history
+            
+            querySnapshot.forEach((doc) => {
+                const item = doc.data();
+                const procurement = new PublicProcurement(
+                item.name,
+                item.cost,
+                item.procedureType,
+                item.contractSigningDate
+                );
+                procurement.procedureDuration = item.procedureDuration || 0;
+                procurement.procedureDetails = item.procedureDetails || [];
+                history.push(procurement);
+            });
+            
+            console.log("Fetched history from Firestore:", history);
             } catch (error) {
-                console.error('Error loading history:', error);
+            console.error("Error loading history from Firestore:", error);
             }
         }
 
