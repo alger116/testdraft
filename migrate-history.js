@@ -1,32 +1,39 @@
-// Firebase Firestore Migration Script
 import { db } from "./firebase-config.js";
-import { collection, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+import { collection, setDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-// Load history.json (replace with actual JSON data)
-const historyData = [
-    {
-        "name": "1",
-        "cost": 1,
-        "procedureType": "Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks",
-        "contractSigningDate": "2025-01-31T00:00:00.000Z",
-        "procedureDuration": 53,
-        "procedureDetails": [
-            { "step": "Riigihanke alusdokumentide koostamine", "days": "kuni 10 tööpäeva" },
-            { "step": "Pakkumuste esitamine RHRis", "days": "15 päeva" }
-        ],
-        "requestSubmissionDate": "2024-12-09"
-    }
-];
+// Function to save user data to Firestore
+async function saveProcurementToFirestore(userId, formData) {
+    const entryId = `${formData.name}_${formData.contractSigningDate}`; // Unique ID
+    
+    const procurementData = {
+        name: formData.name,
+        cost: formData.cost,
+        procedureType: formData.procedureType,
+        contractSigningDate: Timestamp.fromDate(new Date(formData.contractSigningDate)),
+        procedureDuration: formData.procedureDuration,
+        procedureDetails: formData.procedureDetails,
+        requestSubmissionDate: Timestamp.fromDate(new Date(formData.requestSubmissionDate))
+    };
 
-// Assume current user ID (Replace with actual authentication logic)
-const userId = "exampleUserId";
-
-async function migrateHistory() {
-    for (const entry of historyData) {
-        const entryId = entry.name + "_" + entry.contractSigningDate; // Unique ID format
-        await setDoc(doc(db, `history/${userId}/${entryId}`), entry);
-        console.log(`✅ Migrated: ${entryId}`);
-    }
+    await setDoc(doc(db, `history/${userId}/entries`, entryId), procurementData);
+    console.log(`✅ Saved: ${entryId}`);
 }
 
-migrateHistory();
+// Example usage: Capturing form submission
+document.getElementById("saveFields").addEventListener("click", async function() {
+    const userId = "exampleUserId"; // Replace with actual user ID
+    const formData = {
+        name: document.getElementById("name").value,
+        cost: Number(document.getElementById("cost").value),
+        procedureType: document.getElementById("procedureType").value,
+        contractSigningDate: document.getElementById("contractSigningDate").value,
+        procedureDuration: 53, // Loaded dynamically
+        procedureDetails: [
+            { step: "Document Preparation", days: "10 tööpäeva" },
+            { step: "Bid Submission", days: "15 päeva" }
+        ],
+        requestSubmissionDate: "2025-02-20" // Auto-calculated, can be adjusted
+    };
+
+    await saveProcurementToFirestore(userId, formData);
+});
