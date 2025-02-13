@@ -1,7 +1,8 @@
 module.exports = {
   content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
+    "./index.html",
+    "./layouts/**/*.html",
+    "./src/**/*.{html,js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -29,14 +30,21 @@ module.exports = {
         '144': '36rem',
       },
       screens: {
-        'xs': '480px',
+        xs: '480px',
         '3xl': '1600px',
       },
     },
   },
+  safelist: [
+    "bg-blue-500", "text-white", "p-4", "rounded", "hidden", "block",
+    "grid", "flex", "justify-center", "items-center", "text-center"
+  ],
   plugins: [
     require('@tailwindcss/typography'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
   ],
-}
+  corePlugins: {
+    preflight: true,
+  },
+};
