@@ -1677,6 +1677,273 @@ button, input:where([type='button'], [type='reset'], [type='submit']), ::file-se
 .\[keywords\:node-addon-api\] {
   keywords: node-addon-api;
 }
+.\[link\:classes\/ActiveModel\/AttributeMethods\.html\] {
+  link: classes/ActiveModel/AttributeMethods.html;
+}
+.\[link\:classes\/ActiveModel\/Callbacks\.html\] {
+  link: classes/ActiveModel/Callbacks.html;
+}
+.\[link\:classes\/ActiveModel\/Dirty\.html\] {
+  link: classes/ActiveModel/Dirty.html;
+}
+.\[link\:classes\/ActiveModel\/Errors\.html\] {
+  link: classes/ActiveModel/Errors.html;
+}
+.\[link\:classes\/ActiveModel\/Naming\.html\] {
+  link: classes/ActiveModel/Naming.html;
+}
+.\[link\:classes\/ActiveModel\/Serialization\.html\] {
+  link: classes/ActiveModel/Serialization.html;
+}
+.\[link\:classes\/ActiveModel\/Translation\.html\] {
+  link: classes/ActiveModel/Translation.html;
+}
+.\[link\:classes\/ActiveModel\/Validations\.html\] {
+  link: classes/ActiveModel/Validations.html;
+}
+.\[link\:classes\/ActiveModel\/Validator\.html\] {
+  link: classes/ActiveModel/Validator.html;
+}
+.\[link\:classes\/ActiveRecord\/Aggregations\/ClassMethods\.html\] {
+  link: classes/ActiveRecord/Aggregations/ClassMethods.html;
+}
+.\[link\:classes\/ActiveRecord\/Associations\/ClassMethods\.html\] {
+  link: classes/ActiveRecord/Associations/ClassMethods.html;
+}
+.\[link\:classes\/ActiveRecord\/Base\.html\] {
+  link: classes/ActiveRecord/Base.html;
+}
+.\[link\:classes\/ActiveRecord\/Callbacks\.html\] {
+  link: classes/ActiveRecord/Callbacks.html;
+}
+.\[link\:classes\/ActiveRecord\/Migration\.html\] {
+  link: classes/ActiveRecord/Migration.html;
+}
+.\[link\:classes\/ActiveRecord\/Reflection\/ClassMethods\.html\] {
+  link: classes/ActiveRecord/Reflection/ClassMethods.html;
+}
+.\[link\:classes\/ActiveRecord\/Transactions\/ClassMethods\.html\] {
+  link: classes/ActiveRecord/Transactions/ClassMethods.html;
+}
+.\[link\:classes\/ActiveRecord\/Validations\.html\] {
+  link: classes/ActiveRecord/Validations.html;
+}
+.\[link\:doc\/command_line_usage\.rdoc\] {
+  link: doc/command line usage.rdoc;
+}
+.\[link\:doc\/glossary\.rdoc\] {
+  link: doc/glossary.rdoc;
+}
+.\[link\:doc\/rakefile\.rdoc\] {
+  link: doc/rakefile.rdoc;
+}
+.\[link\:doc\/rakefile_rdoc\.html\#label-Importing\+Dependencies\] {
+  link: doc/rakefile rdoc.html#label-Importing+Dependencies;
+}
+.\[link\:doc\/rational\.rdoc\] {
+  link: doc/rational.rdoc;
+}
+.\[link\:files\/actioncable\/README_md\.html\] {
+  link: files/actioncable/README md.html;
+}
+.\[link\:files\/actionmailbox\/README_md\.html\] {
+  link: files/actionmailbox/README md.html;
+}
+.\[link\:files\/actionmailer\/README_rdoc\.html\] {
+  link: files/actionmailer/README rdoc.html;
+}
+.\[link\:files\/actionpack\/README_rdoc\.html\] {
+  link: files/actionpack/README rdoc.html;
+}
+.\[link\:files\/actiontext\/README_md\.html\] {
+  link: files/actiontext/README md.html;
+}
+.\[link\:files\/actionview\/README_rdoc\.html\] {
+  link: files/actionview/README rdoc.html;
+}
+.\[link\:files\/activejob\/README_md\.html\] {
+  link: files/activejob/README md.html;
+}
+.\[link\:files\/activemodel\/README_rdoc\.html\] {
+  link: files/activemodel/README rdoc.html;
+}
+.\[link\:files\/activerecord\/README_rdoc\.html\] {
+  link: files/activerecord/README rdoc.html;
+}
+.\[link\:files\/activestorage\/README_md\.html\] {
+  link: files/activestorage/README md.html;
+}
+.\[link\:files\/activesupport\/README_rdoc\.html\] {
+  link: files/activesupport/README rdoc.html;
+}
+.\[options\:IParseOptions\] {
+  options: IParseOptions;
+}
+.\[rdoc-ref\:\#checkin\] {
+  rdoc-ref: #checkin;
+}
+.\[rdoc-ref\:\#checkout\] {
+  rdoc-ref: #checkout;
+}
+.\[rdoc-ref\:\#create_inbound_email_from_mail\] {
+  rdoc-ref: #create inbound email from mail;
+}
+.\[rdoc-ref\:\#with_connection\] {
+  rdoc-ref: #with connection;
+}
+.\[rdoc-ref\:AttributeAssignment\#attributes\=\] {
+  rdoc-ref: AttributeAssignment#attributes=;
+}
+.\[rdoc-ref\:Base\#save\] {
+  rdoc-ref: Base#save;
+}
+.\[rdoc-ref\:BodyTypeBasic\#content_id\] {
+  rdoc-ref: BodyTypeBasic#content id;
+}
+.\[rdoc-ref\:BodyTypeBasic\#media_type\] {
+  rdoc-ref: BodyTypeBasic#media type;
+}
+.\[rdoc-ref\:ClassMethods\#store_accessor\] {
+  rdoc-ref: ClassMethods#store accessor;
+}
+.\[rdoc-ref\:ConnectionHandling\#connection\] {
+  rdoc-ref: ConnectionHandling#connection;
+}
+.\[rdoc-ref\:ConnectionHandling\#establish_connection\] {
+  rdoc-ref: ConnectionHandling#establish connection;
+}
+.\[rdoc-ref\:ConnectionHandling\#retrieve_connection\] {
+  rdoc-ref: ConnectionHandling#retrieve connection;
+}
+.\[rdoc-ref\:ConnectionHandling\.connection\] {
+  rdoc-ref: ConnectionHandling.connection;
+}
+.\[rdoc-ref\:Core\#new\] {
+  rdoc-ref: Core#new;
+}
+.\[rdoc-ref\:Core\#readonly\?\] {
+  rdoc-ref: Core#readonly?;
+}
+.\[rdoc-ref\:Core\.configurations\] {
+  rdoc-ref: Core.configurations;
+}
+.\[rdoc-ref\:Core\.new\] {
+  rdoc-ref: Core.new;
+}
+.\[rdoc-ref\:Date\@Argument\+limit\] {
+  rdoc-ref: Date@Argument+limit;
+}
+.\[rdoc-ref\:Enumerable\] {
+  rdoc-ref: Enumerable;
+}
+.\[rdoc-ref\:FinderMethods\#find\] {
+  rdoc-ref: FinderMethods#find;
+}
+.\[rdoc-ref\:Migration\] {
+  rdoc-ref: Migration;
+}
+.\[rdoc-ref\:Module\#thread_mattr_accessor\] {
+  rdoc-ref: Module#thread mattr accessor;
+}
+.\[rdoc-ref\:Persistence\#destroy\!\] {
+  rdoc-ref: Persistence#destroy!;
+}
+.\[rdoc-ref\:Persistence\#destroy\] {
+  rdoc-ref: Persistence#destroy;
+}
+.\[rdoc-ref\:Persistence\#new_record\?\] {
+  rdoc-ref: Persistence#new record?;
+}
+.\[rdoc-ref\:Persistence\#save\!\] {
+  rdoc-ref: Persistence#save!;
+}
+.\[rdoc-ref\:Persistence\#save\] {
+  rdoc-ref: Persistence#save;
+}
+.\[rdoc-ref\:QueryMethods\#group\] {
+  rdoc-ref: QueryMethods#group;
+}
+.\[rdoc-ref\:QueryMethods\#preload\] {
+  rdoc-ref: QueryMethods#preload;
+}
+.\[rdoc-ref\:QueryMethods\#select\] {
+  rdoc-ref: QueryMethods#select;
+}
+.\[rdoc-ref\:QueryMethods\#where\] {
+  rdoc-ref: QueryMethods#where;
+}
+.\[rdoc-ref\:Relation\#update_all\] {
+  rdoc-ref: Relation#update all;
+}
+.\[rdoc-ref\:Runnable\#result_code\] {
+  rdoc-ref: Runnable#result code;
+}
+.\[rdoc-ref\:SchemaStatements\#add_check_constraint\] {
+  rdoc-ref: SchemaStatements#add check constraint;
+}
+.\[rdoc-ref\:SchemaStatements\#add_foreign_key\] {
+  rdoc-ref: SchemaStatements#add foreign key;
+}
+.\[rdoc-ref\:SchemaStatements\#add_index\] {
+  rdoc-ref: SchemaStatements#add index;
+}
+.\[rdoc-ref\:SchemaStatements\#add_reference\] {
+  rdoc-ref: SchemaStatements#add reference;
+}
+.\[rdoc-ref\:SchemaStatements\#add_timestamps\] {
+  rdoc-ref: SchemaStatements#add timestamps;
+}
+.\[rdoc-ref\:SchemaStatements\#change_column_default\] {
+  rdoc-ref: SchemaStatements#change column default;
+}
+.\[rdoc-ref\:SchemaStatements\#change_column_null\] {
+  rdoc-ref: SchemaStatements#change column null;
+}
+.\[rdoc-ref\:SchemaStatements\#column_exists\?\] {
+  rdoc-ref: SchemaStatements#column exists?;
+}
+.\[rdoc-ref\:SchemaStatements\#create_table\] {
+  rdoc-ref: SchemaStatements#create table;
+}
+.\[rdoc-ref\:SchemaStatements\#foreign_key_exists\?\] {
+  rdoc-ref: SchemaStatements#foreign key exists?;
+}
+.\[rdoc-ref\:SchemaStatements\#index_exists\?\] {
+  rdoc-ref: SchemaStatements#index exists?;
+}
+.\[rdoc-ref\:SchemaStatements\#remove_check_constraint\] {
+  rdoc-ref: SchemaStatements#remove check constraint;
+}
+.\[rdoc-ref\:SchemaStatements\#remove_columns\] {
+  rdoc-ref: SchemaStatements#remove columns;
+}
+.\[rdoc-ref\:SchemaStatements\#remove_foreign_key\] {
+  rdoc-ref: SchemaStatements#remove foreign key;
+}
+.\[rdoc-ref\:SchemaStatements\#remove_index\] {
+  rdoc-ref: SchemaStatements#remove index;
+}
+.\[rdoc-ref\:SchemaStatements\#remove_reference\] {
+  rdoc-ref: SchemaStatements#remove reference;
+}
+.\[rdoc-ref\:SchemaStatements\#remove_timestamps\] {
+  rdoc-ref: SchemaStatements#remove timestamps;
+}
+.\[rdoc-ref\:SchemaStatements\#rename_column\] {
+  rdoc-ref: SchemaStatements#rename column;
+}
+.\[rdoc-ref\:SchemaStatements\#rename_index\] {
+  rdoc-ref: SchemaStatements#rename index;
+}
+.\[rdoc-ref\:calendars\.rdoc\@Argument\+start\] {
+  rdoc-ref: calendars.rdoc@Argument+start;
+}
+.\[rdoc-ref\:calendars\.rdoc\] {
+  rdoc-ref: calendars.rdoc;
+}
+.\[rdoc-ref\:lib\/racc\/rdoc\/grammar\.en\.rdoc\] {
+  rdoc-ref: lib/racc/rdoc/grammar.en.rdoc;
+}
 .\[root\:Root\] {
   root: Root;
 }
