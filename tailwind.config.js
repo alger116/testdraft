@@ -1,8 +1,5 @@
 module.exports = {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"], // Õige failide asukoht
   theme: {
     extend: {
       colors: {
@@ -29,7 +26,7 @@ module.exports = {
         '144': '36rem',
       },
       screens: {
-        'xs': '480px',
+        xs: '480px',
         '3xl': '1600px',
       },
     },
@@ -39,4 +36,7 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
   ],
-}
+  corePlugins: {
+    preflight: true, // Veendu, et Tailwind'i baasstiilid rakenduvad
+  },
+};
