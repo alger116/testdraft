@@ -1,28 +1,22 @@
-# filepath: /Users/viljarpartel/Desktop/uusversioon0502//testdraft_config.yml
 title: My Jekyll Site
 description: A simple Jekyll site
-baseurl: "/testdraft" # the subpath of your site, e.g. /blog
-url: "https://alger116.github.io" # the base hostname & protocol for your site
+baseurl: ""  # Eemaldatud, et leht töötaks otse domeenis
+url: "https://alger116.github.io" # Õige URL
 
 # Build settings
 markdown: kramdown
 theme: minima
-
+include:
+  - output.css
 # Exclude these files and directories from the site build
 exclude:
   - Gemfile.lock
   - node_modules
-  - vendor/bundle
   - .github
   - .gitignore
 
-# Include these files and directories in the site build
-include:
-  - _site
-
-# Source and destination directories
+# Source directory (destination eemaldatud, sest see pole vajalik)
 source: .
-destination: ./_site
 
 # Plugins
 plugins:

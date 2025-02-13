@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riigihanke Andmed</title>
     <link href="output.css" rel="stylesheet">
-
+    <!-- Ensure Tailwind CSS is properly linked -->
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Dark Mode Toggle -->
@@ -289,16 +289,13 @@
         // Utility function for formatting dates to "dd.mm.yyyy"
         function formatDate(date) {
             const d = new Date(date);
-            
             if (isNaN(d.getTime())) {
                 console.error("Invalid date:", date);
-                return "Invalid date";  // Prevents errors
+                return "Invalid date";
             }
-
             const day = String(d.getDate()).padStart(2, '0');
             const month = String(d.getMonth() + 1).padStart(2, '0');
             const year = d.getFullYear();
-
             return `${day}.${month}.${year}`;
         }
 
@@ -508,7 +505,7 @@
             const offerDays = parseInt(document.getElementById('offerDays').value);
             const useInternational = document.getElementById('useInternationalThreshold').checked;
             delete procedureData[oldType];
-            procedureData[newType] = { taotlusteAeg: requestDays, pakkumusteAeg: offerDays, piirmäär: 60000, useInternational }; // Default piirmäär
+            procedureData[newType] = { taotlusteAeg: requestDays, pakkumusteAeg: offerDays, piirmäär: 60000, useInternational };
             loadProcedureTypes();
             saveSettings();
         }
@@ -518,7 +515,7 @@
             const requestDays = parseInt(document.getElementById('requestDays').value);
             const offerDays = parseInt(document.getElementById('offerDays').value);
             const useInternational = document.getElementById('useInternationalThreshold').checked;
-            procedureData[newType] = { taotlusteAeg: requestDays, pakkumusteAeg: offerDays, piirmäär: 60000, useInternational }; // Default piirmäär
+            procedureData[newType] = { taotlusteAeg: requestDays, pakkumusteAeg: offerDays, piirmäär: 60000, useInternational };
             loadProcedureTypes();
             saveSettings();
         }
@@ -527,12 +524,10 @@
 
         class PublicProcurement {
             constructor(name, cost, procedureType, contractSigningDate) {
-                // Ensure the date is valid before any conversion logic
                 if (!contractSigningDate || isNaN(new Date(contractSigningDate).getTime())) {
                     console.error("Invalid contract signing date:", contractSigningDate);
-                    this.contractSigningDate = null; // Avoid breaking further calculations
+                    this.contractSigningDate = null;
                 } else {
-                    // Convert dd.mm.yyyy to YYYY-MM-DD if necessary
                     if (typeof contractSigningDate === "string" && contractSigningDate.includes(".")) {
                         const parts = contractSigningDate.split(".");
                         if (parts.length === 3) {
@@ -541,11 +536,9 @@
                     }
                     this.contractSigningDate = new Date(contractSigningDate);
                 }
-
                 this.name = name;
                 this.cost = cost;
                 this.procedureType = procedureType;
-                this.contractSigningDate = new Date(contractSigningDate); null;
                 this.procedureDuration = this.calculateProcedureDuration();
                 this.procedureDetails = this.calculateProcedureDetails();
                 this.requestSubmissionDate = this.calculateRequestSubmissionDate();
@@ -555,7 +548,6 @@
                 const procedure = procedureData[this.procedureType];
                 const internationalProcedure = internationalProcedureData[this.procedureType];
                 const internationalThreshold = internationalProcedure.piirmäär;
-
                 let duration = 0;
 
                 if (this.cost > internationalThreshold || procedure.useInternational) {
@@ -602,33 +594,29 @@
             }
 
             calculateRequestSubmissionDate() {
-                // Step 1: Ensure contractSigningDate is in YYYY-MM-DD format
                 if (typeof this.contractSigningDate === "string" && this.contractSigningDate.includes(".")) {
                     const parts = this.contractSigningDate.split(".");
                     if (parts.length === 3) {
-                         this.contractSigningDate = typeof this.contractSigningDate === "string" ? `${parts[2]}-${parts[1]}-${parts[0]}` : this.contractSigningDate; // Convert dd.mm.yyyy → YYYY-MM-DD only if it's a string
+                        this.contractSigningDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
                     }
                 }
 
-                // Step 2: Validate contractSigningDate before using it
                 if (!this.contractSigningDate || isNaN(new Date(this.contractSigningDate).getTime())) {
                     console.error("Invalid contract signing date:", this.contractSigningDate);
-                    return "Invalid date"; // Prevent further errors
+                    return "Invalid date";
                 }
 
-                // Step 3: Calculate the request submission date
                 const submissionDate = new Date(this.contractSigningDate);
                 if (!isNaN(this.procedureDuration)) {
                     submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
-                if (isNaN(submissionDate.getTime())) {
-                    console.error("Invalid submission date:", submissionDate);
-                    return "Invalid date"; // Prevents errors
-                }
-                return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
-                    console.error("Invalid procedure duration:", this.procedureDuration);
+                    if (isNaN(submissionDate.getTime())) {
+                        console.error("Invalid submission date:", submissionDate);
+                        return "Invalid date";
+                    }
+                    return submissionDate.toISOString().split('T')[0];
                 }
 
-                return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+                return submissionDate.toISOString().split('T')[0];
             }
 
             generateHTML() {
@@ -639,7 +627,6 @@
                         <div class="flex gap-1 ml-6">
                             <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition transform hover:scale-105">-</button>
                             <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition transform hover:scale-105">+</button>
-
                         </div>
                     </li>
                 `).join('');
@@ -690,11 +677,10 @@
             }
 
             let daysText = daysElement.innerText;
-            let days = parseInt(daysText.match(/\d+/)?.[0] || "0", 10);  // Avoid NaN
+            let days = parseInt(daysText.match(/\d+/)?.[0] || "0", 10);
             days += adjustment;
             daysElement.innerText = daysText.replace(/\d+/, days);
 
-            // Update total duration
             const totalDurationElement = document.getElementById('totalDuration');
             if (totalDurationElement) {
                 let totalDuration = parseInt(totalDurationElement.innerText || "0", 10);
@@ -704,7 +690,6 @@
                 console.error('Element with id totalDuration not found');
             }
 
-            // Store updated total duration in the PublicProcurement object
             const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
             if (procurement) {
                 procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
@@ -929,7 +914,30 @@
             updateSavedSearchesTable();
         }
 
-        async function saveHistory() {
+        async function saveHistory(procurement) {
+            const user = auth.currentUser;
+            if (!user) {
+                console.error("User not authenticated.");
+                return;
+            }
+            try {
+                const response = await fetch('/save-history', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': await user.getIdToken(), // Send Firebase Auth token
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(procurement)
+                });
+                if (!response.ok) {
+                    console.error("Failed to save history:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error saving history:", error);
+            }
+        }
+
+        async function saveLocalHistory(history) {
             try {
                 const response = await fetch('http://localhost:3000/save-history', {
                     method: 'POST',
@@ -942,9 +950,12 @@
                     console.error('Failed to save history');
                 }
             } catch (error) {
-                console.error('Error saving history:', error);
+                console.error("Error saving local history:", error);
             }
         }
+
+        // Call the function to save local history
+        saveLocalHistory(history);
 
         async function loadHistory() {
             try {
@@ -1017,7 +1028,21 @@
 
         setInterval(updateDateTime, 1000);
         updateDateTime();
-        loadHistory();
+        import { db, auth } from "./firebase-config.js";
+        import { collection, query, onSnapshot } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        function loadHistory() {
+            auth.onAuthStateChanged(user => {
+            if (user) {
+                const historyRef = collection(db, `history/${user.uid}/entries`);
+                onSnapshot(historyRef, (snapshot) => {
+                const history = snapshot.docs.map(doc => doc.data());
+                console.log("🔄 Real-time history update:", history);
+                updateHistoryTable(history);
+                });
+            }
+            });
+        }
 
         function adjustTableColumns() {
             const tables = document.querySelectorAll('table');
@@ -1184,6 +1209,22 @@
                 closeAllTabs();
                 document.getElementById(tabId).classList.remove('hidden');
             }
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
+            if (navSettings) navSettings.addEventListener("click", () => showTab('settingsContainer'));
+
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+
             // Initialize Chart.js
             renderChart();
         });
@@ -1225,6 +1266,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="auth.js"></script> <!-- You will create this file next -->
+    <script type="module" src="index.js"></script>
 <script>
     // Animated Progression Bars for Procurement Steps (Dynamic Data with Button Trigger)
     // Requires: TailwindCSS, GSAP (Already included in your project)

@@ -1,5 +1,9 @@
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"], // Õige failide asukoht
+  content: [
+    "./index.html",
+    "./layouts/**/*.html",
+    "./src/**/*.{html,js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -31,12 +35,16 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    "bg-blue-500", "text-white", "p-4", "rounded", "hidden", "block",
+    "grid", "flex", "justify-center", "items-center", "text-center"
+  ],
   plugins: [
     require('@tailwindcss/typography'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
   ],
   corePlugins: {
-    preflight: true, // Veendu, et Tailwind'i baasstiilid rakenduvad
+    preflight: true,
   },
 };
