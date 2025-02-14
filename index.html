@@ -115,27 +115,49 @@
                         <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
                     </div>
                     <div>
-                       <label for="procedureType" class="block text-gray-700">Riigihanke menetlusliik:</label>
-                        <select id="procedureType" name="procedureType" class="w-full p-2 border rounded" required aria-label="Riigihanke menetlusliik">
-                            <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Avatud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Avatud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Piiratud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Võistlev dialoog asjade hankelepingu sõlmimiseks</option>
-                            <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Võistlev dialoog teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Võistlev dialoog ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Kontsessioonimenetlus koos eraldi taotluse esitamisega</option>
-                            <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Kontsessioonimenetlus ilma eraldi taotlust esitamata</option>
-                            <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
-                            <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
+                       <label for="procedureType" class="block text-gray-700 font-semibold mb-1">Riigihanke menetlusliik:</label>
+                        <select id="procedureType" name="procedureType" 
+                            class="w-full p-2 border rounded bg-white shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                            required aria-label="Riigihanke menetlusliik">
+                            <optgroup label="Avatud hankemenetlus">
+                                <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Piiratud hankemenetlus">
+                                <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Konkurentsipõhine läbirääkimistega menetlus">
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Võistlev dialoog">
+                                <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Innovatsioonipartnerlus">
+                                <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Kontsessioonimenetlus">
+                                <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Koos eraldi taotlusega</option>
+                                <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Ilma eraldi taotluseta</option>
+                            </optgroup>
+                        
+                            <optgroup label="Erimenetlused">
+                                <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
+                                <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div>
