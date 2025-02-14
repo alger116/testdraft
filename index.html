@@ -1320,19 +1320,23 @@
             if (navTool) navTool.addEventListener("click", () => showTab('formContainer'));
             if (navHanked) navHanked.addEventListener("click", () => showTab('savedSearchesContainer'));
             if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
+            
             function showTab(tabId) {
                 closeAllTabs();
                 document.getElementById(tabId).classList.remove('hidden');
             }
+            
             // Initialize Chart.js
             renderChart();
         });
+            
         function toggleDashboard() {
             const dashboard = document.getElementById("dashboard");
             const recentCalculationsTable = document.getElementById("recentCalculationsTable");
+            
             dashboard.classList.toggle("hidden");
             recentCalculationsTable.classList.toggle("hidden");
-    }
+        }
 
 <script>
     function darkModeHandler() {
