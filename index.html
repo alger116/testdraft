@@ -1016,26 +1016,26 @@
         }
 
         function closeAllTabs() {
-            document.getElementById('formContainer').classList.add('hidden');
-            document.getElementById('savedSearchesContainer').classList.add('hidden');
-            document.getElementById('historyContainer').classList.add('hidden');
-            document.getElementById('settingsContainer').classList.add('hidden');
-            document.getElementById('resultContainer').classList.add('hidden'); // Ensure result container is hidden
+            document.getElementById("formContainer").classList.add("hidden");
+            document.getElementById("savedSearchesContainer").classList.add("hidden");
+            document.getElementById("historyContainer").classList.add("hidden");
+            document.getElementById("settingsContainer").classList.add("hidden");
         }
 
         function updateSavedSearchesTable() {
-            const tableBody = document.getElementById('savedSearchesTableBody');
+            const tableBody = document.getElementById("savedSearchesTableBody");
             if (!tableBody) {
                 console.error("❌ ERROR: 'savedSearchesTableBody' not found in the document.");
                 return;
             }
-            
-            tableBody.innerHTML = '';
+        
+            tableBody.innerHTML = "";
             savedSearches.forEach((procurement, index) => {
                 tableBody.innerHTML += procurement.generateTableRow(index);
             });
         
             adjustTableColumns();
+        }
         
             // Fix: Ensure correct ID for the second table
             const recentTableBody = document.getElementById('recentCalculations'); // ✅ Correct ID
@@ -1233,8 +1233,23 @@
             showNotification('Uuendatud edukalt!');
         });
 
-        document.getElementById('toggleChartBtn').addEventListener('click', toggleChart);
-            
+        document.addEventListener("DOMContentLoaded", function () {
+            const settingsButton = document.getElementById("settingsButton");
+            if (settingsButton) {
+                settingsButton.addEventListener("click", function () {
+                    closeAllTabs();
+                    document.getElementById("settingsContainer").classList.remove("hidden");
+                    loadSettings();
+                    loadProcedureTypes();
+                    setActiveTab(this);
+                });
+            } else {
+                console.error("❌ ERROR: 'settingsButton' not found in the document.");
+            }
+        });
+        
+        document.getElementById("toggleChartBtn").addEventListener("click", toggleChart);
+    
         function toggleChart() {
             const chartContainer = document.getElementById("chartContainer");
             if (!chartContainer) {
