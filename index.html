@@ -1335,6 +1335,12 @@
     }
 
 <script>
+    function darkModeHandler() {
+        document.body.classList.toggle("dark-mode");
+    } // ✅ Correctly closed
+</script>
+
+<script>
     document.addEventListener("DOMContentLoaded", () => {
         gsap.from("body", { opacity: 0, duration: 0.3 });
     });
