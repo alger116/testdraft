@@ -929,8 +929,7 @@
                     document.body.removeChild(link);
                 });
             }
-        
-            // Kontrollime, kas "HP Näidis" nupp on olemas ja lisame sündmuse
+        document.addEventListener("DOMContentLoaded", function () {
             const saveHPExcelBtn = document.getElementById('saveHPExcel');
             if (saveHPExcelBtn) {
                 saveHPExcelBtn.addEventListener('click', function () {
@@ -985,6 +984,7 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+            }
         });
 
         document.getElementById('showForm').addEventListener('click', function() {
