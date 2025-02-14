@@ -1338,46 +1338,46 @@
             recentCalculationsTable.classList.toggle("hidden");
         }
 
-<script>
-    function darkModeHandler() {
-        document.body.classList.toggle("dark-mode");
-    } // ✅ Correctly closed
-</script>
+    <script>
+        function darkModeHandler() {
+            document.body.classList.toggle("dark-mode");
+        } // ✅ Correctly closed
+    </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        gsap.from("body", { opacity: 0, duration: 0.3 });
-    });
-</script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.from("body", { opacity: 0, duration: 0.3 });
+        });
+    </script>
 
-<!-- Dark Mode Handling -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function applyDarkMode(enabled) {
-            document.body.classList.toggle('dark-mode', enabled);
-            const toggleSwitch = document.getElementById('darkModeToggle');
-            if (toggleSwitch) {
-                toggleSwitch.checked = enabled;
+    <!-- Dark Mode Handling -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function applyDarkMode(enabled) {
+                document.body.classList.toggle('dark-mode', enabled);
+                const toggleSwitch = document.getElementById('darkModeToggle');
+                if (toggleSwitch) {
+                    toggleSwitch.checked = enabled;
+                }
             }
-        }
-
-        function loadDarkMode() {
-            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-            applyDarkMode(darkModeEnabled);
-        }
-
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener('change', function () {
-                const isDarkMode = this.checked;
-                localStorage.setItem('darkMode', isDarkMode);
-                applyDarkMode(isDarkMode);
-            });
-        }
-
-        loadDarkMode();
-    });
-</script>
+    
+            function loadDarkMode() {
+                const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+                applyDarkMode(darkModeEnabled);
+            }
+    
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', function () {
+                    const isDarkMode = this.checked;
+                    localStorage.setItem('darkMode', isDarkMode);
+                    applyDarkMode(isDarkMode);
+                });
+            }
+    
+            loadDarkMode();
+        });
+    </script>
 
 <style>
 /* Your CSS styles */
