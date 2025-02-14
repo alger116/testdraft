@@ -1016,10 +1016,11 @@
         }
 
         function closeAllTabs() {
-            document.getElementById("formContainer").classList.add("hidden");
-            document.getElementById("savedSearchesContainer").classList.add("hidden");
-            document.getElementById("historyContainer").classList.add("hidden");
-            document.getElementById("settingsContainer").classList.add("hidden");
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.add('hidden'));
+
+            const navButtons = document.querySelectorAll('.nav button');
+            navButtons.forEach(btn => btn.classList.remove('active'));
         }
 
         function updateSavedSearchesTable() {
