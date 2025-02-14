@@ -1547,29 +1547,5 @@
             procurementForm.appendChild(formButton);
         }
     });
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            function loadDarkMode() {
-                const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-                document.body.classList.toggle('dark-mode', darkModeEnabled);
-                document.getElementById('darkModeToggle').checked = darkModeEnabled;
-                applyDarkMode(darkModeEnabled);
-            }
-    
-            function applyDarkMode(enabled) {
-                document.body.classList.toggle('dark-mode', enabled);
-                document.getElementById('darkModeSwitch').classList.toggle('translate-x-5', enabled);
-            }
-    
-            document.getElementById('darkModeToggle').addEventListener('change', function () {
-                const isDarkMode = this.checked;
-                localStorage.setItem('darkMode', isDarkMode);
-                applyDarkMode(isDarkMode);
-            });
-    
-            loadDarkMode();
-        });
-    </script>
-</body> 
+</script>
 </html>
