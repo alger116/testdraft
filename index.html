@@ -1241,18 +1241,19 @@
                 console.error("❌ Chart container not found!");
                 return;
             }
+            
             chartContainer.classList.toggle("hidden");
 
             if (!chartContainer.classList.contains("hidden")) {
                 setTimeout(() => {
                     if (document.querySelectorAll("#savedSearchesTableBody tr").length > 0) {
                         renderChart();
-                } else {
-                    console.warn("⚠ No saved searches found, chart cannot be displayed.");
-                }
-            }, 300);
+                    } else {
+                        console.warn("⚠ No saved searches found, chart cannot be displayed.");
+                    }
+                }, 300);
+            }
         }
-        });
 
         function renderChart() {
             const canvas = document.getElementById("procurementChart");
@@ -1288,7 +1289,8 @@
                     }
                 }
             });
-
+        }
+            
             // If no valid data, show a warning and prevent chart initialization
             if (labels.length === 0) {
                 console.warn("⚠ No valid data found for the chart.");
