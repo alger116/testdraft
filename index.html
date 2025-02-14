@@ -1046,12 +1046,10 @@
         
             const recentSearches = savedSearches.slice(-10); // Get the last 10 searches
             recentTableBody.innerHTML = '';  // Clear the recent searches table
-        
             recentSearches.forEach((procurement, index) => {
                 recentTableBody.innerHTML += procurement.generateTableRow(index);
-            });
-        }
-
+        });
+        
         function deleteSearch(index) {
             savedSearches.splice(index, 1);
             updateSavedSearchesTable();
