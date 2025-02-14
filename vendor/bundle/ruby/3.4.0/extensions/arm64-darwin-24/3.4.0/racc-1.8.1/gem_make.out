@@ -1,0 +1,18 @@
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+/Users/viljarpartel/.rbenv/versions/3.4.1/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-7ntky8 sitelibdir\=./.gem.20250213-65935-7ntky8 clean
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-7ntky8 sitelibdir\=./.gem.20250213-65935-7ntky8
+compiling cparse.c
+linking shared-object racc/cparse.bundle
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-7ntky8 sitelibdir\=./.gem.20250213-65935-7ntky8 install
+/usr/bin/install -c -m 0755 cparse.bundle ./.gem.20250213-65935-7ntky8/racc
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-7ntky8 sitelibdir\=./.gem.20250213-65935-7ntky8 clean

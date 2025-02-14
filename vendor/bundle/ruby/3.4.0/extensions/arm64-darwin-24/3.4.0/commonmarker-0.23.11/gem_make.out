@@ -1,0 +1,1406 @@
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/commonmarker-0.23.11/ext/commonmarker
+/Users/viljarpartel/.rbenv/versions/3.4.1/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/commonmarker-0.23.11/ext/commonmarker
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-jupzb8 sitelibdir\=./.gem.20250213-65935-jupzb8 clean
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/commonmarker-0.23.11/ext/commonmarker
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-jupzb8 sitelibdir\=./.gem.20250213-65935-jupzb8
+compiling arena.c
+compiling autolink.c
+compiling blocks.c
+blocks.c:1540:5: warning: 'CMARK_DEBUG_NODES' is not defined, evaluates to 0 [-Wundef]
+#if CMARK_DEBUG_NODES
+    ^
+1 warning generated.
+compiling buffer.c
+compiling cmark.c
+compiling cmark_ctype.c
+compiling commonmark.c
+compiling commonmarker.c
+In file included from commonmarker.c:3:
+In file included from ./houdini.h:9:
+./config.h:8:9: warning: 'HAVE_STDBOOL_H' macro redefined [-Wmacro-redefined]
+#define HAVE_STDBOOL_H
+        ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/arm64-darwin24/ruby/config.h:45:9: note: previous definition is here
+#define HAVE_STDBOOL_H 1
+        ^
+commonmarker.c:50:43: warning: passing 'const char *' to parameter of type 'void *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+  cmark_get_default_mem_allocator()->free(str);
+                                          ^~~
+commonmarker.c:103:9: warning: 'rb_data_object_wrap_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  val = Data_Wrap_Struct(rb_cNode, rb_mark_c_struct, free_func, node);
+        ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:199:5: note: expanded from macro 'Data_Wrap_Struct'
+    rb_data_object_wrap(                          \
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:363:31: note: expanded from macro 'rb_data_object_wrap'
+#define rb_data_object_wrap   RUBY_MACRO_SELECT(rb_data_object_wrap_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:200:1: note: expanded from here
+rb_data_object_wrap_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:361:31: note: expanded from macro 'rb_data_object_wrap_1'
+#define rb_data_object_wrap_1 rb_data_object_wrap_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:277:1: note: 'rb_data_object_wrap_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:327:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:201:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:349:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:202:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:370:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:203:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:457:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:204:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:480:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:205:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:491:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:206:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:506:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:207:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:519:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:208:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:536:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node1);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:209:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:538:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(sibling, cmark_node, node2);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:210:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:566:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:211:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:564:20: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+  extensions_len = RARRAY_LEN(rb_extensions);
+                 ~ ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rarray.h:51:36: note: expanded from macro 'RARRAY_LEN'
+#define RARRAY_LEN                 rb_array_len                 /**< @alias{rb_array_len} */
+                                   ^
+commonmarker.c:607:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:212:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:636:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:213:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:664:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:214:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:683:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node1);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:215:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:685:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(sibling, cmark_node, node2);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:216:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:706:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node1);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:217:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:708:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(child, cmark_node, node2);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:218:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:729:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node1);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:219:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:731:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(child, cmark_node, node2);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:220:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:748:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:221:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:761:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:222:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:774:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:223:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:790:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:224:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:812:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:225:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:831:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:226:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:853:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:227:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:872:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:228:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:895:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:229:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:915:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:230:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:942:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:231:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:968:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:232:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:992:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:233:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1011:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:234:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1032:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:235:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1051:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:236:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1074:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:237:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1087:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:238:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1109:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:239:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1127:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:240:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1143:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:241:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1172:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:242:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1178:27: warning: implicit conversion loses integer precision: 'long' to 'bufsize_t' (aka 'int') [-Wshorten-64-to-32]
+                          RSTRING_LEN(rb_text))) {
+                          ^~~~~~~~~~~~~~~~~~~~
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rstring.h:46:27: note: expanded from macro 'RSTRING_LEN'
+#define RSTRING_LEN       RSTRING_LEN
+                          ^
+commonmarker.c:1193:3: warning: 'rb_data_object_get_warning' is deprecated: by TypedData [-Wdeprecated-declarations]
+  Data_Get_Struct(self, cmark_node, node);
+  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:275:34: note: expanded from macro 'Data_Get_Struct'
+    ((sval) = RBIMPL_CAST((type*)rb_data_object_get(obj)))
+                                 ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:367:31: note: expanded from macro 'rb_data_object_get'
+#define rb_data_object_get    RUBY_MACRO_SELECT(rb_data_object_get_2, RUBY_UNTYPED_DATA_WARNING)
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:50:35: note: expanded from macro 'RUBY_MACRO_SELECT'
+#define RUBY_MACRO_SELECT(x, y)   RBIMPL_MACRO_SELECT(x, y)
+                                  ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:49:35: note: expanded from macro 'RBIMPL_MACRO_SELECT'
+#define RBIMPL_MACRO_SELECT(x, y) x ## y
+                                  ^
+<scratch space>:243:1: note: expanded from here
+rb_data_object_get_1
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:365:31: note: expanded from macro 'rb_data_object_get_1'
+#define rb_data_object_get_1  rb_data_object_get_warning
+                              ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:314:1: note: 'rb_data_object_get_warning' has been explicitly marked deprecated here
+RBIMPL_ATTRSET_UNTYPED_DATA_FUNC()
+^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rdata.h:47:5: note: expanded from macro 'RBIMPL_ATTRSET_UNTYPED_DATA_FUNC'
+    RBIMPL_ATTR_DEPRECATED(("by TypedData"))
+    ^
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/attr/deprecated.h:36:53: note: expanded from macro 'RBIMPL_ATTR_DEPRECATED'
+# define RBIMPL_ATTR_DEPRECATED(msg) __attribute__((__deprecated__ msg))
+                                                    ^
+commonmarker.c:1199:28: warning: implicit conversion loses integer precision: 'long' to 'bufsize_t' (aka 'int') [-Wshorten-64-to-32]
+                           RSTRING_LEN(rb_text), 0)) {
+                           ^~~~~~~~~~~~~~~~~~~~
+/Users/viljarpartel/.rbenv/versions/3.4.1/include/ruby-3.4.0/ruby/internal/core/rstring.h:46:27: note: expanded from macro 'RSTRING_LEN'
+#define RSTRING_LEN       RSTRING_LEN
+                          ^
+49 warnings generated.
+compiling core-extensions.c
+compiling ext_scanners.c
+compiling footnotes.c
+compiling houdini_href_e.c
+compiling houdini_html_e.c
+compiling houdini_html_u.c
+compiling html.c
+compiling inlines.c
+compiling iterator.c
+compiling latex.c
+compiling linked_list.c
+compiling man.c
+compiling map.c
+compiling node.c
+compiling plaintext.c
+compiling plugin.c
+compiling references.c
+compiling registry.c
+compiling render.c
+compiling scanners.c
+compiling strikethrough.c
+compiling syntax_extension.c
+compiling table.c
+compiling tagfilter.c
+compiling tasklist.c
+compiling utf8.c
+compiling xml.c
+linking shared-object commonmarker/commonmarker.bundle
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/commonmarker-0.23.11/ext/commonmarker
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-jupzb8 sitelibdir\=./.gem.20250213-65935-jupzb8 install
+/usr/bin/install -c -m 0755 commonmarker.bundle ./.gem.20250213-65935-jupzb8/commonmarker
+
+current directory: /Users/viljarpartel/Desktop/uusversioon0502/testdraft/vendor/bundle/ruby/3.4.0/gems/commonmarker-0.23.11/ext/commonmarker
+make DESTDIR\= sitearchdir\=./.gem.20250213-65935-jupzb8 sitelibdir\=./.gem.20250213-65935-jupzb8 clean

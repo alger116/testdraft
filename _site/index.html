@@ -5,226 +5,304 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        @import "tailwindcss";
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        .dark-mode .container {
-            background-color: #1e1e1e;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-        .dark-mode input, .dark-mode select, .dark-mode button {
-            background-color: #333;
-            color: #e0e0e0;
-            border: 1px solid #555;
-        }
-        .dark-mode button {
-            background-color: #007bff;
-        }
-        .dark-mode button:hover {
-            background-color: #0056b3;
-        }
-        .dark-mode th {
-            background-color: #007bff;
-        }
-        .dark-mode td {
-            background-color: #2e2e2e;
-        }
-        .dark-mode tr:nth-child(even) {
-            background-color: #3a3a3a;
-        }
-        .dark-mode .delete-button {
-            background-color: #dc3545;
-        }
-        .dark-mode .delete-button:hover {
-            background-color: #c82333;
-        }
-        .dark-mode .edit-button {
-            background-color: #ffc107;
-        }
-        .dark-mode .edit-button:hover {
-            background-color: #e0a800;
-        }
-    </style>
-</head>
-<body class="flex justify-center items-center h-screen bg-gray-100">
-    <div class="nav absolute top-2 left-2 flex space-x-2">
-        <button id="showForm" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center active" aria-label="Show Form">
-            <i class="fas fa-tools mr-2"></i> Tööriist
-        </button>
-        <button id="showSavedSearches" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show Saved Searches">
-            <i class="fas fa-folder-open mr-2"></i> Hanked
-        </button>
-        <button id="showHistory" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show History">
-            <i class="fas fa-history mr-2"></i> Ajalugu
-        </button>
-        <button id="settingsButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" aria-label="Show Settings">
-            <i class="fas fa-cog mr-2"></i> Sätted
-        </button>
-    </div>
-    <div id="currentDateTime" class="absolute bottom-2 right-2 bg-white p-2 rounded shadow text-gray-800"></div>
-    <div id="toolTab" class="flex space-x-4">
-        <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
-            <h2 class="text-2xl font-bold text-center mb-4">Riigihanke andmed</h2>
-            <form id="procurementForm" class="space-y-4">
-                <div>
-                    <label for="name" class="block text-gray-700">Nimi:</label>
-                    <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="cost" class="block text-gray-700">Maksumus:</label>
-                    <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
-                </div>
-                <div>
-                    <label for="procedureType" class="block text-gray-700">Riigihanke menetlusliik:</label>
-                    <select id="procedureType" name="procedureType" class="w-full p-2 border rounded" required>
-                        <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Avatud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Avatud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Piiratud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks</option>
-                        <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Võistlev dialoog asjade hankelepingu sõlmimiseks</option>
-                        <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Võistlev dialoog teenuste hankelepingu sõlmimiseks</option>
-                        <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Võistlev dialoog ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks</option>
-                        <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Kontsessioonimenetlus koos eraldi taotluse esitamisega</option>
-                        <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Kontsessioonimenetlus ilma eraldi taotlust esitamata</option>
-                        <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
-                        <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="contractSigningDate" class="block text-gray-700">Lepingu Allkirjastamise Kuupäev:</label>
-                    <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
-                </div>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center">
-                    <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
-                </button>
-            </form>
-            <div class="flex space-x-2 mt-4">
-                <button id="clearFields" class="clear-button bg-red-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center">
-                    <i class="fas fa-broom mr-2"></i> Puhasta
-                </button>
-                <button id="saveFields" class="save-button bg-green-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center">
-                    <i class="fas fa-save mr-2"></i> Salvesta
-                </button>
-                <button id="refreshFields" class="refresh-button bg-yellow-500 text-black px-4 py-2 rounded flex-1 flex items-center justify-center">
-                    <i class="fas fa-sync-alt mr-2"></i> Uuenda
-                </button>
-            </div>
-        </div>
-        <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
-            <div id="result" class="result-card"></div>
-        </div>
-    </div>
+    <link href="src/output.css" rel="stylesheet">
 
-    <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
-    <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
-        <h2 class="text-2xl font-bold text-center mb-4">Salvestatud Hanked</h2>
-        <table class="w-full border-collapse table-auto">
-            <thead>
-                <tr>
-                    <th class="border p-2 bg-blue-500 text-white">Nimi</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
-                    <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
-                    <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
-                    <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
-                    <th class="border p-2 bg-blue-500 text-white">Muuda</th>
-                    <th class="border p-2 bg-blue-500 text-white">Kustuta</th>
-                </tr>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Modern Navbar with Dark Mode Toggle -->
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full fixed top-0 left-0">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold ml-4">Riigihanke andmed</h1>
+            <nav class="flex space-x-6">
+                <a href="#" id="showForm" class="hover:text-gray-200 transition">Tööriist</a>
+                <a href="#" id="showSavedSearches" class="hover:text-gray-200 transition">Hanked</a>
+                <a href="#" id="showHistory" class="hover:text-gray-200 transition">Ajalugu</a>
+                <a href="#" id="settingsButton" class="hover:text-gray-200 transition">Sätted</a>
+                <a href="#" onclick="toggleDashboard()" class="hover:text-gray-200 transition">Toggle 3</a>
+                <label class="flex items-center cursor-pointer">
+                    <span class="mr-2">Dark Mode</span>
+                    <input type="checkbox" id="darkModeToggle" class="hidden">
+                    <div class="w-10 h-5 bg-gray-300 rounded-full p-1 flex items-center">
+                        <div class="w-4 h-4 bg-white rounded-full shadow-md transition transform"></div>
+                    </div>
+                </label>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 pt-32">
+        <div id="dashboard" class="tab-content hidden">
+            <!-- Dashboard content goes here -->
+        </div>
+        <div class="nav hidden">
+            <div class="relative inline-block text-left">
+                <button id="dropdownButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
+                    <i class="fas fa-bars mr-2"></i> Menüü
+                </button>
+                <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
+                        <button id="showForm" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-tools mr-2"></i> Tööriist
+                        </button>
+                        <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-folder-open mr-2"></i> Hanked
+                        </button>
+                        <button id="showHistory" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-history mr-2"></i> Ajalugu
+                        </button>
+                        <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-cog mr-2"></i> Sätted
+                        </button>
+                        <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-moon mr-2"></i> Dark Mode
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="currentDateTime" class="absolute bottom-2 right-2 bg-white p-2 rounded shadow text-gray-800"></div>
+        <div id="toolTab" class="flex space-x-4">
+            <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
+                <h2 class="text-2xl font-bold text-center mb-4">Sisesta andmed</h2>
+                <form id="procurementForm" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-gray-700">Riigihanke nimetus:</label>
+                        <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label for="cost" class="block text-gray-700">Riigihanke maksumus:</label>
+                        <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label for="procedureType" class="block text-gray-700">Riigihanke menetlusliik:</label>
+                        <select id="procedureType" name="procedureType" class="w-full p-2 border rounded" required>
+                            <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Avatud hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Avatud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Piiratud hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks</option>
+                            <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Võistlev dialoog asjade hankelepingu sõlmimiseks</option>
+                            <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Võistlev dialoog teenuste hankelepingu sõlmimiseks</option>
+                            <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Võistlev dialoog ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks</option>
+                            <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Kontsessioonimenetlus koos eraldi taotluse esitamisega</option>
+                            <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Kontsessioonimenetlus ilma eraldi taotlust esitamata</option>
+                            <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
+                            <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="contractSigningDate" class="block text-gray-700">Lepingu allkirjastamise kuupäev:</label>
+                        <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center hover:bg-blue-600 transition transform hover:scale-105">
+                        <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
+                    </button>
+                </form>
+                <div class="flex space-x-2 mt-4">
+                    <button id="clearFields" class="clear-button bg-red-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-red-600 transition transform hover:scale-105">
+                        <i class="fas fa-broom mr-2"></i> Puhasta
+                    </button>
+                    <button id="saveFields" class="save-button bg-green-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-green-600 transition transform hover:scale-105">
+                        <i class="fas fa-save mr-2"></i> Salvesta
+                    </button>
+                    <button id="refreshFields" class="refresh-button bg-yellow-500 text-black px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-yellow-600 transition transform hover:scale-105">
+                        <i class="fas fa-sync-alt mr-2"></i> Uuenda
+                    </button>
+                </div>
+            </div>
+            <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
+                <div id="result" class="result-card"></div>
+            </div>
+        </div>
+
+        <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
+        <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
+            <h2 class="text-2xl font-bold text-center mb-4">Salvestatud Hanked</h2>
+            <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
+                <thead>
+                    <tr>
+                        <th class="p-3">Nimi</th>
+                        <th class="p-3">Menetlusliik</th>
+                        <th class="p-3">Maksumus</th>
+                        <th class="p-3">Menetlusaeg</th>
+                        <th class="p-3">Taotluse Kuupäev</th>
+                        <th class="p-3">Allkirjastamise Kuupäev</th>
+                        <th class="p-3">Muuda</th>
+                        <th class="p-3">Kustuta</th>
+                    </tr>
+                </thead>
+                <tbody id="savedSearchesTableBody">
+                    <!-- Saved searches will be inserted here -->
+                </tbody>
+            </table>
+            <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Salvesta Excelisse</button>
+            <!-- Button to Show Chart -->
+            <button onclick="toggleChart()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
+                Näita Graafikut
+            </button>
+
+            <!-- Chart Container (Initially Hidden) -->
+            <div id="chartContainer" class="hidden mt-4 w-full max-w-lg mx-auto">
+                <canvas id="procurementChart" class="w-full"></canvas>
+            </div>
+        </div>
+        <!-- Settings Container -->
+        <div class="container bg-white p-6 rounded-lg shadow-lg max-w-2xl hidden" id="settingsContainer">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">⚙️ Seaded</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Form Section -->
+                <form id="settingsForm" class="space-y-6 bg-gray-50 p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-800">📑 Menetlusliigi sätted</h3>
+
+                    <div class="relative">
+                        <label for="documentPreparationDays" class="block text-gray-700 mb-1">📄 Riigihanke alusdokumentide koostamine (päevad):</label>
+                        <input type="number" id="documentPreparationDays" name="documentPreparationDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="offerEvaluationDays" class="block text-gray-700 mb-1">🧐 Pakkumuste hindamine (päevad):</label>
+                        <input type="number" id="offerEvaluationDays" name="offerEvaluationDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="decisionDays" class="block text-gray-700 mb-1">✅ Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
+                        <input type="number" id="decisionDays" name="decisionDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="bidderEvaluationDays" class="block text-gray-700 mb-1">📊 Pakkujate hindamine (päevad):</label>
+                        <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="successfulBidderDays" class="block text-gray-700 mb-1">🏆 Eduka kõrvaldamata jätmine ja kval (päevad):</label>
+                        <input type="number" id="successfulBidderDays" name="successfulBidderDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <div class="relative">
+                        <label for="waitingPeriodDays" class="block text-gray-700 mb-1">⏳ Ooteaeg (päevad):</label>
+                        <input type="number" id="waitingPeriodDays" name="waitingPeriodDays"
+                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sisesta päevad" required>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition transform hover:scale-105">
+                        💾 Salvesta
+                    </button>
+                </form>
+
+                <!-- Procedure Type Selection -->
+                <div class="bg-gray-50 p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">🛠️ Menetlusliigid</h3>
+                    <select id="procedureTypeSelect"
+                        class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <div id="procedureTypeSettings" class="mt-4 space-y-4">
+                        <!-- Procedure type settings will be displayed here -->
+                    </div>
+                    <button id="addProcedureTypeButton"
+                        class="w-full bg-green-500 text-white p-3 rounded-lg mt-4 hover:bg-green-600 transition transform hover:scale-105">
+                        ➕ Lisa Menetlusliik
+                    </button>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
+            <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
+            <div class="filter-container mb-4">
+                <label for="filterByDate" class="block text-gray-700">Filtreeri kuupäeva järgi:</label>
+                <select id="filterByDate" class="w-full p-2 border rounded">
+                    <option value="all">Kõik</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            <table class="w-full border-collapse table-auto">
+                <thead>
+                    <tr>
+                        <th class="border p-2 bg-blue-500 text-white">Nimi</th>
+                        <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
+                        <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
+                        <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
+                        <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
+                        <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <!-- History entries will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="password-prompt hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-80 text-center" id="passwordPrompt">
+            <h3 class="text-xl font-bold mb-4">Enter Password</h3>
+            <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
+            <div class="flex justify-center space-x-2">
+                <button id="passwordSubmit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Submit</button>
+                <button id="passwordClose" class="close-button bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Close</button>
+            </div>
+            <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
+        </div>
+
+        <!-- Modern Table -->
+        <table id="recentCalculationsTable" class="w-full border-collapse shadow-lg rounded-lg overflow-hidden mt-4 hidden">
+            <thead class="bg-blue-500 text-white">
+            <tr>
+                <th class="p-3">Nimi</th>
+                <th class="p-3">Menetlusliik</th>
+                <th class="p-3">Maksumus</th>
+                <th class="p-3">Menetlusaeg</th>
+                <th class="p-3">Taotluse Kuupäev</th>
+            </tr>
             </thead>
-            <tbody id="savedSearchesTableBody">
-                <!-- Saved searches will be inserted here -->
+            <tbody id="recentCalculations">
+            <!-- Last 3 calculations will be dynamically inserted here -->
             </tbody>
         </table>
-        <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4">Salvesta Excelisse</button>
-    </div>
-    <div class="container bg-white p-6 rounded shadow max-w-lg hidden" id="settingsContainer">
-        <h2 class="text-2xl font-bold text-center mb-4">Settings</h2>
-        <form id="settingsForm" class="space-y-4">
-            <h3 class="text-xl font-semibold">Menetlusliigi sätted</h3>
-            <div>
-                <label for="documentPreparationDays" class="block text-gray-700">Riigihanke alusdokumentide koostamine (päevad):</label>
-                <input type="number" id="documentPreparationDays" name="documentPreparationDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="offerEvaluationDays" class="block text-gray-700">Pakkumuste hindamine (päevad):</label>
-                <input type="number" id="offerEvaluationDays" name="offerEvaluationDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="decisionDays" class="block text-gray-700">Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
-                <input type="number" id="decisionDays" name="decisionDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="bidderEvaluationDays" class="block text-gray-700">Pakkujate hindamine (päevad):</label>
-                <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="successfulBidderDays" class="block text-gray-700">Eduka kõrvaldamata jätmine ja kval (päevad):</label>
-                <input type="number" id="successfulBidderDays" name="successfulBidderDays" class="w-full p-2 border rounded" required>
-            </div>
-            <div>
-                <label for="waitingPeriodDays" class="block text-gray-700">Ootaeg (päevad):</label>
-                <input type="number" id="waitingPeriodDays" name="waitingPeriodDays" class="w-full p-2 border rounded" required>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Salvesta</button>
-        </form>
-        <h3 class="text-xl font-semibold mt-6">Menetlusliigid</h3>
-        <select id="procedureTypeSelect" class="w-full p-2 border rounded mt-2">
-            <!-- Options will be populated dynamically -->
-        </select>
-        <div id="procedureTypeSettings" class="mt-4 space-y-4">
-            <!-- Procedure type settings will be displayed here -->
+
+        <!-- Notification System -->
+        <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-md hidden">
+            ✅ !
         </div>
-        <button id="addProcedureTypeButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Lisa Menetlusliik</button>
-    </div>
-    <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
-        <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
-        <div class="filter-container mb-4">
-            <label for="filterByDate" class="block text-gray-700">Filtreeri kuupäeva järgi:</label>
-            <select id="filterByDate" class="w-full p-2 border rounded">
-                <option value="all">Kõik</option>
-                <!-- Options will be populated dynamically -->
-            </select>
-        </div>
-        <table class="w-full border-collapse table-auto">
-            <thead>
-                <tr>
-                    <th class="border p-2 bg-blue-500 text-white">Nimi</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
-                    <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
-                    <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
-                    <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
-                    <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
-                </tr>
-            </thead>
-            <tbody id="historyTableBody">
-                <!-- History entries will be inserted here -->
-            </tbody>
-        </table>
-    </div>
-    <button id="toggleDarkMode" class="absolute bottom-2 left-2 bg-blue-500 text-white px-4 py-2 rounded">Toggle Dark Mode</button>
-    <div class="password-prompt hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-80 text-center" id="passwordPrompt">
-        <h3 class="text-xl font-bold mb-4">Enter Password</h3>
-        <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
-        <div class="flex justify-center space-x-2">
-            <button id="passwordSubmit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
-            <button id="passwordClose" class="close-button bg-red-500 text-white px-4 py-2 rounded">Close</button>
-        </div>
-        <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script>
+        // Utility function for formatting dates to "dd.mm.yyyy"
+        function formatDate(date) {
+            const d = new Date(date);
+            
+            if (isNaN(d.getTime())) {
+                console.error("Invalid date:", date);
+                return "Invalid date";  // Prevents errors
+            }
+
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+
+            return `${day}.${month}.${year}`;
+        }
+
         const procedureData = {
             "Lihthankemenetlus asjade hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
             "Lihthankemenetlus teenuste hankelepingu sõlmimiseks": { taotlusteAeg: 0, pakkumusteAeg: 10, piirmäär: 60000 },
@@ -283,7 +361,7 @@
 
         let settings = { ...defaultSettings };
 
-        const correctPassword = 'admin';
+        const correctPassword = '123';
         let passwordValidUntil = null;
 
         function showPasswordPrompt(callback) {
@@ -316,13 +394,11 @@
         }
 
         document.getElementById('settingsButton').addEventListener('click', function() {
-            showPasswordPrompt(() => {
-                document.getElementById('settingsContainer').classList.toggle('hidden');
-                document.getElementById('formContainer').classList.add('hidden');
-                document.getElementById('savedSearchesContainer').classList.add('hidden');
-                loadSettings();
-                loadProcedureTypes();
-            });
+            closeAllTabs();
+            document.getElementById('settingsContainer').classList.remove('hidden');
+            loadSettings();
+            loadProcedureTypes();
+            setActiveTab(this);
         });
 
         document.getElementById('settingsForm').addEventListener('submit', function(event) {
@@ -333,8 +409,6 @@
             settings.bidderEvaluationDays = parseInt(document.getElementById('bidderEvaluationDays').value);
             settings.successfulBidderDays = parseInt(document.getElementById('successfulBidderDays').value);
             settings.waitingPeriodDays = parseInt(document.getElementById('waitingPeriodDays').value);
-            saveSettings();
-            alert('Settings saved successfully!');
         });
 
         document.getElementById('addProcedureTypeButton').addEventListener('click', function() {
@@ -393,8 +467,8 @@
                     <input type="number" id="offerDays" value="${procedure.pakkumusteAeg}" required><br><br>
                     <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
                     <input type="checkbox" id="useInternationalThreshold" ${procedure.useInternational ? 'checked' : ''} onchange="toggleInternationalThreshold('${type}')"><br><br>
-                    <button onclick="deleteProcedureType('${type}')" class="bg-red-500 text-white px-4 py-2 rounded">Kustuta</button>
-                    <button onclick="saveProcedureType('${type}')" class="bg-blue-500 text-white px-4 py-2 rounded">Salvesta</button>
+                    <button onclick="deleteProcedureType('${type}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Kustuta</button>
+                    <button onclick="saveProcedureType('${type}')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
                 </div>
             `;
         }
@@ -411,7 +485,7 @@
                     <input type="number" id="offerDays" required><br><br>
                     <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
                     <input type="checkbox" id="useInternationalThreshold" onchange="toggleInternationalThreshold()"><br><br>
-                    <button onclick="saveNewProcedureType()" class="bg-blue-500 text-white px-4 py-2 rounded">Salvesta</button>
+                    <button onclick="saveNewProcedureType()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
                 </div>
             `;
         }
@@ -454,10 +528,25 @@
 
         class PublicProcurement {
             constructor(name, cost, procedureType, contractSigningDate) {
+                // Ensure the date is valid before any conversion logic
+                if (!contractSigningDate || isNaN(new Date(contractSigningDate).getTime())) {
+                    console.error("Invalid contract signing date:", contractSigningDate);
+                    this.contractSigningDate = null; // Avoid breaking further calculations
+                } else {
+                    // Convert dd.mm.yyyy to YYYY-MM-DD if necessary
+                    if (typeof contractSigningDate === "string" && contractSigningDate.includes(".")) {
+                        const parts = contractSigningDate.split(".");
+                        if (parts.length === 3) {
+                            contractSigningDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        }
+                    }
+                    this.contractSigningDate = new Date(contractSigningDate);
+                }
+
                 this.name = name;
                 this.cost = cost;
                 this.procedureType = procedureType;
-                this.contractSigningDate = new Date(contractSigningDate);
+                this.contractSigningDate = new Date(contractSigningDate); null;
                 this.procedureDuration = this.calculateProcedureDuration();
                 this.procedureDetails = this.calculateProcedureDetails();
                 this.requestSubmissionDate = this.calculateRequestSubmissionDate();
@@ -501,32 +590,57 @@
                 }
 
                 const details = [
-                    { step: "Riigihanke alusdokumentide koostamine", days: `kuni ${settings.documentPreparationDays} tööpäeva` },
-                    { step: "Taotluste esitamine RHRis", days: taotlusteAeg ? `${taotlusteAeg} päeva` : "Ei kohaldu antud menetluses." },
-                    { step: "Pakkumuste esitamine RHRis", days: pakkumusteAeg ? `${pakkumusteAeg} päeva` : "Ei kohaldu antud menetluses." },
-                    { step: "Pakkumuste hindamine", days: `${settings.offerEvaluationDays} päeva` },
-                    { step: "Vastavaks ja edukaks tunnistamise otsus", days: `${settings.decisionDays} päeva` },
-                    { step: "Pakkujate hindamine", days: `${settings.bidderEvaluationDays} päeva` },
-                    { step: "Eduka kõrvaldamata jätmine ja kval", days: `${settings.successfulBidderDays} päeva` },
-                    { step: "Hankija ei või anda nõustumust sõlmida hankeleping enne 14 päeva möödumist peale otsust 2 (Jah, seal sees on ka 10 päevane ooteaeg)", days: `${settings.waitingPeriodDays} päeva` }
+                    { step: "Riigihanke alusdokumentide koostamine", days: ` ${settings.documentPreparationDays} päeva` },
+                    { step: "Taotluste esitamine RHRis", days: taotlusteAeg ? `${taotlusteAeg} päeva` : "Ei kohaldu" },
+                    { step: "Pakkumuste esitamine RHRis", days: pakkumusteAeg ? `${pakkumusteAeg} päeva` : "Ei kohaldu" },
+                    { step: "Hindamine 1", days: `${settings.offerEvaluationDays} päeva` },
+                    { step: "Otsus 1", days: `${settings.decisionDays} päeva` },
+                    { step: "Hindamine 2", days: `${settings.bidderEvaluationDays} päeva` },
+                    { step: "Otsus 2", days: `${settings.successfulBidderDays} päeva` },
+                    { step: "Ooteaeg", days: `${settings.waitingPeriodDays} päeva` }
                 ];
                 return details;
             }
 
             calculateRequestSubmissionDate() {
+                // Step 1: Ensure contractSigningDate is in YYYY-MM-DD format
+                if (typeof this.contractSigningDate === "string" && this.contractSigningDate.includes(".")) {
+                    const parts = this.contractSigningDate.split(".");
+                    if (parts.length === 3) {
+                         this.contractSigningDate = typeof this.contractSigningDate === "string" ? `${parts[2]}-${parts[1]}-${parts[0]}` : this.contractSigningDate; // Convert dd.mm.yyyy → YYYY-MM-DD only if it's a string
+                    }
+                }
+
+                // Step 2: Validate contractSigningDate before using it
+                if (!this.contractSigningDate || isNaN(new Date(this.contractSigningDate).getTime())) {
+                    console.error("Invalid contract signing date:", this.contractSigningDate);
+                    return "Invalid date"; // Prevent further errors
+                }
+
+                // Step 3: Calculate the request submission date
                 const submissionDate = new Date(this.contractSigningDate);
-                submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
-                return submissionDate.toISOString().split('T')[0]; // Return date in YYYY-MM-DD format
+                if (!isNaN(this.procedureDuration)) {
+                    submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
+                if (isNaN(submissionDate.getTime())) {
+                    console.error("Invalid submission date:", submissionDate);
+                    return "Invalid date"; // Prevents errors
+                }
+                return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+                    console.error("Invalid procedure duration:", this.procedureDuration);
+                }
+
+                return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
             }
 
             generateHTML() {
                 const detailsHTML = this.procedureDetails.map((detail, index) => `
-                    <li>
-                        ${detail.step}: 
-                        <span id="days-${index}">${detail.days}</span>
-                        <div class="adjust-buttons">
-                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-2 py-1 rounded">-</button>
-                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-2 py-1 rounded">+</button>
+                    <li class="flex justify-between items-center py-1">
+                        <span class="w-3/4">${detail.step}:</span>
+                        <span id="days-${index}" class="w-16 text-center font-medium whitespace-nowrap">${detail.days}</span>
+                        <div class="flex gap-1 ml-6">
+                            <button onclick="adjustDays(${index}, -1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition transform hover:scale-105">-</button>
+                            <button onclick="adjustDays(${index}, 1)" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition transform hover:scale-105">+</button>
+
                         </div>
                     </li>
                 `).join('');
@@ -536,13 +650,15 @@
 
                 return `
                     <div class="result-card bg-white p-6 rounded max-w-lg">
-                        <h2 class="text-2xl font-bold text-black-500 mb-4">Riigihanke Andmed</h2>
-                        <p><strong>Riigihanke Taotluse Esitamise Kuupäev:</strong> <span id="requestSubmissionDate">${this.requestSubmissionDate}</span></p>
+                        <h2 class="text-2xl font-bold text-black-500 mb-4">Riigihanke andmed</h2>
+                        <p><strong>Riigihanke taotluse esitamise kuupäev:</strong> 
+                            <span id="requestSubmissionDate">${formatDate(this.requestSubmissionDate)}</span>
+                        </p>
                         ${errorMessage}
                         <p><strong>Nimi:</strong> ${this.name}</p>
                         <p><strong>Maksumus:</strong> ${this.cost}</p>
                         <p><strong>Riigihanke menetlusliik:</strong> ${this.procedureType}</p>
-                        <p><strong>Lepingu Allkirjastamise Kuupäev:</strong> ${this.contractSigningDate.toISOString().split('T')[0]}</p>
+                        <p><strong>Lepingu allkirjastamise kuupäev:</strong> ${formatDate(this.contractSigningDate)}</p>
                         <p><strong>Eeldatav riigihanke menetlusaeg päevades:</strong> <span id="totalDuration">${this.procedureDuration}</span> päeva</p>
                         <ul class="list-none p-0">
                             ${detailsHTML}
@@ -558,10 +674,10 @@
                         <td class="border p-2">${this.procedureType}</td>
                         <td class="border p-2">${this.cost}</td>
                         <td class="border p-2">${this.procedureDuration} päeva</td>
-                        <td class="border p-2">${this.requestSubmissionDate}</td>
-                        <td class="border p-2">${this.contractSigningDate.toISOString().split('T')[0]}</td>
-                        <td class="border p-2"><button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded" onclick="editSearch(${index})">Muuda</button></td>
-                        <td class="border p-2"><button class="delete-button bg-red-500 text-white px-2 py-1 rounded" onclick="deleteSearch(${index})">Kustuta</button></td>
+                        <td class="border p-2">${formatDate(this.requestSubmissionDate)}</td>
+                        <td class="border p-2">${formatDate(this.contractSigningDate)}</td>
+                        <td class="border p-2"><button class="edit-button bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition transform hover:scale-105" onclick="editSearch(${index})">Muuda</button></td>
+                        <td class="border p-2"><button class="delete-button bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition transform hover:scale-105" onclick="deleteSearch(${index})">Kustuta</button></td>
                     </tr>
                 `;
             }
@@ -569,22 +685,34 @@
 
         function adjustDays(index, adjustment) {
             const daysElement = document.getElementById(`days-${index}`);
+            if (!daysElement) {
+                console.error(`Element with id days-${index} not found`);
+                return;
+            }
+
             let daysText = daysElement.innerText;
-            let days = parseInt(daysText.match(/\d+/)[0]);
+            let days = parseInt(daysText.match(/\d+/)?.[0] || "0", 10);  // Avoid NaN
             days += adjustment;
             daysElement.innerText = daysText.replace(/\d+/, days);
 
             // Update total duration
             const totalDurationElement = document.getElementById('totalDuration');
-            let totalDuration = parseInt(totalDurationElement.innerText);
-            totalDuration += adjustment;
-            totalDurationElement.innerText = totalDuration;
+            if (totalDurationElement) {
+                let totalDuration = parseInt(totalDurationElement.innerText || "0", 10);
+                totalDuration += adjustment;
+                totalDurationElement.innerText = totalDuration;
+            } else {
+                console.error('Element with id totalDuration not found');
+            }
 
             // Store updated total duration in the PublicProcurement object
             const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
             if (procurement) {
-                procurement.procedureDuration = totalDuration;
+                procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
                 procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+                document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
+            } else {
+                console.error("Could not find procurement object for real-time update.");
             }
         }
 
@@ -636,13 +764,28 @@
             // Update procedure details with adjusted days
             procurement.procedureDetails.forEach((detail, index) => {
                 const daysElement = document.getElementById(`days-${index}`);
-                let daysText = daysElement.innerText;
-                let days = parseInt(daysText.match(/\d+/)[0]);
-                detail.days = `${days} päeva`;
-            });
+                if (daysElement) {
+                    let daysText = daysElement.innerText;
+                    let match = daysText.match(/\d+/);
+                    if (match) {
+                        let days = parseInt(match[0]);
+                        detail.days = `${days} päeva`;
+                    } else {
+                        console.error("No days found in text:", daysText);
+                    }
+                } else {
+                    console.error("Element not found for index:", index);
+                }
+            })
 
             // Capture the adjusted procedureDuration value
-            procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
+            const totalDurationElement = document.getElementById('totalDuration');
+            if (totalDurationElement) {
+                procurement.procedureDuration = parseInt(totalDurationElement.innerText);
+            } else {
+                console.error("Total duration element not found");
+            }
+
             procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
 
             // Update the displayed result
@@ -659,7 +802,13 @@
                     alert("Maksimaalne salvestatud otsingute arv on 15.");
                 }
             }
-            updateSavedSearchesTable();
+
+            // Save to history
+            if (history.length >= 500) {
+                history.shift(); // Remove the oldest entry if history exceeds 500
+            }
+            history.push(procurement);
+            saveHistory(); // Save history immediately
         });
 
         document.getElementById('refreshFields').addEventListener('click', function() {
@@ -672,7 +821,7 @@
 
             procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
             procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-            document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+            document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
             updateSavedSearchesTable();
         });
 
@@ -690,7 +839,7 @@
                     procurement.name,
                     procurement.cost,
                     procurement.procedureType,
-                    procurement.contractSigningDate.toISOString().split('T')[0],
+                    formatDate(procurement.contractSigningDate),
                     procurement.procedureDuration
                 ].join(",");
                 csvContent += row + "\n";
@@ -706,40 +855,37 @@
         });
 
         document.getElementById('showForm').addEventListener('click', function() {
-            document.getElementById('toolTab').classList.remove('hidden');
+            closeAllTabs();
             document.getElementById('formContainer').classList.remove('hidden');
-            document.getElementById('savedSearchesContainer').classList.add('hidden');
-            document.getElementById('historyContainer').classList.add('hidden');
-            document.getElementById('settingsContainer').classList.add('hidden');
             setActiveTab(this);
         });
 
         document.getElementById('showSavedSearches').addEventListener('click', function() {
-            document.getElementById('toolTab').classList.add('hidden');
-            document.getElementById('formContainer').classList.add('hidden');
+            closeAllTabs();
             document.getElementById('savedSearchesContainer').classList.remove('hidden');
-            document.getElementById('historyContainer').classList.add('hidden');
-            document.getElementById('settingsContainer').classList.add('hidden');
             updateSavedSearchesTable();
             setActiveTab(this);
         });
 
         document.getElementById('showHistory').addEventListener('click', function() {
-            showPasswordPrompt(() => {
-                document.getElementById('toolTab').classList.add('hidden');
-                document.getElementById('formContainer').classList.add('hidden');
-                document.getElementById('savedSearchesContainer').classList.add('hidden');
-                document.getElementById('settingsContainer').classList.add('hidden');
-                document.getElementById('historyContainer').classList.remove('hidden');
-                loadHistory();
-                setActiveTab(this);
-            });
+            closeAllTabs();
+            document.getElementById('historyContainer').classList.remove('hidden');
+            loadHistory();
+            setActiveTab(this);
         });
 
         function setActiveTab(button) {
             const navButtons = document.querySelectorAll('.nav button');
             navButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
+        }
+
+        function closeAllTabs() {
+            document.getElementById('formContainer').classList.add('hidden');
+            document.getElementById('savedSearchesContainer').classList.add('hidden');
+            document.getElementById('historyContainer').classList.add('hidden');
+            document.getElementById('settingsContainer').classList.add('hidden');
+            document.getElementById('resultContainer').classList.add('hidden'); // Ensure result container is hidden
         }
 
         function updateSavedSearchesTable() {
@@ -749,6 +895,14 @@
                 tableBody.innerHTML += procurement.generateTableRow(index);
             });
             adjustTableColumns();
+
+            // Update modern table with the last 3 saved searches
+            const recentTableBody = document.getElementById('savedSearchesTableBody');
+            const recentSearches = savedSearches.slice(-10); // Get the last 3 searches
+            recentTableBody.innerHTML = '';
+            recentSearches.forEach((procurement, index) => {
+                recentTableBody.innerHTML += procurement.generateTableRow(index);
+            });
         }
 
         function deleteSearch(index) {
@@ -763,11 +917,8 @@
             document.getElementById('procedureType').value = procurement.procedureType;
             document.getElementById('contractSigningDate').value = procurement.contractSigningDate.toISOString().split('T')[0];
             deleteSearch(index);
-            document.getElementById('toolTab').classList.remove('hidden');
+            closeAllTabs();
             document.getElementById('formContainer').classList.remove('hidden');
-            document.getElementById('savedSearchesContainer').classList.add('hidden');
-            document.getElementById('historyContainer').classList.add('hidden');
-            document.getElementById('settingsContainer').classList.add('hidden');
             setActiveTab(document.getElementById('showForm'));
         }
 
@@ -775,7 +926,7 @@
             const procurement = savedSearches[index];
             procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
             procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-            document.getElementById('requestSubmissionDate').innerText = procurement.requestSubmissionDate;
+            document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
             updateSavedSearchesTable();
         }
 
@@ -886,6 +1037,287 @@
                 });
             });
         }
+
+        document.getElementById('dropdownButton').addEventListener('click', function() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function(event) {
+            const dropdownButton = document.getElementById('dropdownButton');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (!dropdownButton.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('bg-gray-900');
+            document.body.classList.toggle('text-white');
+        });
+
+        // Show Notification
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, duration);
+        }
+
+        document.getElementById('saveFields').addEventListener('click', function() {
+            // Your save logic here
+            showNotification('Salvestatud edukalt!');
+        });
+    
+        document.getElementById('refreshFields').addEventListener('click', function() {
+            // Your update logic here
+            showNotification('Uuendatud edukalt!');
+        });
+
+        function toggleChart() {
+            const chartContainer = document.getElementById("chartContainer");
+            chartContainer.classList.toggle("hidden");
+
+            // Ensure table has data before rendering
+            if (!chartContainer.classList.contains("hidden")) {
+                setTimeout(() => {
+                    if (document.querySelectorAll("#savedSearchesTableBody tr").length > 0) {
+                        renderChart();
+                    } else {
+                        console.warn("⚠ No saved searches found, chart cannot be displayed.");
+                    }
+                }, 300);
+            }
+        }
+
+        function renderChart() {
+            const canvas = document.getElementById("procurementChart");
+            if (!canvas) {
+                console.error("❌ Chart canvas not found!");
+                return;
+            }
+
+            const ctx = canvas.getContext("2d");
+
+            // Destroy previous chart if it exists
+            if (window.procurementChart && typeof window.procurementChart.destroy === 'function') {
+                window.procurementChart.destroy();
+            }
+
+            // Extract data from savedSearchesTableBody
+            const rows = document.querySelectorAll("#savedSearchesTableBody tr");
+            const labels = [];
+            const costs = [];
+            const totalDays = [];
+
+            rows.forEach(row => {
+                const columns = row.querySelectorAll("td");
+                if (columns.length >= 5) {  // Ensure there are enough columns
+                    const name = columns[0].innerText.trim();
+                    const cost = parseFloat(columns[2].innerText.replace("€", "").trim()); // Remove € sign
+                    const days = parseInt(columns[3].innerText.trim(), 10); // Convert to integer
+
+                    if (!isNaN(cost) && !isNaN(days)) { // Ensure valid data
+                        labels.push(name);
+                        costs.push(cost);
+                        totalDays.push(days);
+                    }
+                }
+            });
+
+            // If no valid data, show a warning and prevent chart initialization
+            if (labels.length === 0) {
+                console.warn("⚠ No valid data found for the chart.");
+                return;
+            }
+
+            // Create the chart
+            window.procurementChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Menetlusaeg (päevad)",
+                            data: totalDays.map(days => {
+                                const today = new Date();
+                                const submissionDate = new Date();
+                                submissionDate.setDate(today.getDate() + days);
+                                const timeDiff = submissionDate.getTime() - today.getTime();
+                                return Math.ceil(timeDiff / (1000 * 3600 * 24));
+                            }),
+                            backgroundColor: "rgba(153, 102, 255, 0.6)",
+                            borderColor: "rgba(153, 102, 255, 1)",
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: { enabled: true }
+                    }
+                }
+            });
+        }
+
+        // Attach event listeners to navbar buttons
+        document.addEventListener("DOMContentLoaded", function () {
+            const navTool = document.getElementById("showForm");
+            const navHanked = document.getElementById("showSavedSearches");
+            const navHistory = document.getElementById("showHistory");
+            const navSettings = document.getElementById("settingsButton");
+
+            if (navTool) navTool.addEventListener("click", () => showTab('formContainer'));
+            if (navHanked) navHanked.addEventListener("click", () => showTab('savedSearchesContainer'));
+            if (navHistory) navHistory.addEventListener("click", () => showTab('historyContainer'));
+            function showTab(tabId) {
+                closeAllTabs();
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            // Initialize Chart.js
+            renderChart();
+        });
+        function toggleDashboard() {
+            const dashboard = document.getElementById("dashboard");
+            const recentCalculationsTable = document.getElementById("recentCalculationsTable");
+            dashboard.classList.toggle("hidden");
+            recentCalculationsTable.classList.toggle("hidden");
+        }
+
+        // Ensure the container fades in on page load
+        document.addEventListener("DOMContentLoaded", () => {
+        gsap.from("body", { opacity: 0, duration: 0.3});
+        });
     </script>
-</body>
+
+    <style>
+    /* Navbar button hover effect */
+    .nav-button {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .nav-button:hover {
+        background-color: rgba(254, 233, 233, 0.2);
+        transform: scale(1.05);
+    }
+    /* Navbar styling */
+    .navbar {
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+    }
+    /* Ensure the clock is fixed in the corner */
+    #currentDateTime {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+    }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="auth.js"></script> <!-- You will create this file next -->
+<script>
+    // Animated Progression Bars for Procurement Steps (Dynamic Data with Button Trigger)
+    // Requires: TailwindCSS, GSAP (Already included in your project)
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function animateProgressBars() {
+            const bars = document.querySelectorAll(".progress-bar");
+            bars.forEach((bar) => {
+                gsap.fromTo(bar, 
+                    { width: "0%" }, 
+                    { width: bar.dataset.progress + "%", duration: 1.5, ease: "power2.out" }
+                );
+            });
+        }
+
+        function extractStepDays() {
+            const steps = [
+                "Riigihanke alusdokumentide koostamine",
+                "Taotluste esitamine RHRis",
+                "Pakkumuste esitamine RHRis",
+                "Hindamine 1",
+                "Otsus 1",
+                "Hindamine 2",
+                "Otsus 2",
+                "Ooteaeg"
+            ];
+            
+            let stepData = [];
+            steps.forEach((step, index) => {
+                const element = document.getElementById(`days-${index}`);
+                if (element) {
+                    let days = parseInt(element.innerText.match(/\d+/)?.[0] || "0", 10);
+                    stepData.push({ name: step, days: days });
+                } else {
+                    stepData.push({ name: step, days: 0 });
+                }
+            });
+            return stepData;
+        }
+
+        function generateProgressBars() {
+            const resultContainer = document.getElementById("result");
+            if (!resultContainer || document.getElementById("progressBars")) return;
+
+            const stepData = extractStepDays();
+            const totalDays = stepData.reduce((sum, step) => sum + step.days, 0);
+
+            let progressHTML = `<div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>`;
+
+            stepData.forEach((step) => {
+                const stepProgress = (step.days / totalDays) * 100;
+                progressHTML += `
+                    <div>
+                        <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
+                        <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
+                            <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
+                        </div>
+                    </div>
+                `;
+            });
+            progressHTML += `</div>`;
+
+            resultContainer.innerHTML += progressHTML;
+            animateProgressBars();
+        }
+
+        // Add the button to the "Riigihanke andmed" page as well
+        const procurementForm = document.getElementById("procurementForm");
+        if (procurementForm) {
+            const formButton = document.createElement("button");
+            formButton.innerText = "Näita menetluse kulgu";
+            formButton.className = "bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105";
+            formButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                const resultContainer = document.getElementById('result');
+                const progressBars = document.getElementById('progressBars');
+
+                if (progressBars) {
+                    progressBars.remove();
+                } else {
+                    const name = document.getElementById('name').value;
+                    const cost = parseFloat(document.getElementById('cost').value);
+                    const procedureType = document.getElementById('procedureType').value;
+                    const contractSigningDate = document.getElementById('contractSigningDate').value;
+
+                    const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
+                    resultContainer.innerHTML = procurement.generateHTML();
+                    generateProgressBars();
+                }
+            });
+            procurementForm.appendChild(formButton);
+        }
+    });
+</script>
 </html>

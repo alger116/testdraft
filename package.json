@@ -4,7 +4,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "tailwind": "tailwindcss"
+    "tailwind:cli": "tailwindcss",
+    "build:tailwind": "tailwindcss -i ./src/input.css -o ./assets/main.css --minify",
+    "build:jekyll": "npm run build:tailwind && jekyll build",
+    "jekyll:build": "jekyll build",
+    "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
   },
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
