@@ -1,8 +1,11 @@
-module.exports = {
+export default {
+  mode: "jit",
+  purge: ["./index.html", "./src/**/*.html", "./src/**/*.js"],
   content: [
     "./index.html",
-    "./layouts/**/*.html",
-    "./src/**/*.{html,js,ts,jsx,tsx}",
+    "./hanked.html",
+    "./src/**/*.html",
+    "./src/**/*.js"
   ],
   theme: {
     extend: {

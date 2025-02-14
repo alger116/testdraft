@@ -8,12 +8,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             addHankeplaanButtonListener();
         } else {
             fetch('src/partials/hanked.html')
-                .then(response => response.text())
-                .then(data => {
-                    cachedHankedHtml = data;
-                    document.getElementById('content').innerHTML = data;
-                    addHankeplaanButtonListener();
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load content');
+                    return response.text();
                 })
+                .then(data => { document.getElementById('content').innerHTML = data; })
                 .catch(error => console.error('Error loading hanked.html:', error));
         }
     };
