@@ -7,6 +7,48 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="/src/output.css" rel="stylesheet">
 
+    <style>
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .dark-mode input, .dark-mode select, .dark-mode button {
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #555;
+        }
+        .dark-mode button {
+            background-color: #007bff;
+        }
+        .dark-mode button:hover {
+            background-color: #0056b3;
+        }
+        .dark-mode th {
+            background-color: #007bff;
+        }
+        .dark-mode td {
+            background-color: #2e2e2e;
+        }
+        .dark-mode tr:nth-child(even) {
+            background-color: #3a3a3a;
+        }
+        .dark-mode .delete-button {
+            background-color: #dc3545;
+        }
+        .dark-mode .delete-button:hover {
+            background-color: #c82333;
+        }
+        .dark-mode .edit-button {
+            background-color: #ffc107;
+        }
+        .dark-mode .edit-button:hover {
+            background-color: #e0a800;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Dark Mode Toggle -->
@@ -22,7 +64,7 @@
                 <label class="flex items-center cursor-pointer">
                     <span class="mr-2">Dark Mode</span>
                     <input type="checkbox" id="darkModeToggle" class="hidden">
-                    <div class="w-10 h-5 bg-gray-500 rounded-full p-1 flex items-center">
+                    <div class="w-10 h-5 bg-gray-500 rounded-full p-1 flex items-center relative">
                         <div class="w-4 h-4 bg-white rounded-full shadow-md transition transform"></div>
                     </div>
                 </label>
@@ -1319,5 +1361,29 @@
             procurementForm.appendChild(formButton);
         }
     });
-</script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function loadDarkMode() {
+                const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+                document.body.classList.toggle('dark-mode', darkModeEnabled);
+                document.getElementById('darkModeToggle').checked = darkModeEnabled;
+                applyDarkMode(darkModeEnabled);
+            }
+    
+            function applyDarkMode(enabled) {
+                document.body.classList.toggle('dark-mode', enabled);
+                document.getElementById('darkModeSwitch').classList.toggle('translate-x-5', enabled);
+            }
+    
+            document.getElementById('darkModeToggle').addEventListener('change', function () {
+                const isDarkMode = this.checked;
+                localStorage.setItem('darkMode', isDarkMode);
+                applyDarkMode(isDarkMode);
+            });
+    
+            loadDarkMode();
+        });
+    </script>
+</body> 
 </html>
