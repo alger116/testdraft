@@ -184,6 +184,7 @@
                 </tbody>
             </table>
             <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Salvesta Excelisse</button>
+            <button id="saveHPExcel" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">HP Näidis</button>
             <!-- Button to Show Chart -->
             <button onclick="toggleChart()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
                 Näita Graafikut
@@ -893,6 +894,97 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Kontrollime, kas "Salvesta Excelisse" nupp on olemas ja lisame sündmuse
+            const saveToExcelBtn = document.getElementById('saveToExcel');
+            if (saveToExcelBtn) {
+                saveToExcelBtn.addEventListener('click', function () {
+                    if (savedSearches.length === 0) {
+                        alert("Salvestatud otsinguid ei ole.");
+                        return;
+                    }
+        
+                    let csvContent = "data:text/csv;charset=utf-8,";
+                    csvContent += "Nimi,Maksumus,Menetluse Tüüp,Lepingu Allkirjastamise Kuupäev,Menetlusele kuluv aeg\n";
+        
+                    savedSearches.forEach(procurement => {
+                        const row = [
+                            procurement.name,
+                            procurement.cost,
+                            procurement.procedureType,
+                            formatDate(procurement.contractSigningDate),
+                            procurement.procedureDuration
+                        ].join(",");
+                        csvContent += row + "\n";
+                    });
+        
+                    const encodedUri = encodeURI(csvContent);
+                    const link = document.createElement("a");
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", "riigihanke_andmed.csv");
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            }
+        
+            // Kontrollime, kas "HP Näidis" nupp on olemas ja lisame sündmuse
+            const saveHPExcelBtn = document.getElementById('saveHPExcel');
+            if (saveHPExcelBtn) {
+                saveHPExcelBtn.addEventListener('click', function () {
+                    if (savedSearches.length === 0) {
+                        alert("Salvestatud hanked puuduvad.");
+                        return;
+                    }
+        
+                    let hpData = [
+                        ["Riigihanke eseme nimetus", "Riigihanke menetluse liik", "Riigihanke korraldamise eeldatav aeg (MM.YYYY)", "Riigihanke eeldatav maksumus käibemaksuta", "Sõlmitava lepingu kehtivusaeg", "Riigihanke eest vastutav isik või üksus", "Tehnilise kirjelduse eest vastutav isik või üksus"]
+                    ];
+        
+                    savedSearches.forEach(procurement => {
+                        const formattedDate = formatDateToMonthYear(procurement.requestSubmissionDate);
+                        hpData.push([
+                            procurement.name,                  // 1) Riigihanke eseme nimetus
+                            procurement.procedureType,         // 2) Riigihanke menetluse liik
+                            formattedDate,                     // 3) Eeldatav aeg (MM.YYYY)
+                            procurement.cost,                  // 4) Maksumus
+                            "",                                // 5) Kehtivusaeg (jäetakse tühjaks)
+                            "Hankekeskus",                     // 6) Vastutav isik
+                            "Asutus"                           // 7) Tehnilise kirjelduse eest vastutav isik
+                        ]);
+                    });
+        
+                    downloadExcel(hpData, "HP_Näidis.xlsx");
+                });
+            }
+        
+            // Funktsioon kuupäeva formaadiks MM.YYYY teisendamiseks
+            function formatDateToMonthYear(dateString) {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) {
+                    return "Vale kuupäev";
+                }
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Kuud algavad 0-st
+                const year = date.getFullYear();
+                return `${month}.${year}`;
+            }
+        
+            // Exceli allalaadimise funktsioon
+            function downloadExcel(data, filename) {
+                let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                data.forEach(row => {
+                    csvContent += row.join(",") + "\n";
+                });
+        
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", filename);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
         });
 
         document.getElementById('showForm').addEventListener('click', function() {
