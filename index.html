@@ -186,7 +186,7 @@
             <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Salvesta Excelisse</button>
             <button id="saveHPExcel" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">HP Näidis</button>
             <!-- Button to Show Chart -->
-            <button onclick="toggleChart()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
+            <button onclick="toggleChartBtn" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
                 Näita Graafikut
             </button>
 
@@ -930,16 +930,20 @@
                 });
             }
             
-            document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {
             const saveHPExcelBtn = document.getElementById('saveHPExcel');
+
+            if (!window.savedSearches) {
+                window.savedSearches = []; // Ensure it exists
+            }
         
             if (saveHPExcelBtn) {
                 saveHPExcelBtn.addEventListener('click', function () {
-                    if (!window.savedSearches || savedSearches.length === 0) {
+                    if (savedSearches.length === 0) {
                         alert("Salvestatud hanked puuduvad.");
                         return;
                     }
-            
+        
                     let hpData = [
                         ["Riigihanke eseme nimetus", "Riigihanke menetluse liik", "Eeldatav aeg (MM.YYYY)", "Maksumus KM-ta", "Kehtivusaeg", "Vastutav isik", "Tehniline vastutaja"]
                     ];
@@ -1021,16 +1025,28 @@
 
         function updateSavedSearchesTable() {
             const tableBody = document.getElementById('savedSearchesTableBody');
+            if (!tableBody) {
+                console.error("❌ ERROR: 'savedSearchesTableBody' not found in the document.");
+                return;
+            }
+            
             tableBody.innerHTML = '';
             savedSearches.forEach((procurement, index) => {
                 tableBody.innerHTML += procurement.generateTableRow(index);
             });
+        
             adjustTableColumns();
-
-            // Update modern table with the last 3 saved searches
-            const recentTableBody = document.getElementById('savedSearchesTableBody');
-            const recentSearches = savedSearches.slice(-10); // Get the last 3 searches
-            recentTableBody.innerHTML = '';
+        
+            // Fix: Ensure correct ID for the second table
+            const recentTableBody = document.getElementById('recentCalculations'); // ✅ Correct ID
+            if (!recentTableBody) {
+                console.warn("⚠️ Warning: 'recentCalculations' table not found.");
+                return;
+            }
+        
+            const recentSearches = savedSearches.slice(-10); // Get the last 10 searches
+            recentTableBody.innerHTML = '';  // Clear the recent searches table
+        
             recentSearches.forEach((procurement, index) => {
                 recentTableBody.innerHTML += procurement.generateTableRow(index);
             });
@@ -1217,21 +1233,26 @@
             showNotification('Uuendatud edukalt!');
         });
 
+        document.getElementById('toggleChartBtn').addEventListener('click', toggleChart);
+            
         function toggleChart() {
             const chartContainer = document.getElementById("chartContainer");
+            if (!chartContainer) {
+                console.error("❌ Chart container not found!");
+                return;
+            }
             chartContainer.classList.toggle("hidden");
 
-            // Ensure table has data before rendering
             if (!chartContainer.classList.contains("hidden")) {
                 setTimeout(() => {
                     if (document.querySelectorAll("#savedSearchesTableBody tr").length > 0) {
                         renderChart();
-                    } else {
-                        console.warn("⚠ No saved searches found, chart cannot be displayed.");
-                    }
-                }, 300);
-            }
+                } else {
+                    console.warn("⚠ No saved searches found, chart cannot be displayed.");
+                }
+            }, 300);
         }
+        });
 
         function renderChart() {
             const canvas = document.getElementById("procurementChart");
@@ -1508,30 +1529,28 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            function loadDarkMode() {
-                const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-                document.body.classList.toggle('dark-mode', darkModeEnabled);
-                document.getElementById('darkModeToggle').checked = darkModeEnabled;
-                applyDarkMode(darkModeEnabled);
-            }
-    
             function applyDarkMode(enabled) {
                 document.body.classList.toggle('dark-mode', enabled);
-            
-                document.querySelectorAll('.container, .table-container, input, select, textarea, table, th, td')
-                    .forEach(el => {
-                        el.classList.toggle('bg-gray-800', enabled);
-                        el.classList.toggle('text-white', enabled);
-                        el.classList.toggle('border-gray-500', enabled);
-                    });
+                const toggleSwitch = document.getElementById('darkModeToggle');
+                if (toggleSwitch) {
+                    toggleSwitch.checked = enabled;
+                }
             }
-    
-            document.getElementById('darkModeToggle').addEventListener('change', function () {
-                const isDarkMode = this.checked;
-                localStorage.setItem('darkMode', isDarkMode);
-                applyDarkMode(isDarkMode);
-            });
-    
+        
+            function loadDarkMode() {
+                const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+                applyDarkMode(darkModeEnabled);
+            }
+        
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', function () {
+                    const isDarkMode = this.checked;
+                    localStorage.setItem('darkMode', isDarkMode);
+                    applyDarkMode(isDarkMode);
+                });
+            }
+        
             loadDarkMode();
         });
 </script>
