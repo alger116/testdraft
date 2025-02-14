@@ -931,7 +931,10 @@
             }
             
             document.addEventListener('DOMContentLoaded', function () {
-                document.getElementById('saveHPExcel').addEventListener('click', function () {
+            const saveHPExcelBtn = document.getElementById('saveHPExcel');
+        
+            if (saveHPExcelBtn) {
+                saveHPExcelBtn.addEventListener('click', function () {
                     if (!window.savedSearches || savedSearches.length === 0) {
                         alert("Salvestatud hanked puuduvad.");
                         return;
@@ -940,44 +943,32 @@
                     let hpData = [
                         ["Riigihanke eseme nimetus", "Riigihanke menetluse liik", "Eeldatav aeg (MM.YYYY)", "Maksumus KM-ta", "Kehtivusaeg", "Vastutav isik", "Tehniline vastutaja"]
                     ];
-            
+        
                     savedSearches.forEach(procurement => {
                         const formattedDate = procurement.requestSubmissionDate ? formatDateToMonthYear(procurement.requestSubmissionDate) : "Puudub";
                         hpData.push([
-                            procurement.name,
-                            procurement.procedureType,
+                            procurement.name || "Puudub",
+                            procurement.procedureType || "Puudub",
                             formattedDate,
-                            procurement.cost,
+                            procurement.cost || "Puudub",
                             "",
                             "Hankekeskus",
                             "Asutus"
                         ]);
                     });
-            
-                    downloadExcel(hpData, "HP_Näidis.xlsx");
-                });
-            
-                function formatDateToMonthYear(dateString) {
-                    const date = new Date(dateString);
-                    if (isNaN(date.getTime())) {
-                        return "Vale kuupäev";
-                    }
-                    return `${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
-                }
-            });
         
-            // Funktsioon kuupäeva formaadiks MM.YYYY teisendamiseks
+                    downloadExcel(hpData, "HP_Näidis.csv");
+                });
+            }
+        
             function formatDateToMonthYear(dateString) {
                 const date = new Date(dateString);
                 if (isNaN(date.getTime())) {
                     return "Vale kuupäev";
                 }
-                const month = String(date.getMonth() + 1).padStart(2, '0'); // Kuud algavad 0-st
-                const year = date.getFullYear();
-                return `${month}.${year}`;
+                return `${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
             }
         
-            // Exceli allalaadimise funktsioon
             function downloadExcel(data, filename) {
                 let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
                 data.forEach(row => {
