@@ -7,22 +7,22 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="dist/output.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-[oklch(0.95_0.05_240)] min-h-screen flex flex-col">
     <!-- Modern Navbar with Dark Mode Toggle -->
-    <header class="bg-gray-200 text-black p-4 shadow-md w-full">
+    <header class="bg-[oklch(0.85_0.05_240)] text-[oklch(0.0_0.0_0)] p-4 shadow-md w-full">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold ml-4">Riigihanke andmed</h1>
             <nav class="flex space-x-6">
-                <a href="#" id="showForm" class="hover:text-gray-600 transition">Tööriist</a>
-                <a href="#" id="showSavedSearches" class="hover:text-gray-600 transition">Hanked</a>
-                <a href="#" id="showHistory" class="hover:text-gray-600 transition">Ajalugu</a>
-                <a href="#" id="settingsButton" class="hover:text-gray-600 transition">Sätted</a>
-                <a href="#" onclick="toggleDashboard()" class="hover:text-gray-600 transition">Toggle 3</a>
+                <a href="#" id="showForm" class="hover:text-[oklch(0.6_0.05_240)] transition">Tööriist</a>
+                <a href="#" id="showSavedSearches" class="hover:text-[oklch(0.6_0.05_240)] transition">Hanked</a>
+                <a href="#" id="showHistory" class="hover:text-[oklch(0.6_0.05_240)] transition">Ajalugu</a>
+                <a href="#" id="settingsButton" class="hover:text-[oklch(0.6_0.05_240)] transition">Sätted</a>
+                <a href="#" onclick="toggleDashboard()" class="hover:text-[oklch(0.6_0.05_240)] transition">Toggle 3</a>
                 <label class="flex items-center cursor-pointer">
                     <span class="mr-2">Dark Mode</span>
                     <input type="checkbox" id="darkModeToggle" class="hidden">
-                    <div class="w-10 h-5 bg-gray-500 rounded-full p-1 flex items-center relative">
-                        <div class="w-4 h-4 bg-white rounded-full shadow-md transition transform"></div>
+                    <div class="w-10 h-5 bg-[oklch(0.5_0.05_240)] rounded-full p-1 flex items-center relative">
+                        <div class="w-4 h-4 bg-[oklch(1.0_0.0_0)] rounded-full shadow-md transition transform"></div>
                     </div>
                 </label>
             </nav>
@@ -31,16 +31,16 @@
     <main class="container mx-auto p-6 pt-32">
         <div id="dashboard" class="tab-content hidden">
             <!-- Dashboard content goes here -->
-        <button id="hankeplaan" class="bg-yellow-300 text-black px-4 py-2 rounded mt-4 hover:bg-yellow-600 transition transform hover:scale-105">Hankeplaan</button>
+        <button id="hankeplaan" class="bg-[oklch(0.8_0.1_90)] text-[oklch(0.0_0.0_0)] px-4 py-2 rounded mt-4 hover:bg-[oklch(0.6_0.1_90)] transition transform hover:scale-105">Hankeplaan</button>
     </div>
     <div class="nav hidden"></div>
             <div class="relative inline-block text-left">
-                <button id="dropdownButton" class="hidden bg-blue-500 text-white px-4 py-2 rounded items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
+                <button id="dropdownButton" class="hidden bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded items-center hover:bg-[oklch(0.5_0.1_240)] transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-bars mr-2"></i> Menüü
                 </button>
                 <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
-                        <button id="showForm" class="block px-4 py-2 text-sm text-black-700 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                        <button id="showForm" class="block px-4 py-2 text-sm text-[oklch(0.0_0.0_0)] w-full text-left hover:bg-[oklch(0.6_0.1_240)] transition transform hover:scale-105" role="menuitem">
                             <i class="fas fa-tools mr-2"></i> Tööriist
                         </button>
                         <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
@@ -121,18 +121,18 @@
                         <label for="contractSigningDate" class="block text-gray-700">Lepingu allkirjastamise kuupäev:</label>
                         <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center hover:bg-blue-600 transition transform hover:scale-105">
+                    <button type="submit" class="bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded w-full flex items-center justify-center hover:bg-[oklch(0.5_0.1_240)] transition transform hover:scale-105">
                         <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
                     </button>
                 </form>
                 <div class="flex space-x-2 mt-4">
-                    <button id="clearFields" class="clear-button bg-red-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-red-600 transition transform hover:scale-105">
+                    <button id="clearFields" class="clear-button bg-[oklch(0.6_0.1_0)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-[oklch(0.5_0.1_0)] transition transform hover:scale-105">
                         <i class="fas fa-broom mr-2"></i> Puhasta
                     </button>
-                    <button id="saveFields" class="save-button bg-green-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-green-600 transition transform hover:scale-105">
+                    <button id="saveFields" class="save-button bg-[oklch(0.6_0.1_120)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-[oklch(0.5_0.1_120)] transition transform hover:scale-105">
                         <i class="fas fa-save mr-2"></i> Salvesta
                     </button>
-                    <button id="refreshFields" class="refresh-button bg-yellow-500 text-black px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-yellow-600 transition transform hover:scale-105">
+                    <button id="refreshFields" class="refresh-button bg-[oklch(0.8_0.1_90)] text-[oklch(0.0_0.0_0)] px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-[oklch(0.6_0.1_90)] transition transform hover:scale-105">
                         <i class="fas fa-sync-alt mr-2"></i> Uuenda
                     </button>
                 </div>
@@ -144,7 +144,7 @@
 
         <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
         <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
-            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Salvestatud Hanked</h2>
+            <h2 class="text-2xl font-bold text-center mb-4 text-[oklch(0.0_0.0_0)]">Salvestatud Hanked</h2>
             <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
                 <thead>
                     <tr>
@@ -162,9 +162,9 @@
                     <!-- Saved searches will be inserted here -->
                 </tbody>
             </table>
-            <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Excel</button>
-            <button id="hankeplaan" class="bg-yellow-300 text-black px-4 py-2 rounded mt-4 hover:bg-yellow-600 transition transform hover:scale-105">Hankeplaan</button>
-            <button onclick="toggleChart()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
+            <button id="saveToExcel" class="bg-[oklch(0.6_0.1_120)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded mt-4 hover:bg-[oklch(0.5_0.1_120)] transition transform hover:scale-105">Excel</button>
+            <button id="hankeplaan" class="bg-[oklch(0.8_0.1_90)] text-[oklch(0.0_0.0_0)] px-4 py-2 rounded mt-4 hover:bg-[oklch(0.6_0.1_90)] transition transform hover:scale-105">Hankeplaan</button>
+            <button onclick="toggleChart()" class="bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded mt-4 hover:bg-[oklch(0.5_0.1_240)] transition transform hover:scale-105">
                 Graafik
             </button>
 
@@ -175,7 +175,7 @@
         </div>
         <!-- Settings Container -->
         <div class="container bg-white p-6 rounded-lg shadow-lg max-w-2xl hidden" id="settingsContainer">
-            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">⚙️ Seaded</h2>
+            <h2 class="text-3xl font-bold text-center mb-6 text-[oklch(0.0_0.0_0)]">⚙️ Seaded</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Form Section -->
@@ -225,7 +225,7 @@
                     </div>
 
                     <button type="submit"
-                        class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition transform hover:scale-105">
+                        class="w-full bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)] p-3 rounded-lg hover:bg-[oklch(0.5_0.1_240)] transition transform hover:scale-105">
                         💾 Salvesta
                     </button>
                 </form>
@@ -241,7 +241,7 @@
                         <!-- Procedure type settings will be displayed here -->
                     </div>
                     <button id="addProcedureTypeButton"
-                        class="w-full bg-green-500 text-white p-3 rounded-lg mt-4 hover:bg-green-600 transition transform hover:scale-105">
+                        class="w-full bg-[oklch(0.6_0.1_120)] text-[oklch(1.0_0.0_0)] p-3 rounded-lg mt-4 hover:bg-[oklch(0.5_0.1_120)] transition transform hover:scale-105">
                         ➕ Lisa Menetlusliik
                     </button>
                 </div>
@@ -249,7 +249,7 @@
         </div>
         </div>
         <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
-            <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
+            <h2 class="text-2xl font-bold text-center mb-4">Ajalugu</h2>
             <div class="filter-container mb-4">
                 <label for="filterByDate" class="block text-gray-700">Filtreeri kuupäeva järgi:</label>
                 <select id="filterByDate" class="w-full p-2 border rounded">
@@ -260,12 +260,12 @@
             <table class="w-full border-collapse table-auto">
                 <thead>
                     <tr>
-                        <th class="border p-2 bg-blue-500 text-white">Nimi</th>
-                        <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
-                        <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
-                        <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
-                        <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
-                        <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
+                        <th class="border p-2 bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)]">Nimi</th>
+                        <th class="border p-2 bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)]">Menetlusliik</th>
+                        <th class="border p-2 bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)]">Maksumus</th>
+                        <th class="border p-2 bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)]">Menetlusaeg</th>
+                        <th class="border p-2 bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)]">Taotluse Kuupäev</th>
+                        <th class="border p-2 bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)]">Allkirjastamise Kuupäev</th>
                     </tr>
                 </thead>
                 <tbody id="historyTableBody">
@@ -277,8 +277,8 @@
             <h3 class="text-xl font-bold mb-4">Enter Password</h3>
             <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
             <div class="flex justify-center space-x-2">
-                <button id="passwordSubmit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Submit</button>
-                <button id="passwordClose" class="close-button bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Close</button>
+                <button id="passwordSubmit" class="bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded hover:bg-[oklch(0.5_0.1_240)] transition transform hover:scale-105">Submit</button>
+                <button id="passwordClose" class="close-button bg-[oklch(0.6_0.1_0)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded hover:bg-[oklch(0.5_0.1_0)] transition transform hover:scale-105">Close</button>
             </div>
             <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
         </div>
@@ -300,7 +300,7 @@
         </table>
 
         <!-- Notification System -->
-        <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-md hidden">
+        <div id="notification" class="fixed bottom-4 right-4 bg-[oklch(0.6_0.1_120)] text-[oklch(1.0_0.0_0)] p-3 rounded-lg shadow-md hidden">
             ✅ !
         </div>
     </main>
@@ -1224,6 +1224,9 @@
     }
     /* Navbar styling */
     .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         padding: 1rem;
     }
@@ -1309,7 +1312,7 @@
         if (procurementForm) {
             const formButton = document.createElement("button");
             formButton.innerText = "Näita menetluse kulgu";
-            formButton.className = "bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105";
+            formButton.className = "bg-[oklch(0.6_0.1_240)] text-[oklch(1.0_0.0_0)] px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105";
             formButton.addEventListener("click", function(event) {
                 event.preventDefault();
                 const resultContainer = document.getElementById('result');

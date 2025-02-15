@@ -905,6 +905,30 @@
 .bg-\[color\:var\(--my-color\)\] {
   background-color: var(--my-color);
 }
+.bg-\[oklch\(0\.5_0\.05_240\)\] {
+  background-color: oklch(0.5 0.05 240);
+}
+.bg-\[oklch\(0\.6_0\.1_0\)\] {
+  background-color: oklch(0.6 0.1 0);
+}
+.bg-\[oklch\(0\.6_0\.1_120\)\] {
+  background-color: oklch(0.6 0.1 120);
+}
+.bg-\[oklch\(0\.6_0\.1_240\)\] {
+  background-color: oklch(0.6 0.1 240);
+}
+.bg-\[oklch\(0\.85_0\.05_240\)\] {
+  background-color: oklch(0.85 0.05 240);
+}
+.bg-\[oklch\(0\.8_0\.1_90\)\] {
+  background-color: oklch(0.8 0.1 90);
+}
+.bg-\[oklch\(0\.95_0\.05_240\)\] {
+  background-color: oklch(0.95 0.05 240);
+}
+.bg-\[oklch\(1\.0_0\.0_0\)\] {
+  background-color: oklch(1.0 0.0 0);
+}
 .bg-\[var\(--my_variable\)\] {
   background-color: var(--my_variable);
 }
@@ -1192,6 +1216,12 @@
 }
 .\[color\:red\]\/50\! {
   color: color-mix(in oklab, red 50%, transparent) !important;
+}
+.text-\[oklch\(0\.0_0\.0_0\)\] {
+  color: oklch(0.0 0.0 0);
+}
+.text-\[oklch\(1\.0_0\.0_0\)\] {
+  color: oklch(1.0 0.0 0);
 }
 .capitalize {
   text-transform: capitalize;
@@ -1695,6 +1725,48 @@
       --tw-scale-y: 105%;
       --tw-scale-z: 105%;
       scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+}
+.hover\:bg-\[oklch\(0\.5_0\.1_0\)\] {
+  &:hover {
+    @media (hover: hover) {
+      background-color: oklch(0.5 0.1 0);
+    }
+  }
+}
+.hover\:bg-\[oklch\(0\.5_0\.1_120\)\] {
+  &:hover {
+    @media (hover: hover) {
+      background-color: oklch(0.5 0.1 120);
+    }
+  }
+}
+.hover\:bg-\[oklch\(0\.5_0\.1_240\)\] {
+  &:hover {
+    @media (hover: hover) {
+      background-color: oklch(0.5 0.1 240);
+    }
+  }
+}
+.hover\:bg-\[oklch\(0\.6_0\.1_90\)\] {
+  &:hover {
+    @media (hover: hover) {
+      background-color: oklch(0.6 0.1 90);
+    }
+  }
+}
+.hover\:bg-\[oklch\(0\.6_0\.1_240\)\] {
+  &:hover {
+    @media (hover: hover) {
+      background-color: oklch(0.6 0.1 240);
+    }
+  }
+}
+.hover\:text-\[oklch\(0\.6_0\.05_240\)\] {
+  &:hover {
+    @media (hover: hover) {
+      color: oklch(0.6 0.05 240);
     }
   }
 }
