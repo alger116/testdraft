@@ -32,7 +32,6 @@
     <main class="container mx-auto p-6 pt-32">
         <div id="dashboard" class="tab-content hidden">
             <!-- Dashboard content goes here -->
-        <button id="hankeplaan" class="bg-yellow-300 text-black px-4 py-2 rounded mt-4 hover:bg-yellow-600 transition transform hover:scale-105">Hankeplaan</button>
     </div>
     <div class="nav hidden"></div>
             <div class="relative inline-block text-left">
@@ -1318,17 +1317,32 @@
 
                 let progressHTML = `<div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>`;
 
-                stepData.forEach((step) => {
-                    const stepProgress = (step.days / totalDays) * 100;
-                    progressHTML += `
-                        <div>
-                            <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
-                            <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
-                                <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
+                    stepData.forEach((step, index) => {
+                        const stepProgress = (step.days / totalDays) * 100;
+
+                        // Define dynamic color classes based on progress percentage
+                        if (stepProgress > 25) progressColor = "bg-red-500"; // High
+                        else if (stepProgress > 14) progressColor = "bg-yellow-500"; // Medium
+                        else if (stepProgress > 7) progressColor = "bg-green-500"; // Low
+                        else progressColor = "bg-blue-500"; // Very Low
+                        
+                        progressHTML += `
+                            <div class="flex items-center space-x-4 p-2 border-b last:border-none">
+                                <!-- Step Number -->
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-200 text-blue-700 font-bold rounded-full">${index + 1}</span>
+                                
+                                <!-- Step Name & Progress -->
+                                <div class="w-full">
+                                    <p class="text-gray-700 font-semibold">${step.name}: <span class="text-gray-500">${step.days} päeva</span></p>
+                                    
+                                    <!-- Progress Bar -->
+                                    <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden mt-1">
+                                        <div class="progress-bar ${progressColor} h-4 rounded-full transition-all duration-500" data-progress="${stepProgress.toFixed(2)}"></div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    `;
-                });
+                        `;
+                    });
 
                 progressHTML += `</div>`;
                 resultContainer.insertAdjacentHTML('beforeend', progressHTML);
