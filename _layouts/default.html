@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <title>{{ page.title }}</title>
-    <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+    <!-- The relative_url filter generates the correct URL for the stylesheet -->
+    <link rel="stylesheet" href="/dist/output.css">
   </head>
   <body>
     {{ content }}

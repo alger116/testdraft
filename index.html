@@ -28,14 +28,14 @@
             </nav>
         </div>
     </header>
-    <script src="src/scripts/hanked.js"></script>
     <main class="container mx-auto p-6 pt-32">
         <div id="dashboard" class="tab-content hidden">
             <!-- Dashboard content goes here -->
-        </div>
-        <div class="nav hidden">
+        <button id="hankeplaan" class="bg-yellow-300 text-black px-4 py-2 rounded mt-4 hover:bg-yellow-600 transition transform hover:scale-105">Hankeplaan</button>
+    </div>
+    <div class="nav hidden"></div>
             <div class="relative inline-block text-left">
-                <button id="dropdownButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
+                <button id="dropdownButton" class="hidden bg-blue-500 text-white px-4 py-2 rounded items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-bars mr-2"></i> Menüü
                 </button>
                 <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
@@ -304,6 +304,7 @@
             ✅ !
         </div>
     </main>
+    <script src="src/scripts/hanked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script>
         // Utility function for formatting dates to "dd.mm.yyyy"

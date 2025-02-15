@@ -5,62 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="src/output.css" rel="stylesheet">
-
+    <link href="dist/output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Dark Mode Toggle -->
-    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full fixed top-0 left-0">
+    <header class="bg-gray-200 text-black p-4 shadow-md w-full">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold ml-4">Riigihanke andmed</h1>
             <nav class="flex space-x-6">
-                <a href="#" id="showForm" class="hover:text-gray-200 transition">Tööriist</a>
-                <a href="#" id="showSavedSearches" class="hover:text-gray-200 transition">Hanked</a>
-                <a href="#" id="showHistory" class="hover:text-gray-200 transition">Ajalugu</a>
-                <a href="#" id="settingsButton" class="hover:text-gray-200 transition">Sätted</a>
-                <a href="#" onclick="toggleDashboard()" class="hover:text-gray-200 transition">Toggle 3</a>
+                <a href="#" id="showForm" class="hover:text-gray-600 transition">Tööriist</a>
+                <a href="#" id="showSavedSearches" class="hover:text-gray-600 transition">Hanked</a>
+                <a href="#" id="showHistory" class="hover:text-gray-600 transition">Ajalugu</a>
+                <a href="#" id="settingsButton" class="hover:text-gray-600 transition">Sätted</a>
+                <a href="#" onclick="toggleDashboard()" class="hover:text-gray-600 transition">Toggle 3</a>
                 <label class="flex items-center cursor-pointer">
                     <span class="mr-2">Dark Mode</span>
                     <input type="checkbox" id="darkModeToggle" class="hidden">
-                    <div class="w-10 h-5 bg-gray-300 rounded-full p-1 flex items-center">
+                    <div class="w-10 h-5 bg-gray-500 rounded-full p-1 flex items-center relative">
                         <div class="w-4 h-4 bg-white rounded-full shadow-md transition transform"></div>
                     </div>
                 </label>
             </nav>
         </div>
     </header>
-
     <main class="container mx-auto p-6 pt-32">
         <div id="dashboard" class="tab-content hidden">
             <!-- Dashboard content goes here -->
-        </div>
-        <div class="nav hidden">
+        <button id="hankeplaan" class="bg-yellow-300 text-black px-4 py-2 rounded mt-4 hover:bg-yellow-600 transition transform hover:scale-105">Hankeplaan</button>
+    </div>
+    <div class="nav hidden"></div>
             <div class="relative inline-block text-left">
-                <button id="dropdownButton" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
+                <button id="dropdownButton" class="hidden bg-blue-500 text-white px-4 py-2 rounded items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-bars mr-2"></i> Menüü
                 </button>
                 <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
-                        <button id="showForm" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                        <button id="showForm" class="block px-4 py-2 text-sm text-black-700 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
                             <i class="fas fa-tools mr-2"></i> Tööriist
                         </button>
-                        <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                        <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
                             <i class="fas fa-folder-open mr-2"></i> Hanked
                         </button>
-                        <button id="showHistory" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                        <button id="showHistory" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
                             <i class="fas fa-history mr-2"></i> Ajalugu
                         </button>
-                        <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                        <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
                             <i class="fas fa-cog mr-2"></i> Sätted
                         </button>
-                        <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-gray-100 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                        <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
                             <i class="fas fa-moon mr-2"></i> Dark Mode
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="currentDateTime" class="absolute bottom-2 right-2 bg-white p-2 rounded shadow text-gray-800"></div>
         <div id="toolTab" class="flex space-x-4">
             <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
                 <h2 class="text-2xl font-bold text-center mb-4">Sisesta andmed</h2>
@@ -74,27 +72,49 @@
                         <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
                     </div>
                     <div>
-                        <label for="procedureType" class="block text-gray-700">Riigihanke menetlusliik:</label>
-                        <select id="procedureType" name="procedureType" class="w-full p-2 border rounded" required>
-                            <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Avatud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Avatud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Piiratud hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks</option>
-                            <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Võistlev dialoog asjade hankelepingu sõlmimiseks</option>
-                            <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Võistlev dialoog teenuste hankelepingu sõlmimiseks</option>
-                            <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Võistlev dialoog ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks</option>
-                            <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Kontsessioonimenetlus koos eraldi taotluse esitamisega</option>
-                            <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Kontsessioonimenetlus ilma eraldi taotlust esitamata</option>
-                            <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
-                            <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
+                       <label for="procedureType" class="block text-gray-700 font-semibold mb-1">Riigihanke menetlusliik:</label>
+                        <select id="procedureType" name="procedureType" 
+                            class="w-full p-2 border rounded bg-white shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                            required aria-label="Riigihanke menetlusliik">
+                            <optgroup label="Avatud hankemenetlus">
+                                <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Piiratud hankemenetlus">
+                                <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Konkurentsipõhine läbirääkimistega menetlus">
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Võistlev dialoog">
+                                <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Innovatsioonipartnerlus">
+                                <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
+                            </optgroup>
+                        
+                            <optgroup label="Kontsessioonimenetlus">
+                                <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Koos eraldi taotlusega</option>
+                                <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Ilma eraldi taotluseta</option>
+                            </optgroup>
+                        
+                            <optgroup label="Erimenetlused">
+                                <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
+                                <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div>
@@ -124,7 +144,7 @@
 
         <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
         <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
-            <h2 class="text-2xl font-bold text-center mb-4">Salvestatud Hanked</h2>
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Salvestatud Hanked</h2>
             <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
                 <thead>
                     <tr>
@@ -142,10 +162,10 @@
                     <!-- Saved searches will be inserted here -->
                 </tbody>
             </table>
-            <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Salvesta Excelisse</button>
-            <!-- Button to Show Chart -->
+            <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Excel</button>
+            <button id="hankeplaan" class="bg-yellow-300 text-black px-4 py-2 rounded mt-4 hover:bg-yellow-600 transition transform hover:scale-105">Hankeplaan</button>
             <button onclick="toggleChart()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
-                Näita Graafikut
+                Graafik
             </button>
 
             <!-- Chart Container (Initially Hidden) -->
@@ -212,7 +232,7 @@
 
                 <!-- Procedure Type Selection -->
                 <div class="bg-gray-50 p-4 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-3">🛠️ Menetlusliigid</h3>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">🛠️ Menetlusliigid</h3>
                     <select id="procedureTypeSelect"
                         class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <!-- Options will be populated dynamically -->
@@ -284,7 +304,7 @@
             ✅ !
         </div>
     </main>
-
+    <script src="src/scripts/hanked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script>
         // Utility function for formatting dates to "dd.mm.yyyy"
@@ -1010,14 +1030,6 @@
             document.body.classList.toggle('dark-mode');
         });
 
-        function updateDateTime() {
-            const now = new Date();
-            const dateTimeString = now.toLocaleString('et-EE', { dateStyle: 'full', timeStyle: 'medium' });
-            document.getElementById('currentDateTime').innerText = dateTimeString;
-        }
-
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
         loadHistory();
 
         function adjustTableColumns() {
@@ -1319,5 +1331,6 @@
             procurementForm.appendChild(formButton);
         }
     });
-</script>
+    </script>
+</body> 
 </html>
