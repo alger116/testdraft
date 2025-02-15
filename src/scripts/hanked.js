@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     if (!response.ok) throw new Error('Failed to load content');
                     return response.text();
                 })
-                .then(data => { document.getElementById('content').innerHTML = data; })
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
+                    addHankeplaanButtonListener();
+                })
                 .catch(error => console.error('Error loading hanked.html:', error));
         }
     };
@@ -21,13 +24,37 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const hankeplaanButton = document.getElementById('hankeplaan');
         if (hankeplaanButton) {
             hankeplaanButton.addEventListener('click', () => {
-                // Define the functionality for the button click
-                alert('Hankeplaan button clicked!');
-                // You can replace the alert with the actual functionality you need
+                generateExcelFile();
             });
         } else {
             console.error('Hankeplaan button not found');
         }
+    };
+
+    const generateExcelFile = () => {
+        const tableBody = document.getElementById('savedSearchesTableBody');
+        if (!tableBody) {
+            alert("No saved searches to export.");
+            return;
+        }
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Nimi,Maksumus,Menetluse Tüüp,Lepingu Allkirjastamise Kuupäev,Menetlusele kuluv aeg\n";
+
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const columns = row.querySelectorAll('td');
+            const rowData = Array.from(columns).map(column => column.innerText).join(",");
+            csvContent += rowData + "\n";
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "hankeplaan.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     loadHankedContent();
