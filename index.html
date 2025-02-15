@@ -65,18 +65,28 @@
                 <h2 class="text-2xl font-bold text-center mb-4">Sisesta andmed</h2>
                 <form id="procurementForm" class="space-y-4">
                     <div>
-                        <label for="name" class="block text-gray-700">Riigihanke nimetus:</label>
+                        <div class="flex justify-end items-center mt-[-10px] mb-2">
+                            <input type="checkbox" id="toggleProgress" class="mr-2">
+                            <label for="toggleProgress" class="text-gray-700 text-sm"></label>
+                        </div>
+                        <label for="name" class="block text-gray-700 font-semibold mb-1">Riigihanke nimetus:</label>
                         <input type="text" id="name" name="name" class="w-full p-2 border rounded" required>
                     </div>
                     <div>
-                        <label for="cost" class="block text-gray-700">Riigihanke maksumus:</label>
+                        <label for="cost" class="block text-gray-700 font-semibold mb-1">Riigihanke maksumus:</label>
                         <input type="number" id="cost" name="cost" class="w-full p-2 border rounded" required>
                     </div>
                     <div>
-                       <label for="procedureType" class="block text-gray-700 font-semibold mb-1">Riigihanke menetlusliik:</label>
+                        <label for="procedureType" class="block text-gray-700 font-semibold mb-1">
+                            Riigihanke menetlusliik: 
+                            <span id="procedureLabel" class="text-gray-500 text-sm italic opacity-0 transition-opacity duration-300 ml-1"></span>
+                        </label>
                         <select id="procedureType" name="procedureType" 
                             class="w-full p-2 border rounded bg-white shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
                             required aria-label="Riigihanke menetlusliik">
+
+                            <!-- Placeholder option (disabled & selected by default) -->
+                            <option value="" disabled selected>Vali siit</option>
                             <optgroup label="Avatud hankemenetlus">
                                 <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
                                 <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
@@ -1220,26 +1230,6 @@
         document.addEventListener("DOMContentLoaded", () => {
         gsap.from("body", { opacity: 0, duration: 0.3});
         });
-
-        // Add the button to the "Hanked" page
-        document.getElementById('showProgress').addEventListener('click', function(event) {
-            event.preventDefault();
-            const resultContainer = document.getElementById('result');
-            const progressBars = document.getElementById('progressBars');
-
-            if (progressBars) {
-                progressBars.remove();
-            } else {
-                const name = document.getElementById('name').value;
-                const cost = parseFloat(document.getElementById('cost').value);
-                const procedureType = document.getElementById('procedureType').value;
-                const contractSigningDate = document.getElementById('contractSigningDate').value;
-
-                const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
-                resultContainer.innerHTML = procurement.generateHTML();
-                generateProgressBars();
-            }
-        });
     </script>
 
     <style>
@@ -1284,99 +1274,77 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="auth.js"></script> <!-- You will create this file next -->
-<script>
-    // Animated Progression Bars for Procurement Steps (Dynamic Data with Button Trigger)
-    // Requires: TailwindCSS, GSAP (Already included in your project)
+    <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-        function animateProgressBars() {
-            const bars = document.querySelectorAll(".progress-bar");
-            bars.forEach((bar) => {
-                gsap.fromTo(bar, 
-                    { width: "0%" }, 
-                    { width: bar.dataset.progress + "%", duration: 1.5, ease: "power2.out" }
-                );
-            });
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            function animateProgressBars() {
+                const bars = document.querySelectorAll(".progress-bar");
+                bars.forEach((bar) => {
+                    gsap.fromTo(bar, { width: "0%" }, { width: bar.dataset.progress + "%", duration: 1.5, ease: "power2.out" });
+                });
+            }
 
-        function extractStepDays() {
-            const steps = [
-                "Riigihanke alusdokumentide koostamine",
-                "Taotluste esitamine RHRis",
-                "Pakkumuste esitamine RHRis",
-                "Hindamine 1",
-                "Otsus 1",
-                "Hindamine 2",
-                "Otsus 2",
-                "Ooteaeg"
-            ];
-            
-            let stepData = [];
-            steps.forEach((step, index) => {
-                const element = document.getElementById(`days-${index}`);
-                if (element) {
-                    let days = parseInt(element.innerText.match(/\d+/)?.[0] || "0", 10);
-                    stepData.push({ name: step, days: days });
-                } else {
-                    stepData.push({ name: step, days: 0 });
-                }
-            });
-            return stepData;
-        }
+            function extractStepDays() {
+                const steps = [
+                    "Riigihanke alusdokumentide koostamine",
+                    "Taotluste esitamine RHRis",
+                    "Pakkumuste esitamine RHRis",
+                    "Hindamine 1",
+                    "Otsus 1",
+                    "Hindamine 2",
+                    "Otsus 2",
+                    "Ooteaeg"
+                ];
 
-        function generateProgressBars() {
-            const resultContainer = document.getElementById("result");
-            if (!resultContainer || document.getElementById("progressBars")) return;
+                return steps.map((step, index) => {
+                    const element = document.getElementById(`days-${index}`);
+                    return {
+                        name: step,
+                        days: element ? parseInt(element.innerText.match(/\d+/)?.[0] || "0", 10) : 0
+                    };
+                });
+            }
 
-            const stepData = extractStepDays();
-            const totalDays = stepData.reduce((sum, step) => sum + step.days, 0);
+            function generateProgressBars() {
+                const resultContainer = document.getElementById("result");
+                if (!resultContainer) return;
 
-            let progressHTML = `<div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>`;
+                // Remove existing bars to prevent duplication
+                const existingBars = document.getElementById("progressBars");
+                if (existingBars) existingBars.remove();
 
-            stepData.forEach((step) => {
-                const stepProgress = (step.days / totalDays) * 100;
-                progressHTML += `
-                    <div>
-                        <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
-                        <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
-                            <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
+                const stepData = extractStepDays();
+                const totalDays = stepData.reduce((sum, step) => sum + step.days, 0) || 1; // Avoid division by zero
+
+                let progressHTML = `<div id='progressBars' class='space-y-4 p-4 bg-white rounded-lg shadow-md mt-4'>`;
+
+                stepData.forEach((step) => {
+                    const stepProgress = (step.days / totalDays) * 100;
+                    progressHTML += `
+                        <div>
+                            <p class='text-gray-700 font-semibold'>${step.name}: ${step.days} päeva</p>
+                            <div class='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
+                                <div class='progress-bar bg-blue-500 h-4 rounded-full' data-progress='${stepProgress.toFixed(2)}'></div>
+                            </div>
                         </div>
-                    </div>
-                `;
-            });
-            progressHTML += `</div>`;
+                    `;
+                });
 
-            resultContainer.innerHTML += progressHTML;
-            animateProgressBars();
-        }
+                progressHTML += `</div>`;
+                resultContainer.insertAdjacentHTML('beforeend', progressHTML);
+                animateProgressBars();
+            }
 
-        // Add the button to the "Riigihanke andmed" page as well
-        const procurementForm = document.getElementById("procurementForm");
-        if (procurementForm) {
-            const formButton = document.createElement("button");
-            formButton.innerText = "Näita menetluse kulgu";
-            formButton.className = "bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105";
-            formButton.addEventListener("click", function(event) {
-                event.preventDefault();
-                const resultContainer = document.getElementById('result');
-                const progressBars = document.getElementById('progressBars');
-
-                if (progressBars) {
-                    progressBars.remove();
-                } else {
-                    const name = document.getElementById('name').value;
-                    const cost = parseFloat(document.getElementById('cost').value);
-                    const procedureType = document.getElementById('procedureType').value;
-                    const contractSigningDate = document.getElementById('contractSigningDate').value;
-
-                    const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
-                    resultContainer.innerHTML = procurement.generateHTML();
+            // Toggle visibility based on checkbox
+            document.getElementById("toggleProgress").addEventListener("change", function () {
+                if (this.checked) {
                     generateProgressBars();
+                } else {
+                    const progressBars = document.getElementById("progressBars");
+                    if (progressBars) progressBars.remove();
                 }
             });
-            procurementForm.appendChild(formButton);
-        }
-    });
+        });
 
         // Active Tab Highlighting
         document.addEventListener('DOMContentLoaded', function () {
@@ -1427,6 +1395,32 @@
 
     // Attach the form submission event
     document.getElementById('procurementForm').addEventListener('submit', handleFormSubmit);
+
+    //menetlusliigi nimi
+    document.addEventListener("DOMContentLoaded", function () {
+        const procedureSelect = document.getElementById("procedureType");
+        const procedureLabel = document.getElementById("procedureLabel");
+
+        function updateProcedureLabel() {
+            const selectedOption = procedureSelect.options[procedureSelect.selectedIndex];
+            const optgroup = selectedOption.closest("optgroup"); // Find parent optgroup
+            
+            if (optgroup) {
+                procedureLabel.innerText = `${optgroup.label}`;
+                
+                // Animate fade-in effect
+                gsap.to(procedureLabel, { opacity: 1, y: 5, duration: 0.5, ease: "power2.out" });
+            } else {
+                gsap.to(procedureLabel, { opacity: 0, duration: 0.3 });
+            }
+        }
+
+        // Update on selection change
+        procedureSelect.addEventListener("change", updateProcedureLabel);
+
+        // Run once on page load to show the initially selected value
+        updateProcedureLabel();
+    });
     </script>
 </body> 
 </html>
