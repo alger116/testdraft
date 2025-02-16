@@ -17,6 +17,15 @@ module.exports = {
         text: "#1E293B", // Dark Gray (gray-800)
         accent: "#93C5FD", // Light Blue Accent (blue-300)
       },
+      spacing: {
+        'progress-margin': '4px', // Adjust spacing under progress bars
+      },
+      borderRadius: {
+        'progress': '6px', // Ensure smooth rounded edges
+      },
+      height: {
+        'progress-bar': '6px', // Make progress bars thinner
+      },
       fontFamily: {
         mono: ["JetBrains Mono", "monospace"],
       },

@@ -1226,45 +1226,83 @@
 
         // Ensure the container fades in on page load
         document.addEventListener("DOMContentLoaded", () => {
-            gsap.from("body", { opacity: 0, duration: 0.3 });
-            updateProgressBars(); // Ensure progress bars are updated right away
+        gsap.from("body", { opacity: 0, duration: 0.3});
         });
 
         function updateProgressBars() {
             const stepData = extractStepDays();
-            const maxDays = Math.max(...stepData.map(step => step.days), 1); // Get the longest step duration
+            const totalDays = stepData.reduce((sum, step) => sum + step.days, 0) || 1; // Avoid division by zero
 
-            stepData.forEach(step => {
-            const progressBar = document.getElementById(`progress-${step.index}`);
+            console.log("Total Days for Scaling:", totalDays); // Debugging: Check if totalDays is correct
+
+            stepData.forEach((step, index) => {
+            const progressBar = document.getElementById(`progress-${index}`);
             if (progressBar) {
-                // Hide the progress bar if "Ei kohaldu"
+                // 🔥 Hide "Ei kohaldu" bars
                 if (step.element.innerText.includes("Ei kohaldu")) {
+                console.log(`Hiding bar for step ${index} (${step.element.innerText})`);
                 progressBar.style.display = "none";
                 return;
                 } else {
                 progressBar.style.display = "block";
                 }
 
-                // Scale width dynamically based on the longest step
-                let progressWidth = (step.days / maxDays) * 100;
+                // 🔥 Scale width based on totalDays
+                let progressWidth = (step.days / totalDays) * 100;
                 progressBar.dataset.progress = progressWidth.toFixed(2);
 
-                // Animate width change
+                // 🔥 Immediately set width (fix initial loading issue)
+                progressBar.style.width = `${progressWidth}%`;
+
+                console.log(`Step ${index}: ${step.days} days (${progressWidth}%)`); // Debugging
+
+                // 🔥 Animate width change
                 gsap.to(progressBar, { width: `${progressWidth}%`, duration: 0.8, ease: "power2.out" });
 
-                // Apply colors dynamically based on percentage of max days
+                // 🔥 Apply colors dynamically based on percentage of total duration
                 progressBar.classList.remove("bg-blue-500", "bg-green-500", "bg-yellow-500", "bg-red-500");
-                if (progressWidth > 66) {
-                progressBar.classList.add("bg-red-500"); // Very long duration
-                } else if (progressWidth > 33) {
-                progressBar.classList.add("bg-yellow-500"); // Medium duration
+                if (progressWidth > 50) {
+                progressBar.classList.add("bg-red-500"); // Longest durations
+                } else if (progressWidth > 25) {
+                progressBar.classList.add("bg-yellow-500"); // Medium durations
                 } else {
-                progressBar.classList.add("bg-green-500"); // Short duration
+                progressBar.classList.add("bg-green-500"); // Short durations
                 }
             }
             });
         }
-    
+            const stepData = extractStepDays();
+            const maxDays = Math.max(...stepData.map(step => step.days), 1); // Get the longest step duration
+
+            stepData.forEach(step => {
+                const progressBar = document.getElementById(`progress-${step.index}`);
+                if (progressBar) {
+                    // Hide the progress bar if "Ei kohaldu"
+                    if (step.element.innerText.includes("Ei kohaldu")) {
+                        progressBar.style.display = "none";
+                        return;
+                    } else {
+                        progressBar.style.display = "block";
+                    }
+
+                    // Scale width dynamically based on the longest step
+                    let progressWidth = (step.days / maxDays) * 100;
+                    progressBar.dataset.progress = progressWidth.toFixed(2);
+
+                    // Animate width change
+                    gsap.to(progressBar, { width: `${progressWidth}%`, duration: 0.8, ease: "power2.out" });
+
+                    // Apply colors dynamically based on percentage of max days
+                    progressBar.classList.remove("bg-blue-500", "bg-green-500", "bg-yellow-500", "bg-red-500");
+                    if (progressWidth > 66) {
+                        progressBar.classList.add("bg-red-500"); // Very long duration
+                    } else if (progressWidth > 33) {
+                        progressBar.classList.add("bg-yellow-500"); // Medium duration
+                    } else {
+                        progressBar.classList.add("bg-green-500"); // Short duration
+                    }
+                }
+            });
 
         function extractStepDays() {
             return Array.from(document.querySelectorAll('[id^="days-"]')).map((el, index) => {
@@ -1317,11 +1355,8 @@ function adjustDays(index, adjustment) {
 
             document.addEventListener("readystatechange", function () {
                 if (document.readyState === "complete") {
-                    console.log("Page fully loaded. Initializing scripts...");
                     initializeAdjustButtons();
-                    updateTotalDuration();  // 🔥 Ensures total duration starts correctly
-                    updateProgressBars();   // 🔥 Ensures progress bars scale correctly on load
-                    setTimeout(updateProgressBars, 500); // 🔥 Second pass to ensure visibility
+                    updateProgressBars();
                 }
             });
         </script>

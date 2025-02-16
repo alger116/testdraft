@@ -14,5 +14,8 @@
   "tailwindCSS.experimental.classRegex": [
     ["class=\\\"([^\\\"]*)\\\"", 1],
     ["class:\\s+['\"]([^'\"]*)['\"]", 1]
-  ]
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true
 }
