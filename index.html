@@ -17,7 +17,6 @@
                 <a href="#" id="showSavedSearches" class="nav-link">Hanked</a>
                 <a href="#" id="showHistory" class="nav-link">Ajalugu</a>
                 <a href="#" id="settingsButton" class="nav-link">Sätted</a>
-                <a href="#" onclick="toggleDashboard()" class="nav-link">Toggle 3</a>
                 
                 <!-- Dark Mode Toggle Without Text -->
                 <label class="flex items-center cursor-pointer">
@@ -127,18 +126,18 @@
                         <label for="contractSigningDate" class="block text-gray-700">Lepingu allkirjastamise kuupäev:</label>
                         <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full flex items-center justify-center hover:bg-blue-600 transition transform hover:scale-105">
+                    <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg w-full flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
                     </button>
                 </form>
-                <div class="flex space-x-2 mt-4">
-                    <button id="clearFields" class="clear-button bg-red-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-red-600 transition transform hover:scale-105">
+                <div class="flex space-x-3 mt-6">
+                    <button id="clearFields" class="clear-button bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-broom mr-2"></i> Puhasta
                     </button>
-                    <button id="saveFields" class="save-button bg-green-500 text-white px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-green-600 transition transform hover:scale-105">
+                    <button id="saveFields" class="save-button bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-save mr-2"></i> Salvesta
                     </button>
-                    <button id="refreshFields" class="refresh-button bg-yellow-500 text-black px-4 py-2 rounded flex-1 flex items-center justify-center hover:bg-yellow-600 transition transform hover:scale-105">
+                    <button id="refreshFields" class="refresh-button bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-yellow-600 hover:to-yellow-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-sync-alt mr-2"></i> Uuenda
                     </button>
                 </div>
@@ -149,30 +148,42 @@
             </div>
 
         <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
-        <div class="container bg-white p-6 rounded shadow text-m hidden" id="savedSearchesContainer">
-            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Salvestatud Hanked</h2>
-            <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
-                <thead>
-                    <tr>
-                        <th class="p-3">Nimi</th>
-                        <th class="p-3">Menetlusliik</th>
-                        <th class="p-3">Maksumus</th>
-                        <th class="p-3">Menetlusaeg</th>
-                        <th class="p-3">Taotluse Kuupäev</th>
-                        <th class="p-3">Allkirjastamise Kuupäev</th>
-                        <th class="p-3">Muuda</th>
-                        <th class="p-3">Kustuta</th>
+        <div class="container bg-white p-6 rounded-lg shadow-lg hidden" id="savedSearchesContainer">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">📁 Salvestatud Hanked</h2>
+            <div class="overflow-x-auto bg-gray-100 p-4 rounded-lg shadow-md">
+                <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-left">
+                        <th class="p-4">📌 Nimi</th>
+                        <th class="p-4">📜 Menetlusliik</th>
+                        <th class="p-4">💰 Maksumus (€)</th>
+                        <th class="p-4">⏳ Menetlusaeg (päevad)</th>
+                        <th class="p-4">📅 Taotluse Kuupäev</th>
+                        <th class="p-4">🖊️ Allkirjastamise Kuupäev</th>
+                        <th class="p-4 text-center">✏️ Muuda</th>
+                        <th class="p-4 text-center">❌ Kustuta</th>
                     </tr>
                 </thead>
                 <tbody id="savedSearchesTableBody">
                     <!-- Saved searches will be inserted here -->
                 </tbody>
             </table>
-            <button id="saveToExcel" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition transform hover:scale-105">Excel</button>
-            <button id="hankeplaan" class="bg-yellow-300 text-black px-4 py-2 rounded mt-4 hover:bg-yellow-600 transition transform hover:scale-105">Hankeplaan</button>
-            <button id="showProgress" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition transform hover:scale-105">
-                Näita menetluse kulgu
-            </button>
+            <div class="flex justify-center gap-4 mt-6">
+                <!-- Save to Excel -->
+                <button id="saveToExcel" class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300">
+                    📊 Excel
+                </button>
+
+                <!-- Hankeplaan -->
+                <button id="hankeplaan" class="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-5 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 hover:scale-105 transition-all duration-300">
+                    📋 Hankeplaan
+                </button>
+
+                <!-- Show Progress -->
+                <button id="showProgress" class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300">
+                    📈 Graafika
+                </button>
+            </div>
 
             <!-- Chart Container (Initially Hidden) -->
             <div id="chartContainer" class="hidden mt-4 w-full max-w-lg mx-auto">
@@ -254,25 +265,29 @@
             </div>
         </div>
         </div>
-        <div class="container bg-white p-6 rounded shadow text-m hidden" id="historyContainer">
-            <h2 class="text-2xl font-bold text-center mb-4">Arvutuste Ajalugu</h2>
-            <div class="filter-container mb-4">
-                <label for="filterByDate" class="block text-gray-700">Filtreeri kuupäeva järgi:</label>
-                <select id="filterByDate" class="w-full p-2 border rounded">
-                    <option value="all">Kõik</option>
-                    <!-- Options will be populated dynamically -->
+        <div class="container bg-white p-6 rounded-lg shadow-lg hidden" id="historyContainer">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">📜 Arvutuste Ajalugu</h2>
+
+            <!-- Filter Dropdown -->
+            <div class="mb-4 bg-gray-100 p-4 rounded-lg shadow-md">
+                <label for="filterByDate" class="block text-gray-700 font-semibold mb-2">🔎 Filtreeri kuupäeva järgi:</label>
+                <select id="filterByDate" class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="all">📅 Kõik kuupäevad</option>
+                    <!-- Options will be dynamically added here -->
                 </select>
             </div>
-            <table class="w-full border-collapse table-auto">
-                <thead>
-                    <tr>
-                        <th class="border p-2 bg-blue-500 text-white">Nimi</th>
-                        <th class="border p-2 bg-blue-500 text-white">Menetlusliik</th>
-                        <th class="border p-2 bg-blue-500 text-white">Maksumus</th>
-                        <th class="border p-2 bg-blue-500 text-white">Menetlusaeg</th>
-                        <th class="border p-2 bg-blue-500 text-white">Taotluse Kuupäev</th>
-                        <th class="border p-2 bg-blue-500 text-white">Allkirjastamise Kuupäev</th>
-                    </tr>
+
+            <div class="overflow-x-auto bg-gray-100 p-4 rounded-lg shadow-md">
+                <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-left">
+                            <th class="p-4">📌 Nimi</th>
+                            <th class="p-4">📜 Menetlusliik</th>
+                            <th class="p-4">💰 Maksumus (€)</th>
+                            <th class="p-4">⏳ Menetlusaeg (päevad)</th>
+                            <th class="p-4">📅 Taotluse Kuupäev</th>
+                            <th class="p-4">🖊️ Allkirjastamise Kuupäev</th>
+                        </tr>
                 </thead>
                 <tbody id="historyTableBody">
                     <!-- History entries will be inserted here -->
@@ -926,19 +941,32 @@
         }
 
         function updateSavedSearchesTable() {
-            const tableBody = document.getElementById('savedSearchesTableBody');
-            tableBody.innerHTML = '';
-            savedSearches.forEach((procurement, index) => {
-                tableBody.innerHTML += procurement.generateTableRow(index);
-            });
-            adjustTableColumns();
+            const tableBody = document.getElementById("savedSearchesTableBody");
 
-            // Update modern table with the last 3 saved searches
-            const recentTableBody = document.getElementById('savedSearchesTableBody');
-            const recentSearches = savedSearches.slice(-10); // Get the last 3 searches
-            recentTableBody.innerHTML = '';
-            recentSearches.forEach((procurement, index) => {
-                recentTableBody.innerHTML += procurement.generateTableRow(index);
+            tableBody.innerHTML = ""; // Clear previous entries
+
+            savedSearches.forEach((search, index) => {
+            const row = `
+                <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
+                <td class="p-4 font-semibold text-gray-800">${search.name}</td>
+                <td class="p-4 text-gray-700">${search.procedureType}</td>
+                <td class="p-4 text-green-600 font-semibold">${search.cost} €</td>
+                <td class="p-4 text-blue-600 font-semibold">${search.procedureDuration} päeva</td>
+                <td class="p-4 text-gray-500">${formatDate(search.requestSubmissionDate)}</td>
+                <td class="p-4 text-gray-500">${formatDate(search.contractSigningDate)}</td>
+                <td class="p-4 text-center">
+                    <button onclick="editSearch(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition transform hover:scale-105">
+                    ✏️ Muuda
+                    </button>
+                </td>
+                <td class="p-4 text-center">
+                    <button onclick="deleteSearch(${index})" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition transform hover:scale-105">
+                    ❌ Kustuta
+                    </button>
+                </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
             });
         }
 
