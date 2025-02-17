@@ -1114,6 +1114,79 @@
         darkModeToggle.addEventListener('change', () => {
             document.body.classList.toggle('bg-gray-900');
             document.body.classList.toggle('text-white');
+
+            // Fix navbar & header gradient
+            const header = document.querySelector('header');
+            if (darkModeToggle.checked) {
+                header.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-indigo-600');
+                header.classList.add('bg-gray-800');
+            } else {
+                header.classList.remove('bg-gray-800');
+                header.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-indigo-600');
+            }
+
+            // Ensure navbar links stay visible
+            document.querySelectorAll('nav a').forEach(el => {
+                el.classList.toggle('text-gray-300');
+                el.classList.toggle('text-white');
+            });
+
+            // Navbar, header, and tab menu
+            document.querySelectorAll('header, navbar, .tab-content').forEach(el => {
+                el.classList.toggle('bg-gray-800');
+                el.classList.toggle('text-white');
+            });
+
+            // Containers & content boxes
+            document.querySelectorAll('.container, .shadow, .rounded-lg, .bg-white, .bg-gray-100, .bg-gray-50').forEach(el => {
+            el.classList.toggle('bg-gray-800');
+            el.classList.toggle('text-gray-200');
+            });
+
+            // Tables
+            document.querySelectorAll('table').forEach(el => {
+            el.classList.toggle('bg-gray-700');
+            el.classList.toggle('text-gray-300');
+            });
+
+            // Table headers
+            document.querySelectorAll('thead tr').forEach(el => {
+            el.classList.toggle('bg-gray-600');
+            });
+
+            // Buttons
+            document.querySelectorAll('button').forEach(el => {
+            el.classList.toggle('shadow-lg');
+            el.classList.toggle('border-gray-700');
+            });
+
+            // Form Inputs & Select Boxes
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+            el.classList.toggle('bg-gray-700');
+            el.classList.toggle('text-white');
+            el.classList.toggle('border-gray-600');
+            });
+
+            // Ensure links in navbar are visible
+            document.querySelectorAll('nav a').forEach(el => {
+            el.classList.toggle('text-white');
+            el.classList.toggle('text-gray-300');
+            });
+
+            // Save dark mode preference in localStorage
+            if (document.body.classList.contains('bg-gray-900')) {
+            localStorage.setItem('darkMode', 'enabled');
+            } else {
+            localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+
+        // Load dark mode preference from localStorage on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            if (localStorage.getItem("darkMode") === "enabled") {
+            darkModeToggle.checked = true;
+            darkModeToggle.dispatchEvent(new Event('change'));
+            }
         });
 
         // Show Notification
