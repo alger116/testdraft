@@ -763,7 +763,12 @@
             const contractSigningDate = document.getElementById('contractSigningDate').value;
 
             const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
-            document.getElementById('result').innerHTML = procurement.generateHTML(); // Ensure the result is displayed
+            document.getElementById('result').innerHTML = procurement.generateHTML(); // Ensure the result is // Lisa puuduolev progressiribade uuendus
+            
+            setTimeout(() => {
+                updateTotalDuration();
+                updateProgressBars();
+            }, 100);
             
              // Show the result container
             document.getElementById('resultContainer').classList.remove('hidden');
