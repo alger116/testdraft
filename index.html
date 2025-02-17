@@ -1248,7 +1248,7 @@
                     }
 
                     // Scale width dynamically based on the total duration
-                    let progressWidth = (step.days / totalDuration) * 210;
+                    let progressWidth = (step.days / totalDuration) * 100*1.25;
                     progressBar.dataset.progress = progressWidth.toFixed(2);
 
                     // 🚀 FORCE width and color immediately before animation
@@ -1426,42 +1426,6 @@ function adjustDays(index, adjustment) {
                     return { index, element: el, days };
                 });
             }
-
-function updateProgressBars() {
-    const stepData = extractStepDays();
-    const totalDuration = parseInt(document.getElementById('totalDuration').innerText, 10) || 1; // Get the total duration
-
-    stepData.forEach(step => {
-        const progressBar = document.getElementById(`progress-${step.index}`);
-        if (progressBar) {
-            // Hide the progress bar if "Ei kohaldu"
-            if (step.element.innerText.includes("Ei kohaldu")) {
-                progressBar.style.display = "none";
-                return;
-            } else {
-                progressBar.style.display = "block";
-            }
-
-            // Scale width dynamically based on the total duration
-            let progressWidth = (step.days / totalDuration) * 100;
-            progressBar.dataset.progress = progressWidth.toFixed(2);
-
-            // Animate width change
-            gsap.to(progressBar, { width: `${progressWidth}%`, duration: 0.8, ease: "power2.out" });
-
-            // Apply colors dynamically based on percentage of total duration
-            progressBar.classList.remove("bg-blue-500", "bg-green-500", "bg-yellow-500", "bg-red-500");
-            if (progressWidth > 66) {
-                progressBar.classList.add("bg-red-500"); // Very long duration
-            } else if (progressWidth > 33) {
-                progressBar.classList.add("bg-yellow-500"); // Medium duration
-            } else {
-                progressBar.classList.add("bg-green-500"); // Short duration
-            }
-        }
-    });
-}
-
             function updateTotalDuration() {
                 const totalDurationElement = document.getElementById('totalDuration');
                 if (!totalDurationElement) return;
