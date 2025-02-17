@@ -17,7 +17,7 @@
                 <a href="#" id="showSavedSearches" class="nav-link">Hanked</a>
                 <a href="#" id="showHistory" class="nav-link">Ajalugu</a>
                 <a href="#" id="settingsButton" class="nav-link">Sätted</a>
-                
+
                 <!-- Dark Mode Toggle Without Text -->
                 <label class="flex items-center cursor-pointer">
                     <input type="checkbox" id="darkModeToggle" class="hidden">
@@ -72,11 +72,11 @@
                     </div>
                     <div>
                         <label for="procedureType" class="block text-gray-700 font-semibold mb-1">
-                            Riigihanke menetlusliik: 
+                            Riigihanke menetlusliik:
                             <span id="procedureLabel" class="text-gray-500 text-sm italic opacity-0 transition-opacity duration-300 ml-1"></span>
                         </label>
-                        <select id="procedureType" name="procedureType" 
-                            class="w-full p-2 border rounded bg-white shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                        <select id="procedureType" name="procedureType"
+                            class="w-full p-2 border rounded bg-white shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             required aria-label="Riigihanke menetlusliik">
 
                             <!-- Placeholder option (disabled & selected by default) -->
@@ -168,22 +168,20 @@
                     <!-- Saved searches will be inserted here -->
                 </tbody>
             </table>
-            <div class="flex justify-center gap-4 mt-6">
-                <!-- Save to Excel -->
-                <button id="saveToExcel" class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300">
-                    📊 Excel
-                </button>
+                <div class="flex gap-4 mt-8 justify-center">
+                    <button id="saveToExcel" class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300">
+                        📊 Excel
+                    </button>
 
-                <!-- Hankeplaan -->
-                <button id="hankeplaan" class="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-5 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 hover:scale-105 transition-all duration-300">
-                    📋 Hankeplaan
-                </button>
+                    <button id="hankeplaan" class="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-5 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 hover:scale-105 transition-all duration-300">
+                        📋 Hankeplaan
+                    </button>
 
-                <!-- Show Progress -->
-                <button id="showProgress" class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300">
-                    📈 Graafika
-                </button>
-            </div>
+                    <button id="showProgress" class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300">
+                        📈 Graafika
+                    </button>
+                </div>
+                </div>
 
             <!-- Chart Container (Initially Hidden) -->
             <div id="chartContainer" class="hidden mt-4 w-full max-w-lg mx-auto">
@@ -968,8 +966,7 @@
             `;
             tableBody.innerHTML += row;
             });
-        }
-
+        }        
         function deleteSearch(index) {
             savedSearches.splice(index, 1);
             updateSavedSearchesTable();
@@ -1115,6 +1112,7 @@
             document.body.classList.toggle('bg-gray-900');
             document.body.classList.toggle('text-white');
 
+            // Navbar, header, and tab menu
             // Fix navbar & header gradient
             const header = document.querySelector('header');
             if (darkModeToggle.checked) {
@@ -1131,8 +1129,7 @@
                 el.classList.toggle('text-white');
             });
 
-            // Navbar, header, and tab menu
-            document.querySelectorAll('header, navbar, .tab-content').forEach(el => {
+            document.querySelectorAll('header, nav, .tab-content').forEach(el => {
                 el.classList.toggle('bg-gray-800');
                 el.classList.toggle('text-white');
             });
@@ -1167,25 +1164,11 @@
             el.classList.toggle('border-gray-600');
             });
 
-            // Ensure links in navbar are visible
-            document.querySelectorAll('nav a').forEach(el => {
-            el.classList.toggle('text-white');
-            el.classList.toggle('text-gray-300');
-            });
-
             // Save dark mode preference in localStorage
             if (document.body.classList.contains('bg-gray-900')) {
             localStorage.setItem('darkMode', 'enabled');
             } else {
             localStorage.setItem('darkMode', 'disabled');
-            }
-        });
-
-        // Load dark mode preference from localStorage on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            if (localStorage.getItem("darkMode") === "enabled") {
-            darkModeToggle.checked = true;
-            darkModeToggle.dispatchEvent(new Event('change'));
             }
         });
 
