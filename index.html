@@ -189,76 +189,74 @@
             </div>
         </div>
         <!-- Settings Container -->
-        <div class="container bg-white p-6 rounded-lg shadow-lg max-w-2xl hidden" id="settingsContainer">
-            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">⚙️ Seaded</h2>
+        <div class="flex flex-wrap md:flex-nowrap gap-6 bg-white p-6 rounded-lg shadow-lg max-w-4xl hidden" id="settingsContainer">
+            
+            <!-- Form Section -->
+            <form id="settingsForm" class="flex-1 space-y-6 bg-gray-50 p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold text-gray-800">📑 Menetlusliigi sätted</h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Form Section -->
-                <form id="settingsForm" class="space-y-6 bg-gray-50 p-4 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold text-gray-800">📑 Menetlusliigi sätted</h3>
+                <div class="relative">
+                    <label for="documentPreparationDays" class="block text-gray-700 mb-1">📄 Riigihanke alusdokumentide koostamine (päevad):</label>
+                    <input type="number" id="documentPreparationDays" name="documentPreparationDays"
+                        class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Sisesta päevad" required>
+                </div>
 
-                    <div class="relative">
-                        <label for="documentPreparationDays" class="block text-gray-700 mb-1">📄 Riigihanke alusdokumentide koostamine (päevad):</label>
-                        <input type="number" id="documentPreparationDays" name="documentPreparationDays"
-                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Sisesta päevad" required>
-                    </div>
+                <div class="relative">
+                    <label for="offerEvaluationDays" class="block text-gray-700 mb-1">🧐 Pakkumuste hindamine (päevad):</label>
+                    <input type="number" id="offerEvaluationDays" name="offerEvaluationDays"
+                        class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Sisesta päevad" required>
+                </div>
 
-                    <div class="relative">
-                        <label for="offerEvaluationDays" class="block text-gray-700 mb-1">🧐 Pakkumuste hindamine (päevad):</label>
-                        <input type="number" id="offerEvaluationDays" name="offerEvaluationDays"
-                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Sisesta päevad" required>
-                    </div>
+                <div class="relative">
+                    <label for="decisionDays" class="block text-gray-700 mb-1">✅ Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
+                    <input type="number" id="decisionDays" name="decisionDays"
+                        class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Sisesta päevad" required>
+                </div>
 
-                    <div class="relative">
-                        <label for="decisionDays" class="block text-gray-700 mb-1">✅ Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
-                        <input type="number" id="decisionDays" name="decisionDays"
-                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Sisesta päevad" required>
-                    </div>
+                <div class="relative">
+                    <label for="bidderEvaluationDays" class="block text-gray-700 mb-1">📊 Pakkujate hindamine (päevad):</label>
+                    <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays"
+                        class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Sisesta päevad" required>
+                </div>
 
-                    <div class="relative">
-                        <label for="bidderEvaluationDays" class="block text-gray-700 mb-1">📊 Pakkujate hindamine (päevad):</label>
-                        <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays"
-                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Sisesta päevad" required>
-                    </div>
+                <div class="relative">
+                    <label for="successfulBidderDays" class="block text-gray-700 mb-1">🏆 Eduka kõrvaldamata jätmine ja kval (päevad):</label>
+                    <input type="number" id="successfulBidderDays" name="successfulBidderDays"
+                        class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Sisesta päevad" required>
+                </div>
 
-                    <div class="relative">
-                        <label for="successfulBidderDays" class="block text-gray-700 mb-1">🏆 Eduka kõrvaldamata jätmine ja kval (päevad):</label>
-                        <input type="number" id="successfulBidderDays" name="successfulBidderDays"
-                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Sisesta päevad" required>
-                    </div>
+                <div class="relative">
+                    <label for="waitingPeriodDays" class="block text-gray-700 mb-1">⏳ Ooteaeg (päevad):</label>
+                    <input type="number" id="waitingPeriodDays" name="waitingPeriodDays"
+                        class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Sisesta päevad" required>
+                </div>
 
-                    <div class="relative">
-                        <label for="waitingPeriodDays" class="block text-gray-700 mb-1">⏳ Ooteaeg (päevad):</label>
-                        <input type="number" id="waitingPeriodDays" name="waitingPeriodDays"
-                            class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Sisesta päevad" required>
-                    </div>
+                <button type="submit"
+                    class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300">
+                    💾 Salvesta
+                </button>
+            </form>
 
-                    <button type="submit"
-                        class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition transform hover:scale-105">
-                        💾 Salvesta
-                    </button>
-                </form>
-
-                <!-- Procedure Type Selection -->
-                <div class="bg-gray-50 p-4 rounded-lg shadow-md">
-                    <h3 class="text-lg font-bold text-gray-800 mb-3">🛠️ Menetlusliigid</h3>
-                    <select id="procedureTypeSelect"
-                        class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <!-- Options will be populated dynamically -->
-                    </select>
-                    <div id="procedureTypeSettings" class="mt-4 space-y-4">
-                        <!-- Procedure type settings will be displayed here -->
-                    </div>
-                    <button id="addProcedureTypeButton"
-                        class="w-full bg-green-500 text-white p-3 rounded-lg mt-4 hover:bg-green-600 transition transform hover:scale-105">
-                        ➕ Lisa Menetlusliik
-                    </button>
+            <!-- Procedure Type Selection -->
+            <div class="flex-1 bg-gray-50 p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold text-gray-800 mb-3">🛠️ Menetlusliigid</h3>
+                <select id="procedureTypeSelect"
+                    class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <!-- Options will be populated dynamically -->
+                </select>
+                <div id="procedureTypeSettings" class="mt-4 space-y-4">
+                    <!-- Procedure type settings will be displayed here -->
+                </div>
+                <button id="addProcedureTypeButton"
+                    class="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-green-500 to-green-600 text-white p-3 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300">
+                    ➕ Lisa Menetlusliik
+                </button>
                 </div>
             </div>
         </div>
