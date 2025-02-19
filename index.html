@@ -913,20 +913,35 @@
         document.getElementById('showForm').addEventListener('click', function() {
             closeAllTabs();
             document.getElementById('formContainer').classList.remove('hidden');
+            if (resultContainerHTML) {
+                document.getElementById('resultContainer').innerHTML = resultContainerHTML;
+                document.getElementById('resultContainer').classList.remove('hidden');
+            }
             setActiveTab(this);
         });
-
+        
         document.getElementById('showSavedSearches').addEventListener('click', function() {
+            saveResultContainerHTML();
             closeAllTabs();
             document.getElementById('savedSearchesContainer').classList.remove('hidden');
             updateSavedSearchesTable();
             setActiveTab(this);
         });
-
+        
         document.getElementById('showHistory').addEventListener('click', function() {
+            saveResultContainerHTML();
             closeAllTabs();
             document.getElementById('historyContainer').classList.remove('hidden');
             loadHistory();
+            setActiveTab(this);
+        });
+        
+        document.getElementById('settingsButton').addEventListener('click', function() {
+            saveResultContainerHTML();
+            closeAllTabs();
+            document.getElementById('settingsContainer').classList.remove('hidden');
+            loadSettings();
+            loadProcedureTypes();
             setActiveTab(this);
         });
 
@@ -936,12 +951,16 @@
             button.classList.add('active');
         }
 
+        function saveResultContainerHTML() {
+            resultContainerHTML = document.getElementById('resultContainer').innerHTML;
+        }
+        
         function closeAllTabs() {
             document.getElementById('formContainer').classList.add('hidden');
             document.getElementById('savedSearchesContainer').classList.add('hidden');
             document.getElementById('historyContainer').classList.add('hidden');
             document.getElementById('settingsContainer').classList.add('hidden');
-            document.getElementById('resultContainer').classList.add('hidden'); // Ensure result container is hidden
+            document.getElementById('resultContainer').classList.add('hidden');
         }
 
         function updateSavedSearchesTable() {
