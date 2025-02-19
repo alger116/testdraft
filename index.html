@@ -666,6 +666,11 @@
                     console.error("Invalid procedure duration:", this.procedureDuration);
                 }
 
+                // Step 4: Calculate expected quarter
+                const month = submissionDate.getMonth() + 1;
+                const year = submissionDate.getFullYear();
+                this.expectedQuarter = `Q${Math.ceil(month / 3)} ${year}`;
+            
                 return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
             }
 
