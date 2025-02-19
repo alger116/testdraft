@@ -1,0 +1,31 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "tailwind:cli": "tailwindcss",
+    "build:tailwind": "npx tailwindcss -i src/styles/input.css -o dist/output.css --minify",
+    "build:jekyll": "npm run build:tailwind && jekyll build",
+    "jekyll:build": "jekyll build",
+    "watch:tailwind": "npx tailwindcss -i src/styles/input.css -o dist/output.css --watch",
+    "watch:jekyll": "npm run watch:tailwind & jekyll serve --livereload",
+    "watch": "npm run watch:tailwind & bundle exec jekyll serve --livereload --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/cli": "^4.0.3",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "express": "^4.17.1",
+    "firebase": "^11.3.0"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.2",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^4.0.6",
+    "prettier": "^3.5.1"
+  }
+}
