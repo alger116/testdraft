@@ -885,9 +885,18 @@
                 return;
             }
 
-        let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Riigihanke Eseme Nimetus, Riigihanke Menetluse Liik, Riigihanke Korraldamise Eeldatav Aeg, Riigihanke Eeldatav Maksumus (ilma KM-ta), Sõlmitava Lepingu Kehtivusaeg, Riigihanke Eest Vastutav Isik, Tehnilise Kirjelduse Eest Vastutav Isik\n";
-        
+            const delimiter = ";";  // Use semicolon as delimiter for Excel compatibility
+            let csvContent = "﻿"; // Add UTF-8 BOM for proper encoding
+            csvContent += [
+                "Riigihanke Eseme Nimetus",
+                "Riigihanke Menetluse Liik",
+                "Riigihanke Korraldamise Eeldatav Aeg",
+                "Riigihanke Eeldatav Maksumus (ilma KM-ta)",
+                "Sõlmitava Lepingu Kehtivusaeg",
+                "Riigihanke Eest Vastutav Isik",
+                "Tehnilise Kirjelduse Eest Vastutav Isik"
+            ].join(delimiter) + "\n";
+
             savedSearches.forEach(procurement => {
                 const nimi = procurement.name || "";
                 const menetlusLiik = procurement.procedureType || "";
@@ -895,13 +904,15 @@
                 const taotluseKuupaev = procurement.applicationDate || "";
                 const kvartal = getQuarter(taotluseKuupaev);
         
-                const rowData = [nimi, menetlusLiik, kvartal, maksumus, "", "", ""].join(",");
+                const rowData = [nimi, menetlusLiik, kvartal, maksumus, "", "", ""].join(delimiter);
                 csvContent += rowData + "\n";
             });
         
-            const encodedUri = encodeURI(csvContent);
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute("href", url);
             link.setAttribute("download", "hankeplaan.csv");
             document.body.appendChild(link);
             link.click();
@@ -916,13 +927,12 @@
             
             const month = parseInt(dateParts[1], 10);
             const year = dateParts[2];
-            
-            let quarter = "";
-            if (month >= 1 && month <= 3) quarter = "1. kvartal " + year;
-            else if (month >= 4 && month <= 6) quarter = "2. kvartal " + year;
-            else if (month >= 7 && month <= 9) quarter = "3. kvartal " + year;
-            else if (month >= 10 && month <= 12) quarter = "4. kvartal " + year;
-            
+                    
+            if (month >= 1 && month <= 3) return `1. kvartal ${year}`;
+            if (month >= 4 && month <= 6) return `2. kvartal ${year}`;
+            if (month >= 7 && month <= 9) return `3. kvartal ${year}`;
+            if (month >= 10 && month <= 12) return `4. kvartal ${year}`;
+                    
             return quarter;
         };
 
