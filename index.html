@@ -901,7 +901,7 @@
             const data = savedSearches.map(procurement => [
                 procurement.name || "",
                 procurement.procedureType || "",
-                getQuarter(procurement.applicationDate || ""),
+                getQuarter(procurement.applicationDate || "Määramata"),
                 procurement.cost || "",
                 "",  // Empty field for contract duration
                 "",  // Empty field for responsible person
@@ -930,20 +930,20 @@
         });
 
         const getQuarter = (dateString) => {
-            if (!dateString) return ""; // Kui kuupäev puudub, tagastame tühja väärtuse
+            if (!dateString || dateString === "Määramata") return "Määramata"; // If no date, return "Määramata"
             
             const dateParts = dateString.split('.');
-            if (dateParts.length !== 3) return ""; // Eeldame formaati "dd.mm.yyyy"
+            if (dateParts.length !== 3) return "Määramata"; // Expecting "dd.mm.yyyy" format
             
             const month = parseInt(dateParts[1], 10);
             const year = dateParts[2];
-                    
+            
             if (month >= 1 && month <= 3) return `1. kvartal ${year}`;
             if (month >= 4 && month <= 6) return `2. kvartal ${year}`;
             if (month >= 7 && month <= 9) return `3. kvartal ${year}`;
             if (month >= 10 && month <= 12) return `4. kvartal ${year}`;
-                    
-            return quarter;
+            
+            return "Määramata"; // Ensure a valid return value
         };
 
         document.getElementById('showForm').addEventListener('click', function() {
