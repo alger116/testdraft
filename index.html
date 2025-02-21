@@ -6,6 +6,7 @@
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="dist/output.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Active Tab Highlighting -->
@@ -885,9 +886,8 @@
                 return;
             }
 
-            const delimiter = ";";  // Use semicolon as delimiter for Excel compatibility
-            let csvContent = "﻿"; // Add UTF-8 BOM for proper encoding
-            csvContent += [
+            // Define column headers
+            const headers = [
                 "Riigihanke Eseme Nimetus",
                 "Riigihanke Menetluse Liik",
                 "Riigihanke Korraldamise Eeldatav Aeg",
@@ -895,30 +895,40 @@
                 "Sõlmitava Lepingu Kehtivusaeg",
                 "Riigihanke Eest Vastutav Isik",
                 "Tehnilise Kirjelduse Eest Vastutav Isik"
-            ].join(delimiter) + "\n";
+            ];
 
-            savedSearches.forEach(procurement => {
-                const nimi = procurement.name || "";
-                const menetlusLiik = procurement.procedureType || "";
-                const maksumus = procurement.cost || "";
-                const taotluseKuupaev = procurement.applicationDate || "";
-                const kvartal = getQuarter(taotluseKuupaev);
+            // Prepare data rows
+            const data = savedSearches.map(procurement => [
+                procurement.name || "",
+                procurement.procedureType || "",
+                getQuarter(procurement.applicationDate || ""),
+                procurement.cost || "",
+                "",  // Empty field for contract duration
+                "",  // Empty field for responsible person
+                ""   // Empty field for technical responsible person
+            ]);
         
-                const rowData = [nimi, menetlusLiik, kvartal, maksumus, "", "", ""].join(delimiter);
-                csvContent += rowData + "\n";
-            });
+         // Combine headers and data
+            const worksheetData = [headers, ...data];
         
-            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute("href", url);
-            link.setAttribute("download", "hankeplaan.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Create a new workbook and worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(worksheetData);
+        
+            // Auto-width for columns
+            ws['!cols'] = headers.map(() => ({ wch: 25 }));
+        
+            // Apply table formatting
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            ws['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
+        
+            // Add worksheet to workbook
+            XLSX.utils.book_append_sheet(wb, ws, "Hankeplaan");
+        
+            // Export to .xlsx file
+            XLSX.writeFile(wb, "hankeplaan.xlsx");
         });
-        
+
         const getQuarter = (dateString) => {
             if (!dateString) return ""; // Kui kuupäev puudub, tagastame tühja väärtuse
             
