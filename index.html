@@ -1,231 +1,63 @@
 <!DOCTYPE html>
 <html lang="et">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riigihanke Andmed</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="dist/output.css" rel="stylesheet">
-    <script src="https://unpkg.com/@heroicons/react/outline"></script>
-    <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="config.js"></script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import {
-            getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword
-        } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-        import {
-            getFirestore, doc, getDoc, setDoc, updateDoc, arrayRemove
-        } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
-
-        if (!window.FIREBASE_CONFIG) {
-            console.error("⚠ Firebase konfiguratsiooni ei leitud! Kontrolli, kas `config.js` on õigesti laaditud.");
-        } else {
-            const app = initializeApp(window.FIREBASE_CONFIG);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
-
-            // Tee Firebase objektid globaalselt kättesaadavaks
-            window.auth = auth;
-            window.db = db;
-        }
-
-        // ✅ Lisa Firestore ja muud funktsioonid globaalseks
-        window.auth = auth;
-        window.db = db;
-        window.onAuthStateChanged = onAuthStateChanged;
-        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-        window.signOut = signOut;
-        window.doc = doc;
-        window.getDoc = getDoc;
-        window.setDoc = setDoc;
-        window.updateDoc = updateDoc;
-        window.arrayRemove = arrayRemove;
-
-        function loadUserSearches() {
-            console.log("📥 Laen kasutaja otsingud Firestore'ist...");
-            // Firestore päringud siia
-        }
-        window.loadUserSearches = loadUserSearches;
-
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Modern Navbar with Active Tab Highlighting -->
     <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 shadow-md w-full sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center relative">
-            <!-- ✅ Keskendatud sisselogimise teade -->
-            <div id="loginNotification"
-                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hidden">
-                ✅
-            </div>
-            <div id="notification"
-                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hidden">
-                Andmete salvestamiseks peab olema sisse logitud!
-            </div>
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold ml-4">Riigihanke andmed</h1>
+            <nav class="flex space-x-6">
+                <a href="#" id="showForm" class="nav-link">Tööriist</a>
+                <a href="#" id="showSavedSearches" class="nav-link">Hanked</a>
+                <a href="#" id="showHistory" class="nav-link">Ajalugu</a>
+                <a href="#" id="settingsButton" class="nav-link">Sätted</a>
 
-            <!-- ✅ Title + Dropdown (Left Side) -->
-            <div class="flex items-center space-x-4 relative">
-                <h1 class="text-2xl font-bold">
-                    <a href="index.html" class="hover:underline">Riigihanke andmed</a>
-                </h1>
-                <!-- ✅ Dropdown Button (Aligned Right, Opens Down) -->
-                <div class="relative">
-                    <button id="dropdownButton" class="btn btn-primary" aria-label="Open Menu">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
-                    </button>
-
-                    <!-- ✅ Dropdown Menu (Now Opens Down) -->
-                    <div id="dropdownMenu"
-                        class="hidden absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
-
-                            <button id="showForm"
-                                class="block px-4 py-2 text-sm text-gray-800 w-full text-left hover:bg-blue-600 hover:text-white transition transform hover:scale-105"
-                                role="menuitem">
-                                <i class="fas fa-tools mr-2"></i> Tööriist
-                            </button>
-                            <button id="showSavedSearches" class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-600 hover:text-white w-full text-left transition transform hover:scale-105 protected-section hidden
-                                role=" menuitem">
-                                <i class="fas fa-folder-open mr-2"></i> Hanked
-                            </button>
-                            <button id="settingsButton"
-                                class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-600 hover:text-white w-full text-left transition transform hover:scale-105 protected-section hidden"
-                                role="menuitem">
-                                <i class="fas fa-cog mr-2"></i> Seaded
-                            </button>
-                            <a href="admin.html" id="adminTab" class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-600 hover:text-white w-full text-left transition transform hover:scale-105 protected-section hidden
-                                role=" menuitem">
-                                <i class="fas fa-user-shield mr-2"></i> Admin
-                            </a>
-                        </div>
+                <!-- Dark Mode Toggle Without Text -->
+                <label class="flex items-center cursor-pointer">
+                    <input type="checkbox" id="darkModeToggle" class="hidden">
+                    <div class="w-10 h-5 bg-gray-400 rounded-full p-1 flex items-center relative">
+                        <div class="w-4 h-4 bg-white rounded-full shadow-md transition transform"></div>
                     </div>
-                </div>
-            </div>
-
-            <!-- ✅ Right Side (Login, Register, Logout, Dark Mode) -->
-            <nav class="flex space-x-4 items-center">
-                <div x-data="{ open: false }" class="relative">
-                    <!-- ✅ Login Button (Opens Modal) -->
-                    <button id="loginButton" @click="open = true"
-                        class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-lg flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Logi sisse
-                    </button>
-
-                    <!-- ✅ Modal -->
-                    <div x-show="open" x-cloak x-ref="loginModal"
-                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div class="card w-96 bg-white shadow-xl p-8 rounded-xl border border-gray-200 relative">
-                            <!-- ❌ Close Button -->
-                            <button @click="open = false"
-                                class="absolute top-2 right-2 text-gray-500 hover:text-red-500">
-                                ✖
-                            </button>
-
-                            <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Logi sisse</h2>
-
-                            <!-- ✅ Email Input -->
-                            <div class="form-control w-full mb-3">
-                                <label class="label text-gray-700 font-medium">E-post</label>
-                                <input type="email" id="emailLogin" placeholder="Sisesta oma e-post"
-                                    class="input input-bordered w-full text-gray-900 shadow-md rounded-lg p-3 focus:ring-2 focus:ring-blue-400 transition-all duration-300" />
-                            </div>
-
-                            <!-- ✅ Password Input -->
-                            <div class="form-control w-full mb-3">
-                                <label class="label text-gray-700 font-medium">Parool</label>
-                                <input type="password" id="passwordLogin" placeholder="Sisesta oma parool"
-                                    class="input input-bordered w-full text-gray-900 shadow-md rounded-lg p-3 focus:ring-2 focus:ring-blue-400 transition-all duration-300" />
-                            </div>
-
-                            <!-- ✅ Login Button -->
-                            <button @click="login(); open = false"
-                                class="btn btn-primary w-full mt-4 flex items-center justify-center transition-transform hover:scale-105 shadow-lg text-lg py-3 rounded-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
-                                <i class="fas fa-sign-in-alt mr-2"></i> Logi sisse
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <!-- ✅ Firebase Login Script -->
-                <script type="module">
-                    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-
-                    window.login = async () => {
-                        try {
-                            const email = document.getElementById("emailLogin").value;
-                            const password = document.getElementById("passwordLogin").value;
-                            await signInWithEmailAndPassword(auth, email, password);
-
-                            // ✅ Kuvame teate
-                            const notification = document.getElementById("loginNotification");
-                            notification.classList.remove("hidden");
-
-                            // ✅ Sulgeme teate automaatselt 2 sekundi pärast
-                            setTimeout(() => {
-                                notification.classList.add("hidden");
-                            }, 2000);
-
-                            // ✅ Sulgeme modaalakna Alpine.js kaudu
-                            setTimeout(() => {
-                                const modal = document.querySelector('[x-ref="loginModal"]');
-                                if (modal && modal.__x) {
-                                    modal.__x.$data.open = false;
-                                }
-                            }, 100);
-                        } catch (error) {
-                            alert("Sisselogimine ebaõnnestus: " + error.message);
-                        }
-                    };
-                </script>
-
-                <a href="register.html" id="registerButton"
-                    class="save-button bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1 rounded-lg flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
-                    <i class="fas fa-user-plus mr-2"></i> Registreeri
-                </a>
-
-                <button id="logoutButton"
-                    class="btn bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-lg flex items-center justify-center shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V7m0 3V6m0 10v-3" />
-                    </svg>
-                    <span class="ml-2">Logi välja</span>
-                </button>
-
-
-                <!-- ✅ Dark Mode Toggle -->
-                <div class="flex items-center space-x-2">
-                    <span class="text-sm text-gray-200"></span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="toggleDarkMode" class="sr-only peer">
-                        <div
-                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 transition-all duration-300">
-                        </div>
-                        <div
-                            class="w-5 h-5 bg-white rounded-full shadow-md absolute left-0.5 top-0.5 peer-checked:translate-x-full transition-transform duration-300">
-                        </div>
-                    </label>
-                    <span class="text-sm text-gray-200"></span>
-                </div>
+                </label>
             </nav>
         </div>
     </header>
     <main class="container mx-auto p-6 pt-32">
-        </div>
+        <div id="dashboard" class="tab-content hidden">
+            <!-- Dashboard content goes here -->
+    </div>
+    <div class="nav hidden"></div>
+            <div class="relative inline-block text-left">
+                <button id="dropdownButton" class="hidden bg-blue-500 text-white px-4 py-2 rounded items-center hover:bg-blue-600 transition transform hover:scale-105" aria-haspopup="true" aria-expanded="true">
+                    <i class="fas fa-bars mr-2"></i> Menüü
+                </button>
+                <div id="dropdownMenu" class="hidden origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
+                        <button id="showForm" class="block px-4 py-2 text-sm text-black-700 w-full text-left hover:bg-blue-600 transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-tools mr-2"></i> Tööriist
+                        </button>
+                        <button id="showSavedSearches" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-folder-open mr-2"></i> Hanked
+                        </button>
+                        <button id="showHistory" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-history mr-2"></i> Ajalugu
+                        </button>
+                        <button id="settingsButton" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-cog mr-2"></i> Sätted
+                        </button>
+                        <button id="toggleDarkMode" class="block px-4 py-2 text-sm text-black-700 hover:bg-blue-600 w-full text-left transition transform hover:scale-105" role="menuitem">
+                            <i class="fas fa-moon mr-2"></i> Dark Mode
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="toolTab" class="flex space-x-4">
             <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
@@ -242,8 +74,7 @@
                     <div>
                         <label for="procedureType" class="block text-gray-700 font-semibold mb-1">
                             Riigihanke menetlusliik:
-                            <span id="procedureLabel"
-                                class="text-gray-500 text-sm roboto opacity-0 transition-opacity duration-300 ml-1"></span>
+                            <span id="procedureLabel" class="text-gray-500 text-sm roboto opacity-0 transition-opacity duration-300 ml-1"></span>
                         </label>
                         <select id="procedureType" name="procedureType"
                             class="w-full p-2 border rounded bg-white shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -252,60 +83,40 @@
                             <!-- Placeholder option (disabled & selected by default) -->
                             <option value="" disabled selected>Vali siit</option>
                             <optgroup label="Avatud hankemenetlus">
-                                <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping
-                                </option>
-                                <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste
-                                    hankeleping</option>
-                                <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde
-                                    hankeleping</option>
+                                <option value="Avatud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Avatud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Avatud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
                             </optgroup>
-
+                        
                             <optgroup label="Piiratud hankemenetlus">
-                                <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade
-                                    hankeleping</option>
-                                <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste
-                                    hankeleping</option>
-                                <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde
-                                    hankeleping</option>
+                                <option value="Piiratud hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Piiratud hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Piiratud hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
                             </optgroup>
-
+                        
                             <optgroup label="Konkurentsipõhine läbirääkimistega menetlus">
-                                <option
-                                    value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">
-                                    Asjade hankeleping</option>
-                                <option
-                                    value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">
-                                    Teenuste hankeleping</option>
-                                <option
-                                    value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">
-                                    Ehitustööde hankeleping</option>
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Konkurentsipõhine läbirääkimistega hankemenetlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
                             </optgroup>
-
+                        
                             <optgroup label="Võistlev dialoog">
-                                <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Asjade hankeleping
-                                </option>
-                                <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Teenuste hankeleping
-                                </option>
-                                <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Ehitustööde
-                                    hankeleping</option>
+                                <option value="Võistlev dialoog asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Võistlev dialoog teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Võistlev dialoog ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
                             </optgroup>
-
+                        
                             <optgroup label="Innovatsioonipartnerlus">
-                                <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Asjade
-                                    hankeleping</option>
-                                <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Teenuste
-                                    hankeleping</option>
-                                <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde
-                                    hankeleping</option>
+                                <option value="Innovatsioonipartnerlus asjade hankelepingu sõlmimiseks">Asjade hankeleping</option>
+                                <option value="Innovatsioonipartnerlus teenuste hankelepingu sõlmimiseks">Teenuste hankeleping</option>
+                                <option value="Innovatsioonipartnerlus ehitustööde hankelepingu sõlmimiseks">Ehitustööde hankeleping</option>
                             </optgroup>
-
+                        
                             <optgroup label="Kontsessioonimenetlus">
-                                <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Koos eraldi
-                                    taotlusega</option>
-                                <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Ilma eraldi
-                                    taotluseta</option>
+                                <option value="Kontsessioonimenetlus koos eraldi taotluse esitamisega">Koos eraldi taotlusega</option>
+                                <option value="Kontsessioonimenetlus ilma eraldi taotlust esitamata">Ilma eraldi taotluseta</option>
                             </optgroup>
-
+                        
                             <optgroup label="Erimenetlused">
                                 <option value="Sotsiaalteenuste erimenetlus">Sotsiaalteenuste erimenetlus</option>
                                 <option value="Eriteenuste erimenetlus">Eriteenuste erimenetlus</option>
@@ -313,43 +124,29 @@
                         </select>
                     </div>
                     <div>
-                        <label for="contractSigningDate" class="block text-gray-700 font-semibold mb-1">Lepingu
-                            allkirjastamise
-                            kuupäev:</label>
-                        <input type="date" id="contractSigningDate" name="contractSigningDate"
-                            class="w-full p-2 border rounded" required>
+                        <label for="contractSigningDate" class="block text-gray-700">Lepingu allkirjastamise kuupäev:</label>
+                        <input type="date" id="contractSigningDate" name="contractSigningDate" class="w-full p-2 border rounded" required>
                     </div>
-                    <button type="submit"
-                        class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg w-full flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
+                    <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg w-full flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
                     </button>
-                    <button id="updateProcurement"
-                        class="hidden bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition mt-4">
-                        ✅ Uuenda andmed
-                    </button>
                 </form>
-                <div class="hidden flex space-x-3 mt-6">
-                    <button id="clearFields"
-                        class="clear-button bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 hover:shadow-lg transition-all duration-300"
-                        aria-label="Clear Fields">
+                  <div class="flex space-x-3 mt-6">
+                    <button id="clearFields" class="clear-button bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-broom mr-2"></i> Puhasta
                     </button>
-                    <button id="saveFields"
-                        class="save-button bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300"
-                        aria-label="Save Fields">
+                    <button id="saveFields" class="save-button bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-save mr-2"></i> Salvesta
                     </button>
-                    <button id="refreshFields"
-                        class="refresh-button bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-yellow-600 hover:to-yellow-700 hover:scale-105 hover:shadow-lg transition-all duration-300"
-                        aria-label="Refresh Fields">
+                    <button id="refreshFields" class="refresh-button bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-yellow-600 hover:to-yellow-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                         <i class="fas fa-sync-alt mr-2"></i> Uuenda
                     </button>
                 </div>
             </div>
             <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
                 <div id="result" class="result-card"></div>
+                </div>
             </div>
-        </div>
 
         <!-- The saved searches container is hidden by default and will be shown when the user clicks the "Show Saved Searches" button -->
         <div class="container bg-white p-6 rounded-lg shadow-lg hidden" id="savedSearchesContainer">
@@ -358,40 +155,34 @@
                 <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
                     <thead>
                         <tr class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-left">
-                            <th class="p-4">📌 Nimi</th>
-                            <th class="p-4">📜 Menetlusliik</th>
-                            <th class="p-4">💰 Maksumus (€)</th>
-                            <th class="p-4">📅 Taotluse Kuupäev</th>
-                            <th class="p-4">🖊️ Allkirjastamise Kuupäev</th>
-                            <th class="p-4 text-center">✏️ Muuda</th>
-                            <th class="p-4 text-center">❌ Kustuta</th>
-                        </tr>
-                    </thead>
-                    <tbody id="savedSearchesTableBody">
-                        <!-- 🔥 Firestore data will be inserted here -->
-                    </tbody>
-                </table>
-                </table>
+                        <th class="p-4">📌 Nimi</th>
+                        <th class="p-4">📜 Menetlusliik</th>
+                        <th class="p-4">💰 Maksumus (€)</th>
+                        <th class="p-4">⏳ Menetlusaeg (päevad)</th>
+                        <th class="p-4">📅 Taotluse Kuupäev</th>
+                        <th class="p-4">🖊️ Allkirjastamise Kuupäev</th>
+                        <th class="p-4 text-center">✏️ Muuda</th>
+                        <th class="p-4 text-center">❌ Kustuta</th>
+                    </tr>
+                </thead>
+                <tbody id="savedSearchesTableBody">
+                    <!-- Saved searches will be inserted here -->
+                </tbody>
+            </table>
                 <div class="flex gap-4 mt-8 justify-center">
-                    <button id="saveToExcel"
-                        class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300"
-                        aria-label="Save to Excel">
+                    <button id="saveToExcel" class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300">
                         📊 Excel
                     </button>
 
-                    <button id="hankeplaan"
-                        class="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-5 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 hover:scale-105 transition-all duration-300"
-                        aria-label="Generate Procurement Plan">
+                    <button id="hankeplaan" class="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-5 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 hover:scale-105 transition-all duration-300">
                         📋 Hankeplaan
                     </button>
 
-                    <button id="showProgress"
-                        class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300"
-                        aria-label="Show Progress">
+                    <button id="showProgress" class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300">
                         📈 PDF
                     </button>
                 </div>
-            </div>
+                </div>
 
             <!-- Chart Container (Initially Hidden) -->
             <div id="chartContainer" class="hidden mt-4 w-full max-w-lg mx-auto">
@@ -399,48 +190,42 @@
             </div>
         </div>
         <!-- Settings Container -->
-        <div class="flex flex-wrap md:flex-nowrap gap-6 bg-white p-6 rounded-lg shadow-lg max-w-4xl hidden"
-            id="settingsContainer" class="adminOnly hidden" aria-hidden="true"> <!-- Hidden by default -->
-
+        <div class="flex flex-wrap md:flex-nowrap gap-6 bg-white p-6 rounded-lg shadow-lg max-w-4xl hidden" id="settingsContainer">
+            
             <!-- Form Section -->
             <form id="settingsForm" class="flex-1 space-y-6 bg-gray-50 p-4 rounded-lg shadow-md">
                 <h3 class="text-lg font-bold text-gray-800">📑 Menetlusliigi sätted</h3>
 
                 <div class="relative">
-                    <label for="documentPreparationDays" class="block text-gray-700 mb-1">📄 Riigihanke alusdokumentide
-                        koostamine (päevad):</label>
+                    <label for="documentPreparationDays" class="block text-gray-700 mb-1">📄 Riigihanke alusdokumentide koostamine (päevad):</label>
                     <input type="number" id="documentPreparationDays" name="documentPreparationDays"
                         class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sisesta päevad" required>
                 </div>
 
                 <div class="relative">
-                    <label for="offerEvaluationDays" class="block text-gray-700 mb-1">🧐 Pakkumuste hindamine
-                        (päevad):</label>
+                    <label for="offerEvaluationDays" class="block text-gray-700 mb-1">🧐 Pakkumuste hindamine (päevad):</label>
                     <input type="number" id="offerEvaluationDays" name="offerEvaluationDays"
                         class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sisesta päevad" required>
                 </div>
 
                 <div class="relative">
-                    <label for="decisionDays" class="block text-gray-700 mb-1">✅ Vastavaks ja edukaks tunnistamise otsus
-                        (päevad):</label>
+                    <label for="decisionDays" class="block text-gray-700 mb-1">✅ Vastavaks ja edukaks tunnistamise otsus (päevad):</label>
                     <input type="number" id="decisionDays" name="decisionDays"
                         class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sisesta päevad" required>
                 </div>
 
                 <div class="relative">
-                    <label for="bidderEvaluationDays" class="block text-gray-700 mb-1">📊 Pakkujate hindamine
-                        (päevad):</label>
+                    <label for="bidderEvaluationDays" class="block text-gray-700 mb-1">📊 Pakkujate hindamine (päevad):</label>
                     <input type="number" id="bidderEvaluationDays" name="bidderEvaluationDays"
                         class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sisesta päevad" required>
                 </div>
 
                 <div class="relative">
-                    <label for="successfulBidderDays" class="block text-gray-700 mb-1">🏆 Eduka kõrvaldamata jätmine ja
-                        kval (päevad):</label>
+                    <label for="successfulBidderDays" class="block text-gray-700 mb-1">🏆 Eduka kõrvaldamata jätmine ja kval (päevad):</label>
                     <input type="number" id="successfulBidderDays" name="successfulBidderDays"
                         class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sisesta päevad" required>
@@ -473,8 +258,8 @@
                     class="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-green-500 to-green-600 text-white p-3 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300">
                     ➕ Lisa Menetlusliik
                 </button>
+                </div>
             </div>
-        </div>
         </div>
         </div>
         <div class="container bg-white p-6 rounded-lg shadow-lg hidden" id="historyContainer">
@@ -482,10 +267,8 @@
 
             <!-- Filter Dropdown -->
             <div class="mb-4 bg-gray-100 p-4 rounded-lg shadow-md">
-                <label for="filterByDate" class="block text-gray-700 font-semibold mb-2">🔎 Filtreeri kuupäeva
-                    järgi:</label>
-                <select id="filterByDate"
-                    class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <label for="filterByDate" class="block text-gray-700 font-semibold mb-2">🔎 Filtreeri kuupäeva järgi:</label>
+                <select id="filterByDate" class="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="all">📅 Kõik kuupäevad</option>
                     <!-- Options will be dynamically added here -->
                 </select>
@@ -502,93 +285,60 @@
                             <th class="p-4">📅 Taotluse Kuupäev</th>
                             <th class="p-4">🖊️ Allkirjastamise Kuupäev</th>
                         </tr>
-                    </thead>
-                    <tbody id="historyTableBody">
-                        <!-- History entries will be inserted here -->
-                    </tbody>
-                </table>
+                </thead>
+                <tbody id="historyTableBody">
+                    <!-- History entries will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="password-prompt hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-80 text-center" id="passwordPrompt">
+            <h3 class="text-xl font-bold mb-4">Enter Password</h3>
+            <input type="password" id="passwordInput" class="w-full p-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none mb-4" placeholder="Password">
+            <div class="flex justify-center space-x-2">
+                <button id="passwordSubmit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Submit</button>
+                <button id="passwordClose" class="close-button bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Close</button>
             </div>
+            <p class="error-message text-red-500 font-bold mt-4 hidden" id="passwordError">Incorrect password. Please try again.</p>
         </div>
 
         <!-- Modern Table -->
-        <table id="recentCalculationsTable"
-            class="w-full border-collapse shadow-lg rounded-lg overflow-hidden mt-4 hidden">
+        <table id="recentCalculationsTable" class="w-full border-collapse shadow-lg rounded-lg overflow-hidden mt-4 hidden">
             <thead class="bg-blue-500 text-white">
-                <tr>
-                    <th class="p-3">Nimi</th>
-                    <th class="p-3">Menetlusliik</th>
-                    <th class="p-3">Maksumus</th>
-                    <th class="p-3">Menetlusaeg</th>
-                    <th class="p-3">Taotluse Kuupäev</th>
-                </tr>
+            <tr>
+                <th class="p-3">Nimi</th>
+                <th class="p-3">Menetlusliik</th>
+                <th class="p-3">Maksumus</th>
+                <th class="p-3">Menetlusaeg</th>
+                <th class="p-3">Taotluse Kuupäev</th>
+            </tr>
             </thead>
             <tbody id="recentCalculations">
-                <!-- Last 3 calculations will be dynamically inserted here -->
+            <!-- Last 3 calculations will be dynamically inserted here -->
             </tbody>
         </table>
-
-
 
         <!-- Notification System -->
         <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-md hidden">
             ✅ !
         </div>
-
-        <!-- ✅ Kinnituse modal kustutamiseks -->
-        <div id="deleteConfirmModal"
-            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
-                <h2 class="text-xl font-bold mb-4">Kas oled kindel?</h2>
-                <p class="text-gray-600 mb-6">Soovid kindlasti kustutada selle riigihanke?</p>
-                <div class="flex justify-center space-x-4">
-                    <button id="confirmDelete"
-                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Jah</button>
-                    <button id="cancelDelete"
-                        class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 transition">Ei</button>
-                </div>
-            </div>
-        </div>
     </main>
     <script src="src/scripts/hanked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script>
-
-        // kuupäevade handl
+        // Utility function for formatting dates to "dd.mm.yyyy"
         function formatDate(date) {
-            if (!date) {
-                console.error("❌ Received empty or invalid date:", date);
-                return "Määramata"; // Kasutajasõbralikum väljund
+            const d = new Date(date);
+            
+            if (isNaN(d.getTime())) {
+                console.error("Invalid date:", date);
+                return "Invalid date";  // Prevents errors
             }
 
-            // 🔹 Kui `date` on juba Date objekt, tagasta õiges formaadis
-            if (date instanceof Date && !isNaN(date)) {
-                return `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
-            }
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
 
-            // 🔹 Kui `date` on string formaadis "YYYY-MM-DD", teisenda see õigeks
-            if (typeof date === "string" && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                const [year, month, day] = date.split("-");
-                return `${day}.${month}.${year}`;
-            }
-
-            // 🔹 Kui `date` on string formaadis "dd.mm.yyyy", tagasta see muutmata kujul
-            if (typeof date === "string" && date.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
-                return date;
-            }
-
-            // 🔹 Kui `date` on Firestore timestamp, teisenda see õigeks
-            if (typeof date === "object" && date.toDate) {
-                date = date.toDate();
-            }
-
-            // 🔹 Lõplik kontroll, kas `date` on korrektne
-            const parsedDate = new Date(date);
-            if (isNaN(parsedDate.getTime())) {
-                console.error("❌ Invalid date after parsing:", date);
-                return "Määramata";
-            }
-
-            return `${String(parsedDate.getDate()).padStart(2, '0')}.${String(parsedDate.getMonth() + 1).padStart(2, '0')}.${parsedDate.getFullYear()}`;
+            return `${day}.${month}.${year}`;
         }
 
         const procedureData = {
@@ -666,7 +416,7 @@
             passwordInput.value = '';
             passwordError.classList.add('hidden');
 
-            document.getElementById('passwordSubmit').onclick = function () {
+            document.getElementById('passwordSubmit').onclick = function() {
                 if (passwordInput.value === correctPassword) {
                     passwordPrompt.classList.add('hidden');
                     passwordValidUntil = new Date(now.getTime() + 10 * 60000); // 10 minutes from now
@@ -676,12 +426,12 @@
                 }
             };
 
-            document.getElementById('passwordClose').onclick = function () {
+            document.getElementById('passwordClose').onclick = function() {
                 passwordPrompt.classList.add('hidden');
             };
         }
 
-        document.getElementById('settingsButton').addEventListener('click', function () {
+        document.getElementById('settingsButton').addEventListener('click', function() {
             closeAllTabs();
             document.getElementById('settingsContainer').classList.remove('hidden');
             loadSettings();
@@ -689,11 +439,7 @@
             setActiveTab(this);
         });
 
-        document.getElementById("adminTab").addEventListener("click", () => {
-            window.location.href = "/admin.html"; // Redirect to the admin page
-        });
-
-        document.getElementById('settingsForm').addEventListener('submit', function (event) {
+        document.getElementById('settingsForm').addEventListener('submit', function(event) {
             event.preventDefault();
             settings.documentPreparationDays = parseInt(document.getElementById('documentPreparationDays').value);
             settings.offerEvaluationDays = parseInt(document.getElementById('offerEvaluationDays').value);
@@ -703,11 +449,11 @@
             settings.waitingPeriodDays = parseInt(document.getElementById('waitingPeriodDays').value);
         });
 
-        document.getElementById('addProcedureTypeButton').addEventListener('click', function () {
+        document.getElementById('addProcedureTypeButton').addEventListener('click', function() {
             addProcedureType();
         });
 
-        document.getElementById('procedureTypeSelect').addEventListener('change', function () {
+        document.getElementById('procedureTypeSelect').addEventListener('change', function() {
             const selectedType = this.value;
             loadProcedureTypeSettings(selectedType);
         });
@@ -750,35 +496,35 @@
             const procedure = procedureData[type];
             const container = document.getElementById('procedureTypeSettings');
             container.innerHTML = `
-            <div class="procedure-type">
-                <label for="procedureTypeName" class="block text-gray-700">Menetlusliik:</label>
-                <input type="text" id="procedureTypeName" value="${type}" required><br><br>
-                <label for="requestDays" class="block text-gray-700">Taotluste esitamise päevad:</label>
-                <input type="number" id="requestDays" value="${procedure.taotlusteAeg}" required><br><br>
-                <label for="offerDays" class="block text-gray-700">Pakkumuste esitamise päevad:</label>
-                <input type="number" id="offerDays" value="${procedure.pakkumusteAeg}" required><br><br>
-                <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
-                <input type="checkbox" id="useInternationalThreshold" ${procedure.useInternational ? 'checked' : ''} onchange="toggleInternationalThreshold('${type}')"><br><br>
-                <button onclick="deleteProcedureType('${type}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Kustuta</button>
-                <button onclick="saveProcedureType('${type}')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
-            </div>
+                <div class="procedure-type">
+                    <label for="procedureTypeName" class="block text-gray-700">Menetlusliik:</label>
+                    <input type="text" id="procedureTypeName" value="${type}" required><br><br>
+                    <label for="requestDays" class="block text-gray-700">Taotluste esitamise päevad:</label>
+                    <input type="number" id="requestDays" value="${procedure.taotlusteAeg}" required><br><br>
+                    <label for="offerDays" class="block text-gray-700">Pakkumuste esitamise päevad:</label>
+                    <input type="number" id="offerDays" value="${procedure.pakkumusteAeg}" required><br><br>
+                    <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
+                    <input type="checkbox" id="useInternationalThreshold" ${procedure.useInternational ? 'checked' : ''} onchange="toggleInternationalThreshold('${type}')"><br><br>
+                    <button onclick="deleteProcedureType('${type}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition transform hover:scale-105">Kustuta</button>
+                    <button onclick="saveProcedureType('${type}')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
+                </div>
             `;
         }
 
         function addProcedureType() {
             const container = document.getElementById('procedureTypeSettings');
             container.innerHTML = `
-            <div class="procedure-type">
-                <label for="procedureTypeName" class="block text-gray-700">Menetlusliik:</label>
-                <input type="text" id="procedureTypeName" required><br><br>
-                <label for="requestDays" class="block text-gray-700">Taotluste esitamise päevad:</label>
-                <input type="number" id="requestDays" required><br><br>
-                <label for="offerDays" class="block text-gray-700">Pakkumuste esitamise päevad:</label>
-                <input type="number" id="offerDays" required><br><br>
-                <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
-                <input type="checkbox" id="useInternationalThreshold" onchange="toggleInternationalThreshold()"><br><br>
-                <button onclick="saveNewProcedureType()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
-            </div>
+                <div class="procedure-type">
+                    <label for="procedureTypeName" class="block text-gray-700">Menetlusliik:</label>
+                    <input type="text" id="procedureTypeName" required><br><br>
+                    <label for="requestDays" class="block text-gray-700">Taotluste esitamise päevad:</label>
+                    <input type="number" id="requestDays" required><br><br>
+                    <label for="offerDays" class="block text-gray-700">Pakkumuste esitamise päevad:</label>
+                    <input type="number" id="offerDays" required><br><br>
+                    <label for="useInternationalThreshold" class="block text-gray-700">Kasuta rahvusvahelisi tähtaegu:</label>
+                    <input type="checkbox" id="useInternationalThreshold" onchange="toggleInternationalThreshold()"><br><br>
+                    <button onclick="saveNewProcedureType()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition transform hover:scale-105">Salvesta</button>
+                </div>
             `;
         }
 
@@ -899,7 +645,7 @@
                 if (typeof this.contractSigningDate === "string" && this.contractSigningDate.includes(".")) {
                     const parts = this.contractSigningDate.split(".");
                     if (parts.length === 3) {
-                        this.contractSigningDate = typeof this.contractSigningDate === "string" ? `${parts[2]}-${parts[1]}-${parts[0]}` : this.contractSigningDate; // Convert dd.mm.yyyy → YYYY-MM-DD only if it's a string
+                         this.contractSigningDate = typeof this.contractSigningDate === "string" ? `${parts[2]}-${parts[1]}-${parts[0]}` : this.contractSigningDate; // Convert dd.mm.yyyy → YYYY-MM-DD only if it's a string
                     }
                 }
 
@@ -913,11 +659,11 @@
                 const submissionDate = new Date(this.contractSigningDate);
                 if (!isNaN(this.procedureDuration)) {
                     submissionDate.setDate(submissionDate.getDate() - this.procedureDuration);
-                    if (isNaN(submissionDate.getTime())) {
-                        console.error("Invalid submission date:", submissionDate);
-                        return "Invalid date"; // Prevents errors
-                    }
-                    return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+                if (isNaN(submissionDate.getTime())) {
+                    console.error("Invalid submission date:", submissionDate);
+                    return "Invalid date"; // Prevents errors
+                }
+                return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
                     console.error("Invalid procedure duration:", this.procedureDuration);
                 }
 
@@ -925,7 +671,7 @@
                 const month = submissionDate.getMonth() + 1;
                 const year = submissionDate.getFullYear();
                 this.expectedQuarter = `Q${Math.ceil(month / 3)} ${year}`;
-
+            
                 return submissionDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
             }
 
@@ -946,7 +692,7 @@
                     </li>
                 `).join('');
 
-                const errorMessage = new Date(this.requestSubmissionDate) < new Date() ?
+                const errorMessage = new Date(this.requestSubmissionDate) < new Date() ? 
                     '<p class="error-message text-red-500 font-bold">NB! Oled hiljaks jäänud, palun tutvu menetlusele kuluva ajaga ja korrigeeri lepingu sõlmimise kuupäeva</p>' : '';
 
                 return `
@@ -968,7 +714,6 @@
                         </ul>
                     </div>
                 `;
-                return html;
             }
 
             generateTableRow(index) {
@@ -1019,89 +764,51 @@
             } else {
                 console.error("Could not find procurement object for real-time update.");
             }
-
-            // ✅ Kui kasutaja vajutab "adjustDays", ilmub "Uuenda andmed" nupp
-            document.getElementById("updateProcurement").classList.remove("hidden");
-
-            const stepData = extractStepDays().find(step => step.index === index);
-            if (!stepData) return;
-
-            let newDays = Math.max(0, stepData.days + adjustment);
-            stepData.element.innerText = `${newDays} päeva`;
-
-            updateTotalDuration();
-            updateProgressBars();
-
         }
 
         const savedSearches = [];
         const history = [];
 
-        document.getElementById('procurementForm').addEventListener('submit', async function (event) {
+        document.getElementById('procurementForm').addEventListener('submit', function(event) {
             event.preventDefault();
-
             const name = document.getElementById('name').value;
             const cost = parseFloat(document.getElementById('cost').value);
             const procedureType = document.getElementById('procedureType').value;
             const contractSigningDate = document.getElementById('contractSigningDate').value;
 
             const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
-            procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-
-            document.getElementById('result').innerHTML = procurement.generateHTML();
-
-            // ✅ Peidame "Uuenda andmed" nupu (ilmub ainult adjustDays muutmisel)
-            document.getElementById("updateProcurement").classList.add("hidden");
-
-            // ✅ Progressi ja kestuse uuendamine
+            document.getElementById('result').innerHTML = procurement.generateHTML(); // Ensure the result is // Lisa puuduolev progressiribade uuendus
+            
             setTimeout(() => {
                 updateTotalDuration();
                 updateProgressBars();
             }, 100);
-
-            // ✅ Kuvame tulemuste konteineri
+            
+             // Show the result container
             document.getElementById('resultContainer').classList.remove('hidden');
-
-            // ✅ Salvestame andmed Firestore'i kohe pärast arvutamist
-            const user = auth.currentUser;
-            if (user) {
-                try {
-                    const userDocRef = doc(db, "users", user.uid);
-                    const userDoc = await getDoc(userDocRef);
-                    let searches = userDoc.exists() ? userDoc.data().searches || [] : [];
-
-                    // ✅ Leia olemasolev hange või lisa uus
-                    const existingIndex = searches.findIndex(p => p.name === name);
-                    if (existingIndex !== -1) {
-                        searches[existingIndex] = { ...procurement, timestamp: new Date().toISOString() };
-                    } else {
-                        searches.push({ ...procurement, timestamp: new Date().toISOString() });
-                    }
-
-                    await updateDoc(userDocRef, { searches });
-
-                    console.log("✅ Taotluse esitamise kuupäev salvestatud Firestore'i:", procurement.requestSubmissionDate);
-                } catch (error) {
-                    console.error("❌ Firestore'i salvestamise viga:", error);
-                }
-            }
-
-            // ✅ Lisame andmed ka lokaalsesse `savedSearches` listi
+            
             if (savedSearches.length < 15) {
                 savedSearches.push(procurement);
                 updateSavedSearchesTable();
             } else {
                 alert("Maksimaalne salvestatud otsingute arv on 15.");
             }
+
+            // Save to history
+            if (history.length >= 500) {
+                history.shift(); // Remove the oldest entry if history exceeds 500
+            }
+            history.push(procurement);
+            saveHistory(); // Save history immediately
         });
 
-        document.getElementById('clearFields').addEventListener('click', function () {
+        document.getElementById('clearFields').addEventListener('click', function() {
             document.getElementById('procurementForm').reset();
             document.getElementById('result').innerHTML = '';
             document.getElementById('resultContainer').classList.add('hidden'); // Hide the result container
         });
 
-        document.getElementById('saveFields').addEventListener('click', function () {
+        document.getElementById('saveFields').addEventListener('click', function() {
             const name = document.getElementById('name').value;
             const cost = parseFloat(document.getElementById('cost').value);
             const procedureType = document.getElementById('procedureType').value;
@@ -1159,7 +866,7 @@
             saveHistory(); // Save history immediately
         });
 
-        document.getElementById('refreshFields').addEventListener('click', function () {
+        document.getElementById('refreshFields').addEventListener('click', function() {
             const procurement = new PublicProcurement(
                 document.getElementById('name').value,
                 parseFloat(document.getElementById('cost').value),
@@ -1173,7 +880,7 @@
             updateSavedSearchesTable();
         });
 
-        document.getElementById('saveToExcel').addEventListener('click', function () {
+        document.getElementById('saveToExcel').addEventListener('click', function() {
             if (savedSearches.length === 0) {
                 alert("Salvestatud otsinguid ei ole.");
                 return;
@@ -1200,71 +907,72 @@
                 "",  // Empty field for responsible person
                 ""   // Empty field for technical responsible person
             ]);
-
-            // Combine headers and data
+        
+         // Combine headers and data
             const worksheetData = [headers, ...data];
-
+        
             // Create a new workbook and worksheet
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(worksheetData);
-
+        
             // Auto-width for columns
             ws['!cols'] = headers.map(() => ({ wch: 25 }));
-
+        
             // Apply table formatting
             const range = XLSX.utils.decode_range(ws['!ref']);
             ws['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
-
+        
             // Add worksheet to workbook
             XLSX.utils.book_append_sheet(wb, ws, "Hankeplaan");
-
+        
             // Export to .xlsx file
             XLSX.writeFile(wb, "hankeplaan.xlsx");
         });
 
         const getQuarter = (dateString) => {
             if (!dateString || dateString === "Määramata") return "Määramata"; // If no date, return "Määramata"
-
+            
             const dateParts = dateString.split('.');
             if (dateParts.length !== 3) return "Määramata"; // Expecting "dd.mm.yyyy" format
-
+            
             const month = parseInt(dateParts[1], 10);
             const year = dateParts[2];
-
+            
             if (month >= 1 && month <= 3) return `1. kvartal ${year}`;
             if (month >= 4 && month <= 6) return `2. kvartal ${year}`;
             if (month >= 7 && month <= 9) return `3. kvartal ${year}`;
             if (month >= 10 && month <= 12) return `4. kvartal ${year}`;
-
+            
             return "Määramata"; // Ensure a valid return value
         };
-        // ✅ Defineerime muutuja üleval, et vältida "not defined" viga
-        let resultContainerHTML = "";
 
-        document.getElementById("showSavedSearches").addEventListener("click", function () {
-            // ✅ Salvestame resultContainer sisu enne selle peitmist
-            resultContainerHTML = document.getElementById("resultContainer").innerHTML;
-            document.getElementById("resultContainer").classList.add("hidden");
-        });
-
-        document.getElementById("showForm").addEventListener("click", function () {
-            // ✅ Kui resultContainerHTML on olemas, taastame selle
+        document.getElementById('showForm').addEventListener('click', function() {
+            closeAllTabs();
+            document.getElementById('formContainer').classList.remove('hidden');
             if (resultContainerHTML) {
-                document.getElementById("resultContainer").innerHTML = resultContainerHTML;
-                document.getElementById("resultContainer").classList.remove("hidden");
+                document.getElementById('resultContainer').innerHTML = resultContainerHTML;
+                document.getElementById('resultContainer').classList.remove('hidden');
             }
             setActiveTab(this);
         });
-
-        document.getElementById('showSavedSearches').addEventListener('click', function () {
+        
+        document.getElementById('showSavedSearches').addEventListener('click', function() {
             saveResultContainerHTML();
             closeAllTabs();
             document.getElementById('savedSearchesContainer').classList.remove('hidden');
             updateSavedSearchesTable();
             setActiveTab(this);
         });
-
-        document.getElementById('settingsButton').addEventListener('click', function () {
+        
+        document.getElementById('showHistory').addEventListener('click', function() {
+            saveResultContainerHTML();
+            closeAllTabs();
+            document.getElementById('historyContainer').classList.remove('hidden');
+            loadHistory();
+            setActiveTab(this);
+        });
+        
+        document.getElementById('settingsButton').addEventListener('click', function() {
             saveResultContainerHTML();
             closeAllTabs();
             document.getElementById('settingsContainer').classList.remove('hidden');
@@ -1282,10 +990,11 @@
         function saveResultContainerHTML() {
             resultContainerHTML = document.getElementById('resultContainer').innerHTML;
         }
-
+        
         function closeAllTabs() {
             document.getElementById('formContainer').classList.add('hidden');
             document.getElementById('savedSearchesContainer').classList.add('hidden');
+            document.getElementById('historyContainer').classList.add('hidden');
             document.getElementById('settingsContainer').classList.add('hidden');
             document.getElementById('resultContainer').classList.add('hidden');
         }
@@ -1296,7 +1005,7 @@
             tableBody.innerHTML = ""; // Clear previous entries
 
             savedSearches.forEach((search, index) => {
-                const row = `
+            const row = `
                 <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
                 <td class="p-4 font-semibold text-gray-800">${search.name}</td>
                 <td class="p-4 text-gray-700">${search.procedureType}</td>
@@ -1316,122 +1025,13 @@
                 </td>
                 </tr>
             `;
-                tableBody.innerHTML += row;
+            tableBody.innerHTML += row;
             });
+        }        
+        function deleteSearch(index) {
+            savedSearches.splice(index, 1);
+            updateSavedSearchesTable();
         }
-        let deleteIndex = null; // Hoiab ajutiselt indeksi, mida kustutada soovitakse
-
-        async function deleteSearch(index) {
-            deleteIndex = index; // Salvestame kustutatava indeksi
-            document.getElementById("deleteConfirmModal").classList.remove("hidden"); // Kuvame modali
-        }
-
-
-        async function updateProcurementInFirestore() {
-            const user = auth.currentUser;
-            if (!user) {
-                alert("Salvestamiseks peab olema sisse logitud!");
-                return;
-            }
-
-            try {
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-
-                if (!userDoc.exists()) {
-                    console.error("❌ Kasutaja dokumenti ei leitud Firestore'ist.");
-                    return;
-                }
-
-                let searches = userDoc.data().searches || [];
-                const procurementName = document.getElementById('name').value;
-                const searchIndex = searches.findIndex(s => s.name === procurementName);
-
-                if (searchIndex === -1) {
-                    console.warn("⚠ Firestore'is ei leitud vastavat hanget, ei saa uuendada.");
-                    return;
-                }
-
-                // ✅ Kontrollime, kas kuupäevad on korrektsed enne Firestore'i uuendamist
-                let newRequestDate = document.getElementById('requestSubmissionDate').innerText;
-                console.log("🟡 Kontrollime kuupäeva enne formatDate():", newRequestDate);
-                let formattedRequestDate = formatDate(newRequestDate);
-
-                searches[searchIndex].procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
-                searches[searchIndex].requestSubmissionDate = formatDate(
-                    new Date(document.getElementById('requestSubmissionDate').innerText)
-                );
-
-                await updateDoc(userDocRef, { searches });
-
-                console.log("✅ Hange Firestore'is uuendatud:", searches[searchIndex]);
-
-                // 🔄 Peidame nupu uuesti ja uuendame "Hanked" tabelit
-                document.getElementById("updateProcurement").classList.add("hidden");
-                loadUserSearches();
-            } catch (error) {
-                console.error("❌ Firestore'i uuendamise viga:", error);
-            }
-        }
-
-        document.getElementById("confirmDelete").addEventListener("click", async () => {
-            if (deleteIndex === null) return; // Kui indeks puudub, ära tee midagi
-
-            const user = auth.currentUser;
-            if (!user) {
-                alert("Kustutamiseks peab olema sisse logitud!");
-                return;
-            }
-
-            try {
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-
-                if (!userDoc.exists()) {
-                    console.error("❌ Kasutaja dokumenti ei leitud Firestore'ist.");
-                    return;
-                }
-
-                let searches = userDoc.data().searches || [];
-
-                if (deleteIndex < 0 || deleteIndex >= searches.length) {
-                    console.error("❌ Kehtetu indeks:", deleteIndex);
-                    return;
-                }
-
-                const searchToDelete = searches[deleteIndex];
-
-                console.log("🔴 Enne kustutamist:", searches);
-                console.log("🚨 Kustutame:", searchToDelete);
-
-                // 🔥 Kustutame Firestore'ist ainult selle konkreetse objekti
-                await updateDoc(userDocRef, {
-                    searches: searches.filter((_, i) => i !== deleteIndex)
-                });
-
-                console.log("✅ Otsing kustutatud Firestore'ist:", searchToDelete);
-
-                // 🕒 Lisame animatsiooni ja eemaldame rea tabelist
-                const tableBody = document.getElementById("savedSearchesTableBody");
-                const rowToRemove = tableBody.children[deleteIndex];
-
-                if (rowToRemove) {
-                    rowToRemove.classList.add("fade-out"); // Lisame CSS animatsiooni
-                    setTimeout(() => rowToRemove.remove(), 500); // Eemaldame rea pärast animatsiooni
-                }
-
-                deleteIndex = null; // Nullime indeksi pärast kustutamist
-                document.getElementById("deleteConfirmModal").classList.add("hidden"); // Sulgeme modali
-
-            } catch (error) {
-                console.error("❌ Firestore'i kustutamise viga:", error);
-            }
-        });
-
-        document.getElementById("cancelDelete").addEventListener("click", () => {
-            deleteIndex = null; // Tühistame kustutamise
-            document.getElementById("deleteConfirmModal").classList.add("hidden"); // Peidame modali
-        });
 
         function editSearch(index) {
             const procurement = savedSearches[index];
@@ -1453,6 +1053,52 @@
             updateSavedSearchesTable();
         }
 
+        async function saveHistory() {
+            try {
+                const response = await fetch('http://localhost:3000/save-history', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(history)
+                });
+                if (!response.ok) {
+                    console.error('Failed to save history');
+                }
+            } catch (error) {
+                console.error('Error saving history:', error);
+            }
+        }
+
+        async function loadHistory() {
+            try {
+                const response = await fetch('http://localhost:8080/history.json');
+                if (response.ok) {
+                    const savedHistory = await response.json();
+                    console.log('Fetched history:', savedHistory); // Debugging statement
+                    history.length = 0; // Clear current history
+                    savedHistory.forEach(item => {
+                        const procurement = new PublicProcurement(
+                            item.name,
+                            item.cost,
+                            item.procedureType,
+                            item.contractSigningDate
+                        );
+                        procurement.procedureDuration = item.procedureDuration;
+                        procurement.procedureDetails = item.procedureDetails;
+                        procurement.requestSubmissionDate = item.requestSubmissionDate;
+                        history.push(procurement);
+                    });
+                    updateHistoryTable();
+                    populateFilterOptions();
+                } else {
+                    console.error('Failed to load history:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching history:', error);
+            }
+        }
+
         function updateHistoryTable() {
             const tableBody = document.getElementById('historyTableBody');
             tableBody.innerHTML = '';
@@ -1460,7 +1106,7 @@
                 console.log('Adding row for:', procurement); // Debugging statement
                 tableBody.innerHTML += procurement.generateTableRow(index);
             });
-            populateFilterOptions();
+            adjustTableColumns();
         }
 
         function populateFilterOptions() {
@@ -1472,7 +1118,7 @@
             });
         }
 
-        document.getElementById('filterByDate').addEventListener('change', function () {
+        document.getElementById('filterByDate').addEventListener('change', function() {
             const selectedDate = this.value;
             const filteredHistory = selectedDate === 'all' ? history : history.filter(procurement => procurement.contractSigningDate.toISOString().split('T')[0] === selectedDate);
             const tableBody = document.getElementById('historyTableBody');
@@ -1480,12 +1126,15 @@
             filteredHistory.forEach((procurement, index) => {
                 tableBody.innerHTML += procurement.generateTableRow(index);
             });
+            adjustTableColumns();
         });
 
-        document.getElementById('toggleDarkMode').addEventListener('click', function () {
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
             document.body.classList.toggle('bg-gray-900');
             document.body.classList.toggle('text-white');
         });
+
+        loadHistory();
 
         function adjustTableColumns() {
             const tables = document.querySelectorAll('table');
@@ -1505,12 +1154,12 @@
             });
         }
 
-        document.getElementById('dropdownButton').addEventListener('click', function () {
+        document.getElementById('dropdownButton').addEventListener('click', function() {
             const dropdownMenu = document.getElementById('dropdownMenu');
             dropdownMenu.classList.toggle('hidden');
         });
 
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', function(event) {
             const dropdownButton = document.getElementById('dropdownButton');
             const dropdownMenu = document.getElementById('dropdownMenu');
             if (!dropdownButton.contains(event.target)) {
@@ -1519,7 +1168,7 @@
         });
 
         // Dark Mode Toggle
-        const darkModeToggle = document.getElementById('toggleDarkMode');
+        const darkModeToggle = document.getElementById('darkModeToggle');
         darkModeToggle.addEventListener('change', () => {
             document.body.classList.toggle('bg-gray-900');
             document.body.classList.toggle('text-white');
@@ -1548,39 +1197,39 @@
 
             // Containers & content boxes
             document.querySelectorAll('.container, .shadow, .rounded-lg, .bg-white, .bg-gray-100, .bg-gray-50').forEach(el => {
-                el.classList.toggle('bg-gray-800');
-                el.classList.toggle('text-gray-200');
+            el.classList.toggle('bg-gray-800');
+            el.classList.toggle('text-gray-200');
             });
 
             // Tables
             document.querySelectorAll('table').forEach(el => {
-                el.classList.toggle('bg-gray-700');
-                el.classList.toggle('text-gray-300');
+            el.classList.toggle('bg-gray-700');
+            el.classList.toggle('text-gray-300');
             });
 
             // Table headers
             document.querySelectorAll('thead tr').forEach(el => {
-                el.classList.toggle('bg-gray-600');
+            el.classList.toggle('bg-gray-600');
             });
 
             // Buttons
             document.querySelectorAll('button').forEach(el => {
-                el.classList.toggle('shadow-lg');
-                el.classList.toggle('border-gray-700');
+            el.classList.toggle('shadow-lg');
+            el.classList.toggle('border-gray-700');
             });
 
             // Form Inputs & Select Boxes
             document.querySelectorAll('input, select, textarea').forEach(el => {
-                el.classList.toggle('bg-gray-700');
-                el.classList.toggle('text-white');
-                el.classList.toggle('border-gray-600');
+            el.classList.toggle('bg-gray-700');
+            el.classList.toggle('text-white');
+            el.classList.toggle('border-gray-600');
             });
 
             // Save dark mode preference in localStorage
             if (document.body.classList.contains('bg-gray-900')) {
-                localStorage.setItem('darkMode', 'enabled');
+            localStorage.setItem('darkMode', 'enabled');
             } else {
-                localStorage.setItem('darkMode', 'disabled');
+            localStorage.setItem('darkMode', 'disabled');
             }
         });
 
@@ -1594,12 +1243,12 @@
             }, duration);
         }
 
-        document.getElementById('saveFields').addEventListener('click', function () {
+        document.getElementById('saveFields').addEventListener('click', function() {
             // Your save logic here
             showNotification('Salvestatud edukalt!');
         });
-
-        document.getElementById('refreshFields').addEventListener('click', function () {
+    
+        document.getElementById('refreshFields').addEventListener('click', function() {
             // Your update logic here
             showNotification('Uuendatud edukalt!');
         });
@@ -1744,7 +1393,7 @@
                     }
 
                     // Scale width dynamically based on the total duration
-                    let progressWidth = (step.days / totalDuration) * 100 * 1.25;
+                    let progressWidth = (step.days / totalDuration) * 100*1.25;
                     progressBar.dataset.progress = progressWidth.toFixed(2);
 
                     // 🚀 FORCE width and color immediately before animation
@@ -1774,108 +1423,83 @@
             });
         }
 
-        function updateTotalDuration() {
-            const totalDurationElement = document.getElementById('totalDuration');
-            if (!totalDurationElement) return;
+function updateTotalDuration() {
+    const totalDurationElement = document.getElementById('totalDuration');
+    if (!totalDurationElement) return;
 
-            const totalDays = extractStepDays().reduce((sum, step) => sum + step.days, 0);
-            totalDurationElement.innerText = totalDays;
+    const totalDays = extractStepDays().reduce((sum, step) => sum + step.days, 0);
+    totalDurationElement.innerText = totalDays;
 
-            updateProgressBars();
-        }
+    updateProgressBars();
+}
 
-        function adjustDays(index, adjustment) {
-            const stepData = extractStepDays().find(step => step.index === index);
-            if (!stepData) return;
+function adjustDays(index, adjustment) {
+    const stepData = extractStepDays().find(step => step.index === index);
+    if (!stepData) return;
 
-            let newDays = Math.max(0, stepData.days + adjustment);
-            stepData.element.innerText = `${newDays} päeva`;
+    let newDays = Math.max(0, stepData.days + adjustment);
+    stepData.element.innerText = `${newDays} päeva`;
 
-            updateTotalDuration(); // Update total duration
-            updateProgressBars();  // Update progress bars dynamically
+    updateTotalDuration(); // Update total duration
+    updateProgressBars();  // Update progress bars dynamically
 
-            // Update the request submission date
-            const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
-            if (procurement) {
-                procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
-                procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-                document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
-            } else {
-                console.error("Could not find procurement object for real-time update.");
-            }
-        }
+    // Update the request submission date
+    const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
+    if (procurement) {
+        procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
+        procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+        document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
+    } else {
+        console.error("Could not find procurement object for real-time update.");
+    }
+}
 
-        function initializeAdjustButtons() {
-            document.querySelectorAll("button[data-adjust]").forEach(button => {
-                button.addEventListener("click", function () {
-                    const index = parseInt(this.dataset.index, 10);
-                    const adjustment = parseInt(this.dataset.adjust, 10);
-                    adjustDays(index, adjustment);
+            function initializeAdjustButtons() {
+                document.querySelectorAll("button[data-adjust]").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const index = parseInt(this.dataset.index, 10);
+                        const adjustment = parseInt(this.dataset.adjust, 10);
+                        adjustDays(index, adjustment);
+                    });
                 });
+            }
+
+            document.addEventListener("readystatechange", function () {
+                if (document.readyState === "complete") {
+                    console.log("Page fully loaded. Initializing scripts...");
+                    initializeAdjustButtons();
+                    updateTotalDuration();  // 🔥 Ensures total duration starts correctly
+                    updateProgressBars();   // 🔥 Ensures progress bars scale correctly on load
+                }
             });
-        }
-
-        document.addEventListener("readystatechange", function () {
-            if (document.readyState === "complete") {
-                console.log("Page fully loaded. Initializing scripts...");
-                initializeAdjustButtons();
-                updateTotalDuration();  // 🔥 Ensures total duration starts correctly
-                updateProgressBars();   // 🔥 Ensures progress bars scale correctly on load
-            }
-
-            async function registerUser(email, password) {
-                const { user } = await createUserWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, "users", user.uid), {
-                    email: email,
-                    role: "active",
-                    approved: false
-                });
-            }
-
-            // ✅ Kui kasutaja vajutab "adjustDays", teeme "Uuenda andmed" nupu nähtavaks
-            document.getElementById("updateProcurement").classList.remove("hidden");
-
-            // ✅ Kontrollime, kas event listener on juba lisatud, et vältida topelt kuulamist
-            const updateButton = document.getElementById("updateProcurement");
-            if (updateButton && !updateButton.dataset.listenerAdded) {
-                updateButton.addEventListener("click", async () => {
-                    console.log("🔄 Uuendame hanke andmeid Firestore'is...");
-                    await updateProcurementInFirestore();
-                });
-                updateButton.dataset.listenerAdded = "true"; // Märgime, et listener on lisatud
-            }
-        });
-    </script>
+        </script>
 
     <style>
-        /* Navbar button hover effect */
-        .nav-button {
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .nav-button:hover {
-            background-color: rgba(233, 253, 254, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Navbar styling */
-        .navbar {
-            position: fixed;
-            top: 0;
-            z-index: 50;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-        }
-
-        /* Ensure the clock is fixed in the corner */
-        #currentDateTime {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 1000;
-        }
-
-        /* Navbar Links */
+    /* Navbar button hover effect */
+    .nav-button {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .nav-button:hover {
+        background-color: rgba(233, 253, 254, 0.2);
+        transform: scale(1.05);
+    }
+    /* Navbar styling */
+    .navbar {
+        position: fixed;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+    }
+    /* Ensure the clock is fixed in the corner */
+    #currentDateTime {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+    }
+  
+    /* Navbar Links */
         .nav-link {
             padding-bottom: 4px;
             transition: all 0.3s ease;
@@ -1884,19 +1508,14 @@
         .nav-link:hover {
             opacity: 0.8;
         }
-
         .active-tab {
             border-bottom-width: 2px;
             border-color: white;
         }
-
-        /* ✅ Fade-out efekt rea eemaldamiseks */
-        .fade-out {
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="auth.js"></script> <!-- You will create this file next -->
     <script>
         // Active Tab Highlighting
         document.addEventListener('DOMContentLoaded', function () {
@@ -1911,7 +1530,7 @@
                 link.addEventListener('click', setActiveTab);
             });
         });
-
+        
         //menetlusliigi nimi
         document.addEventListener("DOMContentLoaded", function () {
             const procedureSelect = document.getElementById("procedureType");
@@ -1920,10 +1539,10 @@
             function updateProcedureLabel() {
                 const selectedOption = procedureSelect.options[procedureSelect.selectedIndex];
                 const optgroup = selectedOption.closest("optgroup"); // Find parent optgroup
-
+                
                 if (optgroup) {
                     procedureLabel.innerText = `${optgroup.label}`;
-
+                    
                     // Animate fade-in effect
                     gsap.to(procedureLabel, { opacity: 1, y: 5, duration: 0.5, ease: "power2.out" });
                 } else {
@@ -1994,266 +1613,5 @@
             });
         });
     </script>
-
-    <!-- Firebase Authentication Logic (Add before closing body tag) -->
-    <script type="module">
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
-
-        // ✅ Firebase initsialiseerimine
-        const auth = getAuth();
-        const db = getFirestore();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            console.log("🚀 Page Loaded - Waiting for login or guest selection.");
-
-            // ✅ Buttons
-            const loginButton = document.getElementById("loginButton");
-            const registerButton = document.getElementById("registerButton");
-            const guestButton = document.getElementById("guestButton");
-            const logoutButton = document.getElementById("logoutButton");
-            const settingsButton = document.getElementById("settingsButton");
-            const showHankedButton = document.getElementById("showSavedSearches");
-
-            // ✅ Sections
-            const hankedSection = document.getElementById("savedSearchesContainer");
-            const settingsSection = document.getElementById("settingsContainer");
-            const adminTab = document.getElementById("adminTab");
-
-            // 🔥 Peidame "Hanked" ja "Seaded" esialgu
-            hankedSection?.classList.add("hidden");
-            settingsSection?.classList.add("hidden");
-
-            // ✅ "Hanked" nupp laadib andmed Firestore'ist ja kuvab need
-            showHankedButton?.addEventListener("click", async () => {
-                console.log("📂 'Hanked' nuppu vajutati, laen Firestore andmed...");
-                await loadUserSearches();
-                hankedSection?.classList.remove("hidden");
-            });
-
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    console.log("✅ Kasutaja sisse logitud:", user.email);
-
-                    // ✅ Eemaldame hidden klassi, et kuvada menüünupud
-                    showHankedButton?.classList.remove("hidden");
-                    settingsButton?.classList.remove("hidden");
-
-                    // ✅ Peidame sisselogimisnupud ja kuvame "Logi välja" nupu
-                    loginButton?.classList.add("hidden");
-                    registerButton?.classList.add("hidden");
-                    guestButton?.classList.add("hidden");
-                    logoutButton?.classList.remove("hidden");
-
-                    // ✅ Kontrollime Firestore rolli
-                    const userDoc = await getDoc(doc(db, "users", user.uid));
-                    if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        console.log("📜 Firestore roll:", userData.role);
-
-                        if (userData.role === "admin") {
-                            adminTab?.classList.remove("hidden");
-                        } else {
-                            adminTab?.classList.add("hidden");
-                        }
-                    }
-                } else {
-                    console.log("🚫 Kasutaja pole sisse logitud.");
-
-                    // ✅ Peidame "Hanked", "Seaded" ja "Admin" vahelehed
-                    showHankedButton?.classList.add("hidden");
-                    settingsButton?.classList.add("hidden");
-                    adminTab?.classList.add("hidden");
-
-                    // ✅ Kuvame sisselogimisnupud ja peidame "Logi välja" nupu
-                    loginButton?.classList.remove("hidden");
-                    registerButton?.classList.remove("hidden");
-                    guestButton?.classList.remove("hidden");
-                    logoutButton?.classList.add("hidden");
-                }
-            });
-
-            // 🔥 Logout Button Click Event
-            logoutButton?.addEventListener("click", async () => {
-                console.log("🔴 Logging out user...");
-                await signOut(auth);
-                window.location.href = "index.html";
-            });
-
-            // ✅ Funktsioon otsingu salvestamiseks Firestore'i
-            const saveSearchToFirestore = async (searchData) => {
-                const user = auth.currentUser;
-                if (!user) {
-                    showNotification("Andmete salvestamiseks peab olema sisse logitud!", 3000);
-                    return;
-                }
-
-                try {
-                    await updateDoc(doc(db, "users", user.uid), {
-                        searches: arrayUnion(searchData)
-                    });
-                    showNotification("✅ Otsing salvestatud Firestore'i!", 3000);
-                    console.log("✅ Otsing salvestatud Firestore'i:", searchData);
-                } catch (error) {
-                    showNotification("❌ Otsingu salvestamise viga!", 3000);
-                    console.error("❌ Otsingu salvestamise viga:", error);
-                }
-            };
-
-            // ✅ Seome otsingu salvestamise "Arvuta menetlusaeg" nupuga
-            document.getElementById("procurementForm").addEventListener("submit", async (event) => {
-                event.preventDefault();
-
-                const name = document.getElementById("name").value;
-                const cost = parseFloat(document.getElementById("cost").value);
-                const procedureType = document.getElementById("procedureType").value;
-                const contractSigningDate = document.getElementById("contractSigningDate").value;
-
-                if (!name || !cost || !procedureType || !contractSigningDate) {
-                    alert("Palun täida kõik väljad!");
-                    return;
-                }
-
-                const searchData = {
-                    name,
-                    cost,
-                    procedureType,
-                    contractSigningDate,
-                    timestamp: new Date().toISOString()
-                };
-
-                await saveSearchToFirestore(searchData);
-            });
-
-            // ✅ Funktsioon otsingute laadimiseks Firestore'ist
-            async function loadUserSearches() {
-                console.log("📥 Laen kasutaja otsingud Firestore'ist...");
-                const user = auth.currentUser;
-                if (!user) {
-                    console.warn("⚠ Kasutaja ei ole sisse logitud.");
-                    return;
-                }
-
-                try {
-                    const userDocRef = doc(db, "users", user.uid);
-                    const userDoc = await getDoc(userDocRef);
-
-                    if (!userDoc.exists()) {
-                        console.warn("⚠ Kasutaja andmeid Firestore'is ei leitud.");
-                        return;
-                    }
-
-                    let searches = userDoc.data().searches || [];
-
-                    // ✅ Kontrollime ja korrastame iga hanke kuupäeva enne kuvamist
-                    searches.forEach((search, index) => {
-                        if (!search.requestSubmissionDate) {
-                            console.warn(`⚠ Otsingul [${index}] puudub requestSubmissionDate`);
-                        }
-                        if (!search.contractSigningDate) {
-                            console.warn(`⚠ Otsingul [${index}] puudub contractSigningDate`);
-                        }
-
-                        search.requestSubmissionDate = search.requestSubmissionDate
-                            ? formatDate(search.requestSubmissionDate)
-                            : "Määramata";
-
-                        search.contractSigningDate = search.contractSigningDate
-                            ? formatDate(search.contractSigningDate)
-                            : "Määramata";
-
-                        search.timestamp = search.timestamp
-                            ? new Date(search.timestamp).toLocaleDateString() + " " + new Date(search.timestamp).toLocaleTimeString()
-                            : "Määramata";
-                    });
-
-                    displaySearches(searches);
-                } catch (error) {
-                    console.error("❌ Firestore'i andmete laadimise viga:", error);
-                }
-            }
-            const deleteSearch = async (index) => {
-                const user = auth.currentUser;
-                if (!user) {
-                    alert("Kustutamiseks peab olema sisse logitud!");
-                    return;
-                }
-
-                try {
-                    const userDocRef = doc(db, "users", user.uid);
-                    const userDoc = await getDoc(userDocRef);
-
-                    if (userDoc.exists()) {
-                        let searches = userDoc.data().searches || [];
-
-                        if (index < 0 || index >= searches.length) {
-                            console.error("❌ Kehtetu indeks:", index);
-                            return;
-                        }
-
-                        const searchToDelete = searches[index];
-
-                        // 🔍 Kontrollime, milline element kustutatakse
-                        console.log("🔴 Enne kustutamist:", searches);
-                        console.log("🚨 Kustutame:", searchToDelete);
-
-                        // 🔥 Kustutame Firestore'ist ainult selle konkreetse objekti
-                        await updateDoc(userDocRef, {
-                            searches: arrayRemove(searchToDelete),
-                        });
-
-                        console.log("✅ Otsing kustutatud Firestore'ist:", searchToDelete);
-
-                        // 🔄 Laadime uuesti andmed, et värskendada tabelit
-                        await loadUserSearches();
-                    }
-                } catch (error) {
-                    console.error("❌ Firestore'i kustutamise viga:", error);
-                }
-            };
-
-            // ✅ Funktsioon otsingute kuvamiseks tabelis
-            const displaySearches = (searches) => {
-                const container = document.getElementById("savedSearchesTableBody");
-                if (!container) {
-                    console.error("❌ Ei leitud tabeli keha: savedSearchesTableBody");
-                    return;
-                }
-
-                console.log("🔎 Kuvan otsingud tabelisse:", searches);
-                container.innerHTML = ""; // Tabeli puhastamine
-
-                if (searches.length === 0) {
-                    container.innerHTML = `<tr><td colspan="8" class="text-center p-4 text-gray-500">⚠ Ei leitud salvestatud otsinguid.</td></tr>`;
-                    return;
-                }
-
-                searches.forEach((search, index) => {
-                    // ✅ Kontrollime, et kuupäevad on olemas enne formateerimist
-                    const requestSubmissionDate = search.requestSubmissionDate ? formatDate(search.requestSubmissionDate) : "Määramata";
-                    const contractSigningDate = search.contractSigningDate ? formatDate(search.contractSigningDate) : "Määramata";
-
-                    container.innerHTML += `
-                        <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
-                            <td class="p-4">${search.name}</td>
-                            <td class="p-4">${search.procedureType}</td>
-                            <td class="p-4">${search.cost} €</td>
-                            <td class="p-4 text-blue-600 font-semibold">${formatDate(search.requestSubmissionDate)}</td>
-                            <td class="p-4 text-gray-500">${formatDate(search.contractSigningDate)}</td>
-                            <td class="p-4 text-center">
-                                <button onclick="editSearch(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition transform hover:scale-105">✏️ Muuda</button>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button onclick="deleteSearch(${index})" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition transform hover:scale-105">❌ Kustuta</button>
-                            </td>
-                        </tr>
-        `;
-                });
-
-                console.log("✅ Otsingud lisatud tabelisse!");
-            };
-        });
-    </script>
-</body>
-
+</body> 
 </html>

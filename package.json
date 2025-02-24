@@ -10,8 +10,7 @@
     "jekyll:build": "jekyll build",
     "watch:tailwind": "npx tailwindcss -i src/styles/input.css -o dist/output.css --watch",
     "watch:jekyll": "npm run watch:tailwind & jekyll serve --livereload",
-    "build": "tailwindcss -i ./src/styles/input.css -o ./dist/output.css",
-    "watch": "tailwindcss -i ./src/styles/input.css -o ./dist/output.css --watch"
+    "watch": "npm run watch:tailwind & bundle exec jekyll serve --livereload --watch"
   },
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -19,17 +18,14 @@
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "express": "^4.17.1",
-    "firebase": "^11.3.1",
-    "htmlparser2": "^10.0.0",
-    "tailwindcss": "^2.2.19"
+    "firebase": "^11.3.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^7.0.2",
     "autoprefixer": "^10.4.20",
-    "daisyui": "^4.12.23",
     "postcss": "^8.5.2",
     "postcss-cli": "^8.3.1",
-    "prettier": "^3.5.1",
-    "tailwindcss": "^4.0.6"
+    "tailwindcss": "^4.0.6",
+    "prettier": "^3.5.1"
   }
 }

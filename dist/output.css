@@ -1725,13 +1725,6 @@
     }
   }
 }
-.hover\:underline {
-  &:hover {
-    @media (hover: hover) {
-      text-decoration-line: underline;
-    }
-  }
-}
 .focus\:border-transparent {
   &:focus {
     border-color: transparent;
