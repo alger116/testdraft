@@ -189,12 +189,6 @@
                             alert("Sisselogimine ebaõnnestus: " + error.message);
                         }
                     };
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const updateButton = document.getElementById("updateProcurement");
-                        if (updateButton) {
-                            updateButton.classList.add("hidden"); // Peidame nupu lehe laadimisel
-                        }
-                    });
                 </script>
 
                 <a href="register.html" id="registerButton"
@@ -325,14 +319,16 @@
                         <input type="date" id="contractSigningDate" name="contractSigningDate"
                             class="w-full p-2 border rounded" required>
                     </div>
-                    <button type="submit"
-                        class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg w-full flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
-                        <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
-                    </button>
-                    <button id="updateProcurement"
-                        class="hidden bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition mt-4">
-                        ✅ Uuenda andmed
-                    </button>
+                    <div class="flex space-x-4 mt-4">
+                        <button type="submit"
+                            class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
+                            <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
+                        </button>
+                        <button id="updateProcurement"
+                            class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
+                            ✅ Lisa hange tabelisse
+                        </button>
+                    </div>
                 </form>
                 <div class="hidden flex space-x-3 mt-6">
                     <button id="clearFields"
@@ -384,17 +380,14 @@
                         aria-label="Save to Excel">
                         📊 Excel
                     </button>
-
-                    <button id="hankeplaan"
-                        class="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-5 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 hover:scale-105 transition-all duration-300"
-                        aria-label="Generate Procurement Plan">
-                        📋 Hankeplaan
+                    <button id="saveToFirestore"
+                        class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 transition-all duration-300">
+                        💾 Salvesta
                     </button>
-
-                    <button id="showProgress"
+                    <button id="loadFromFirestore"
                         class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300"
-                        aria-label="Show Progress">
-                        📈 PDF
+                        aria-label="Load Firestore Data">
+                        📂 Näita eelnevaid hankeid
                     </button>
                 </div>
             </div>
@@ -995,47 +988,55 @@
             function adjustDays(index, adjustment) {
                 const daysElement = document.getElementById(`days-${index}`);
                 if (!daysElement) {
-                    console.error(`Element with id days-${index} not found`);
+                    console.error(`❌ Element with id days-${index} not found`);
                     return;
                 }
 
-                let daysText = daysElement.innerText;
-                let days = parseInt(daysText.match(/\d+/)?.[0] || "0", 10);  // Avoid NaN
-                days += adjustment;
-                daysElement.innerText = daysText.replace(/\d+/, days);
+                let days = parseInt(daysElement.innerText.match(/\d+/)?.[0] || "0", 10);
+                days = Math.max(0, days + adjustment);
+                daysElement.innerText = `${days} päeva`;
 
-                // Update total duration
+                // ✅ Uuendame menetluse kogukestust
                 const totalDurationElement = document.getElementById('totalDuration');
                 if (totalDurationElement) {
                     let totalDuration = parseInt(totalDurationElement.innerText || "0", 10);
-                    totalDuration += adjustment;
+                    totalDuration = Math.max(0, totalDuration + adjustment);
                     totalDurationElement.innerText = totalDuration;
                 } else {
-                    console.error('Element with id totalDuration not found');
+                    console.error("❌ Element with id totalDuration not found");
                 }
 
-                // Store updated total duration in the PublicProcurement object
-                const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
-                if (procurement) {
-                    procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
-                    procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-                    document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
-                } else {
-                    console.error("Could not find procurement object for real-time update.");
+                // ✅ Otsime hanke nime järgi
+                let procurement = savedSearches.find(p => p.name === document.getElementById('name').value.trim());
+
+                // 🔹 Kui hanget pole, loome uue ja lisame massiivi
+                if (!procurement) {
+                    console.warn("⚠ Hange ei ole massiivis, loon uue objekti.");
+
+                    procurement = new PublicProcurement(
+                        document.getElementById('name').value.trim(),
+                        parseFloat(document.getElementById('cost').value),
+                        document.getElementById('procedureType').value,
+                        document.getElementById('contractSigningDate').value
+                    );
+                    savedSearches.push(procurement);
                 }
 
-                // ✅ Kui kasutaja vajutab "adjustDays", ilmub "Uuenda andmed" nupp
-                document.getElementById("updateProcurement").classList.remove("hidden");
+                // ✅ Veendume, et menetluse kestus ja taotluse esitamise kuupäev uuenevad õigesti
+                procurement.procedureDuration = parseInt(totalDurationElement.innerText);
+                procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
 
-                const stepData = extractStepDays().find(step => step.index === index);
-                if (!stepData) return;
+                if (!procurement.requestSubmissionDate || procurement.requestSubmissionDate === "Invalid date") {
+                    console.error("❌ Arvutatud kuupäev on vigane:", procurement.requestSubmissionDate);
+                    procurement.requestSubmissionDate = "Määramata";
+                }
 
-                let newDays = Math.max(0, stepData.days + adjustment);
-                stepData.element.innerText = `${newDays} päeva`;
+                document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
 
+                // ✅ Uuendame tabelis kuvamist ja progressiribasid
+                updateSavedSearchesTable();
                 updateTotalDuration();
                 updateProgressBars();
-
             }
 
             const savedSearches = [];
@@ -1054,12 +1055,6 @@
 
                 document.getElementById('result').innerHTML = procurement.generateHTML();
 
-                // ✅ Peidame "Uuenda andmed" nupu ainult siis, kui kasutaja pole `adjustDays` kasutanud
-                const updateButton = document.getElementById("updateProcurement");
-                if (updateButton && updateButton.classList.contains("hidden")) {
-                    updateButton.classList.add("hidden");
-                }
-
                 // ✅ Progressi ja kestuse uuendamine
                 setTimeout(() => {
                     updateTotalDuration();
@@ -1068,38 +1063,37 @@
 
                 // ✅ Kuvame tulemuste konteineri
                 document.getElementById('resultContainer').classList.remove('hidden');
+            });
 
-                // ✅ Salvestame andmed Firestore'i kohe pärast arvutamist
-                const user = auth.currentUser;
-                if (user) {
-                    try {
-                        const userDocRef = doc(db, "users", user.uid);
-                        const userDoc = await getDoc(userDocRef);
-                        let searches = userDoc.exists() ? userDoc.data().searches || [] : [];
+            document.getElementById("updateProcurement").addEventListener("click", function () {
+                const name = document.getElementById('name').value;
+                const cost = parseFloat(document.getElementById('cost').value);
+                const procedureType = document.getElementById('procedureType').value;
+                const contractSigningDate = document.getElementById('contractSigningDate').value;
+                const requestSubmissionDate = document.getElementById('requestSubmissionDate').innerText;
 
-                        // ✅ Leia olemasolev hange või lisa uus
-                        const existingIndex = searches.findIndex(p => p.name === name);
-                        if (existingIndex !== -1) {
-                            searches[existingIndex] = { ...procurement, timestamp: new Date().toISOString() };
-                        } else {
-                            searches.push({ ...procurement, timestamp: new Date().toISOString() });
-                        }
-
-                        await updateDoc(userDocRef, { searches });
-
-                        console.log("✅ Taotluse esitamise kuupäev salvestatud Firestore'i:", procurement.requestSubmissionDate);
-                    } catch (error) {
-                        console.error("❌ Firestore'i salvestamise viga:", error);
-                    }
+                if (!name || isNaN(cost) || !procedureType || !contractSigningDate || requestSubmissionDate === "Määramata") {
+                    alert("Palun täida kõik väljad!");
+                    return;
                 }
 
-                // ✅ Lisame andmed ka lokaalsesse `savedSearches` listi
-                if (savedSearches.length < 15) {
-                    savedSearches.push(procurement);
-                    updateSavedSearchesTable();
-                } else {
-                    alert("Maksimaalne salvestatud otsingute arv on 15.");
+                const index = savedSearches.findIndex(search => search.name === name);
+                if (index !== -1) {
+                    savedSearches.splice(index, 1);
                 }
+
+                let procurement = {
+                    name,
+                    cost,
+                    procedureType,
+                    contractSigningDate,
+                    requestSubmissionDate,
+                };
+
+                savedSearches.push(procurement);
+                updateSavedSearchesTable();
+
+                console.log("✅ Hange lisatud tabelisse, kuid mitte Firestore'i:", procurement);
             });
 
             document.getElementById('clearFields').addEventListener('click', function () {
@@ -1157,13 +1151,6 @@
                         alert("Maksimaalne salvestatud otsingute arv on 15.");
                     }
                 }
-
-                // Save to history
-                if (history.length >= 500) {
-                    history.shift(); // Remove the oldest entry if history exceeds 500
-                }
-                history.push(procurement);
-                saveHistory(); // Save history immediately
             });
 
             document.getElementById('refreshFields').addEventListener('click', function () {
@@ -1299,30 +1286,33 @@
 
             function updateSavedSearchesTable() {
                 const tableBody = document.getElementById("savedSearchesTableBody");
-
-                tableBody.innerHTML = ""; // Clear previous entries
+                tableBody.innerHTML = ""; // Puhastame tabeli
 
                 savedSearches.forEach((search, index) => {
                     const row = `
-                <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
-                <td class="p-4 font-semibold text-gray-800">${search.name}</td>
-                <td class="p-4 text-gray-700">${search.procedureType}</td>
-                <td class="p-4 text-green-600 font-semibold">${search.cost} €</td>
-                <td class="p-4 text-blue-600 font-semibold">${search.procedureDuration} päeva</td>
-                <td class="p-4 text-gray-500">${formatDate(search.requestSubmissionDate)}</td>
-                <td class="p-4 text-gray-500">${formatDate(search.contractSigningDate)}</td>
-                <td class="p-4 text-center">
-                    <button onclick="editSearch(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition transform hover:scale-105">
-                    ✏️ Muuda
-                    </button>
-                </td>
-                <td class="p-4 text-center">
-                    <button onclick="deleteSearch(${index})" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition transform hover:scale-105">
-                    ❌ Kustuta
-                    </button>
-                </td>
-                </tr>
-            `;
+        <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
+            <td class="p-4">${search.name}</td>
+            <td class="p-4">${search.procedureType}</td>
+            <td class="p-4">${search.cost} €</td>
+            <td class="p-4 text-blue-600 font-semibold">${formatDate(search.requestSubmissionDate || "Määramata")}</td>
+            <td class="p-4 text-gray-500">${formatDate(search.contractSigningDate)}</td>
+            <td class="p-4 text-center">
+                <button onclick="editSearch(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition transform hover:scale-105">
+                ✏️ Muuda
+                </button>
+            </td>
+            <td class="p-4 text-center">
+                <button onclick="deleteSearch(${index})" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition transform hover:scale-105">
+                ❌ Kustuta
+                </button>
+            </td>
+            <td class="p-4 text-center">
+                <button onclick="saveToFirestore(${index})" class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition transform hover:scale-105">
+                💾 Salvesta
+                </button>
+            </td>
+        </tr>
+        `;
                     tableBody.innerHTML += row;
                 });
             }
@@ -1382,10 +1372,6 @@
                     await updateDoc(userDocRef, { searches });
 
                     console.log("✅ Hange Firestore'is uuendatud:", searches[searchIndex]);
-
-                    // ✅ Peidame uuendamise nupu ja uuendame "Hanked" tabelit
-                    document.getElementById("updateProcurement").classList.add("hidden");
-                    loadUserSearches();
 
                 } catch (error) {
                     console.error("❌ Firestore'i uuendamise viga:", error);
@@ -1498,7 +1484,69 @@
                 filteredHistory.forEach((procurement, index) => {
                     tableBody.innerHTML += procurement.generateTableRow(index);
                 });
+
+                async function saveToFirestore(index) {
+                    const user = auth.currentUser;
+                    if (!user) {
+                        alert("Salvestamiseks peab olema sisse logitud!");
+                        return;
+                    }
+
+                    try {
+                        const userDocRef = doc(db, "users", user.uid);
+                        const userDoc = await getDoc(userDocRef);
+                        let searches = userDoc.exists() ? userDoc.data().searches || [] : [];
+
+                        searches.push(savedSearches[index]);
+
+                        await updateDoc(userDocRef, { searches });
+
+                        console.log("✅ Hange Firestore'is salvestatud:", savedSearches[index]);
+                        showNotification("✅ Andmed salvestatud!");
+                    } catch (error) {
+                        console.error("❌ Firestore'i salvestamise viga:", error);
+                    }
+                }
+
+                // ✅ Seome nupu vajutamisega Firestore'i laadimise funktsiooni
+                document.getElementById("loadFromFirestore").addEventListener("click", loadFirestoreProcurements);
+
+                // ✅ Laadime Firestore'i andmed kohe lehe avamisel
+                window.addEventListener("load", loadFirestoreProcurements);
             });
+
+            // ✅ Firestore'st andmete laadimise funktsioon
+            async function loadUserSearches() {
+                const user = auth.currentUser;
+                if (!user) {
+                    console.error("❌ Kasutajat ei leitud, ei saa otsinguid laadida.");
+                    return;
+                }
+
+                try {
+                    console.log("📥 Laen Firestore'ist salvestatud otsinguid...");
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+
+                    if (!userDoc.exists()) {
+                        console.warn("⚠ Kasutajal pole salvestatud hankeid Firestore'is.");
+                        return;
+                    }
+
+                    let searches = userDoc.data().searches || [];
+                    console.log("📜 Laetud otsingud Firestore'ist:", searches);
+
+                    // ✅ Teisendame kuupäevad õigesse formaati
+                    searches = searches.map(search => ({
+                        ...search,
+                        requestSubmissionDate: formatDate(search.requestSubmissionDate || "Määramata"),
+                        contractSigningDate: formatDate(search.contractSigningDate || "Määramata")
+                    }));
+
+                    displaySearches(searches); // ✅ Uuendame tabeli
+                } catch (error) {
+                    console.error("❌ Otsingute laadimise viga Firestore'ist:", error);
+                }
+            }
 
             document.getElementById('toggleDarkMode').addEventListener('click', function () {
                 document.body.classList.toggle('bg-gray-900');
@@ -1809,19 +1857,27 @@
                 let newDays = Math.max(0, stepData.days + adjustment);
                 stepData.element.innerText = `${newDays} päeva`;
 
-                updateTotalDuration(); // Update total duration
-                updateProgressBars();  // Update progress bars dynamically
+                updateTotalDuration();
+                updateProgressBars();
 
-                // Update the request submission date
-                const procurement = savedSearches.find(p => p.name === document.getElementById('name').value);
-                if (procurement) {
-                    procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
-                    procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
-                    document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
-                } else {
-                    console.error("Could not find procurement object for real-time update.");
+                // ✅ Kontrollime, kas hange on juba olemas
+                let procurement = savedSearches.find(p => p.name === document.getElementById('name').value.trim());
+
+                if (!procurement) {
+                    procurement = new PublicProcurement(
+                        document.getElementById('name').value.trim(),
+                        parseFloat(document.getElementById('cost').value),
+                        document.getElementById('procedureType').value,
+                        document.getElementById('contractSigningDate').value
+                    );
                 }
+
+                // ✅ Värskendame menetluse kestust ja taotluse esitamise kuupäeva
+                procurement.procedureDuration = parseInt(document.getElementById('totalDuration').innerText);
+                procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
+                document.getElementById('requestSubmissionDate').innerText = formatDate(procurement.requestSubmissionDate);
             }
+
 
             function initializeAdjustButtons() {
                 document.querySelectorAll("button[data-adjust]").forEach(button => {
@@ -1849,18 +1905,35 @@
                         approved: false
                     });
                 }
+            });
 
-                // ✅ Kui kasutaja vajutab "adjustDays", teeme "Uuenda andmed" nupu nähtavaks
-                document.getElementById("updateProcurement").classList.remove("hidden");
+            document.getElementById('saveToFirestore').addEventListener('click', async function () {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert("Salvestamiseks peab olema sisse logitud!");
+                    return;
+                }
 
-                // ✅ Kontrollime, kas event listener on juba lisatud, et vältida topelt kuulamist
-                const updateButton = document.getElementById("updateProcurement");
-                if (updateButton && !updateButton.dataset.listenerAdded) {
-                    updateButton.addEventListener("click", async () => {
-                        console.log("🔄 Uuendame hanke andmeid Firestore'is...");
-                        await updateProcurementInFirestore();
-                    });
-                    updateButton.dataset.listenerAdded = "true"; // Märgime, et listener on lisatud
+                if (savedSearches.length === 0) {
+                    alert("Tabel on tühi, pole midagi salvestada!");
+                    return;
+                }
+
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    let searches = userDoc.exists() ? userDoc.data().searches || [] : [];
+
+                    // ✅ Asendame vanad andmed uute `savedSearches` massiivist
+                    searches = [...savedSearches];
+
+                    await updateDoc(userDocRef, { searches });
+
+                    console.log("✅ Hanked salvestatud Firestore'i:", searches);
+                    alert("✅ Andmed on salvestatud Firestore'i!");
+                } catch (error) {
+                    console.error("❌ Firestore'i salvestamise viga:", error);
+                    alert("❌ Salvestamine ebaõnnestus!");
                 }
             });
         </script>
@@ -2046,6 +2119,8 @@
                 showHankedButton?.addEventListener("click", async () => {
                     console.log("📂 'Hanked' nuppu vajutati, laen Firestore andmed...");
                     await loadUserSearches();
+                    // ✅ Uuendame ka lokaalseid hankeid tabelis
+                    updateSavedSearchesTable();
                     hankedSection?.classList.remove("hidden");
                 });
 
@@ -2118,31 +2193,32 @@
                     }
                 };
 
-                // ✅ Seome otsingu salvestamise "Arvuta menetlusaeg" nupuga
-                document.getElementById("procurementForm").addEventListener("submit", async (event) => {
+                // ✅ Seome otsingu salvestamise "lisa hange tabelisse" nupuga
+                document.getElementById('procurementForm').addEventListener('submit', async function (event) {
                     event.preventDefault();
 
-                    const name = document.getElementById("name").value;
-                    const cost = parseFloat(document.getElementById("cost").value);
-                    const procedureType = document.getElementById("procedureType").value;
-                    const contractSigningDate = document.getElementById("contractSigningDate").value;
+                    const name = document.getElementById('name').value;
+                    const cost = parseFloat(document.getElementById('cost').value);
+                    const procedureType = document.getElementById('procedureType').value;
+                    const contractSigningDate = document.getElementById('contractSigningDate').value;
 
-                    if (!name || !cost || !procedureType || !contractSigningDate) {
-                        alert("Palun täida kõik väljad!");
-                        return;
-                    }
+                    const procurement = new PublicProcurement(name, cost, procedureType, contractSigningDate);
+                    procurement.requestSubmissionDate = procurement.calculateRequestSubmissionDate();
 
-                    const searchData = {
-                        name,
-                        cost,
-                        procedureType,
-                        contractSigningDate,
-                        timestamp: new Date().toISOString()
-                    };
+                    // ✅ Värskendame tulemuste kuvamist, kuid EI LISATA HANKED TABELISSE
+                    document.getElementById('result').innerHTML = procurement.generateHTML();
 
-                    await saveSearchToFirestore(searchData);
+                    // ✅ Progressi ja kestuse uuendamine
+                    setTimeout(() => {
+                        updateTotalDuration();
+                        updateProgressBars();
+                    }, 100);
+
+                    // ✅ Kuvame tulemuste konteineri
+                    document.getElementById('resultContainer').classList.remove('hidden');
+
+                    console.log("✅ Menetlusaeg arvutatud, kuid hange EI LISATUD tabelisse.");
                 });
-
                 async function loadUserSearches() {
                     const user = auth.currentUser;
                     if (!user) {
@@ -2218,7 +2294,7 @@
                 };
 
                 // ✅ Funktsioon otsingute kuvamiseks tabelis
-                const displaySearches = (searches) => {
+                function displaySearches(searches) {
                     const container = document.getElementById("savedSearchesTableBody");
                     if (!container) {
                         console.error("❌ Ei leitud tabeli keha: savedSearchesTableBody");
@@ -2226,33 +2302,29 @@
                     }
 
                     console.log("🔎 Kuvan otsingud tabelisse:", searches);
-                    container.innerHTML = ""; // Tabeli puhastamine
+                    container.innerHTML = ""; // ✅ Puhastame tabeli enne lisamist
 
                     if (searches.length === 0) {
-                        container.innerHTML = `<tr><td colspan="8" class="text-center p-4 text-gray-500">⚠ Ei leitud salvestatud otsinguid.</td></tr>`;
+                        container.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-gray-500">⚠ Ei leitud salvestatud hankeid.</td></tr>`;
                         return;
                     }
 
                     searches.forEach((search, index) => {
-                        // ✅ Kontrollime, et kuupäevad on olemas enne formateerimist
-                        const requestSubmissionDate = search.requestSubmissionDate ? formatDate(search.requestSubmissionDate) : "Määramata";
-                        const contractSigningDate = search.contractSigningDate ? formatDate(search.contractSigningDate) : "Määramata";
-
                         container.innerHTML += `
-                        <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
-                            <td class="p-4">${search.name}</td>
-                            <td class="p-4">${search.procedureType}</td>
-                            <td class="p-4">${search.cost} €</td>
-                            <td class="p-4 text-blue-600 font-semibold">${formatDate(search.requestSubmissionDate)}</td>
-                            <td class="p-4 text-gray-500">${formatDate(search.contractSigningDate)}</td>
-                            <td class="p-4 text-center">
-                                <button onclick="editSearch(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition transform hover:scale-105">✏️ Muuda</button>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button onclick="deleteSearch(${index})" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition transform hover:scale-105">❌ Kustuta</button>
-                            </td>
-                        </tr>
-        `;
+                                <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
+                                    <td class="p-4">${search.name}</td>
+                                    <td class="p-4">${search.procedureType}</td>
+                                    <td class="p-4">${search.cost} €</td>
+                                    <td class="p-4 text-blue-600 font-semibold">${search.requestSubmissionDate}</td>
+                                    <td class="p-4 text-gray-500">${search.contractSigningDate}</td>
+                                    <td class="p-4 text-center">
+                                        <button onclick="editSearch(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition transform hover:scale-105">✏️ Muuda</button>
+                                    </td>
+                                    <td class="p-4 text-center">
+                                        <button onclick="deleteSearch(${index})" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition transform hover:scale-105">❌ Kustuta</button>
+                                    </td>
+                                </tr>
+                            `;
                     });
 
                     console.log("✅ Otsingud lisatud tabelisse!");
