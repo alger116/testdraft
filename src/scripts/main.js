@@ -471,6 +471,36 @@ document.addEventListener("DOMContentLoaded", function () {
   loadSavedSettings();
   loadSettings();
   loadProcedureTypes();
+
+  async function saveAllSearchesToFirestore() {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("You must be logged in to save searches.");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, {
+        savedSearches: savedSearches.map((search) => ({
+          name: search.name,
+          cost: search.cost,
+          procedureType: search.procedureType,
+          contractSigningDate: search.contractSigningDate,
+          requestSubmissionDate: search.requestSubmissionDate,
+          procedureDuration: search.procedureDuration,
+        })),
+      });
+      alert("All searches saved to Firestore!");
+    } catch (error) {
+      console.error("Error saving searches to Firestore:", error);
+      alert("Failed to save searches to Firestore.");
+    }
+  }
+
+  document
+    .getElementById("saveToFirestore")
+    .addEventListener("click", saveAllSearchesToFirestore);
 });
 
 class PublicProcurement {

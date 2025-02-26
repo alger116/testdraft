@@ -318,16 +318,15 @@
                             kuupäev:</label>
                         <input type="date" id="contractSigningDate" name="contractSigningDate"
                             class="w-full p-2 border rounded" required>
-                    <div class="flex w-full flex-col lg:flex-row">
+                    </div>
+                    <div class="flex space-x-4 mt-4">
                         <button type="submit"
-                            class="card bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-box grid h-32 flex-grow place-items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
+                            class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                             <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
                         </button>
-                        <div class="divider lg:divider-horizontal divider-primary">Primary</div>
                         <button id="updateProcurement"
-                            class="card bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-box grid h-32 flex-grow place-items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
+                            class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                             ✅ Lisa hange tabelisse
-                        </button>
                     </div>
                 </form>
                 <div class="hidden flex space-x-3 mt-6">
@@ -451,11 +450,6 @@
                         class="w-full p-3 border rounded-lg bg-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sisesta päevad" required>
                 </div>
-
-                <button type="submit"
-                    class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 transition-all duration-300">
-                    💾 Salvesta
-                </button>
             </form>
 
             <!-- Procedure Type Selection -->
@@ -1306,11 +1300,6 @@
                 ❌ Kustuta
                 </button>
             </td>
-            <td class="p-4 text-center">
-                <button onclick="saveToFirestore(${index})" class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition transform hover:scale-105">
-                💾 Salvesta
-                </button>
-            </td>
         </tr>
         `;
                     tableBody.innerHTML += row;
@@ -1484,36 +1473,30 @@
                 filteredHistory.forEach((procurement, index) => {
                     tableBody.innerHTML += procurement.generateTableRow(index);
                 });
+            });
 
-                async function saveToFirestore(index) {
-                    const user = auth.currentUser;
-                    if (!user) {
-                        alert("Salvestamiseks peab olema sisse logitud!");
-                        return;
-                    }
-
-                    try {
-                        const userDocRef = doc(db, "users", user.uid);
-                        const userDoc = await getDoc(userDocRef);
-                        let searches = userDoc.exists() ? userDoc.data().searches || [] : [];
-
-                        searches.push(savedSearches[index]);
-
-                        await updateDoc(userDocRef, { searches });
-
-                        console.log("✅ Hange Firestore'is salvestatud:", savedSearches[index]);
-                        showNotification("✅ Andmed salvestatud!");
-                    } catch (error) {
-                        console.error("❌ Firestore'i salvestamise viga:", error);
-                    }
+            async function saveToFirestore(index) {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert("Salvestamiseks peab olema sisse logitud!");
+                    return;
                 }
 
-                // ✅ Seome nupu vajutamisega Firestore'i laadimise funktsiooni
-                document.getElementById("loadFromFirestore").addEventListener("click", loadFirestoreProcurements);
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    let searches = userDoc.exists() ? userDoc.data().searches || [] : [];
 
-                // ✅ Laadime Firestore'i andmed kohe lehe avamisel
-                window.addEventListener("load", loadFirestoreProcurements);
-            });
+                    searches.push(savedSearches[index]);
+
+                    await updateDoc(userDocRef, { searches });
+
+                    console.log("✅ Hange Firestore'is salvestatud:", savedSearches[index]);
+                    showNotification("✅ Andmed salvestatud!");
+                } catch (error) {
+                    console.error("❌ Firestore'i salvestamise viga:", error);
+                }
+            }
 
             // ✅ Firestore'st andmete laadimise funktsioon
             async function loadUserSearches() {
@@ -1936,6 +1919,73 @@
                     alert("❌ Salvestamine ebaõnnestus!");
                 }
             });
+            document.getElementById('loadFromFirestore').addEventListener('click', async function () {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert("Andmete laadimiseks peab olema sisse logitud!");
+                    return;
+                }
+
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+
+                    if (!userDoc.exists()) {
+                        console.error("❌ Kasutaja dokumenti ei leitud Firestore'ist.");
+                        return;
+                    }
+
+                    let searches = userDoc.data().searches || [];
+                    console.log("📜 Laetud otsingud Firestore'ist:", searches);
+
+                    // ✅ Teisendame kuupäevad õigesse formaati
+                    searches = searches.map(search => ({
+                        ...search,
+                        requestSubmissionDate: formatDate(search.requestSubmissionDate || "Määramata"),
+                        contractSigningDate: formatDate(search.contractSigningDate || "Määramata")
+                    }));
+
+                    displaySearches(searches); // ✅ Uuendame tabeli
+                } catch (error) {
+                    console.error("❌ Otsingute laadimise viga Firestore'ist:", error);
+                }
+            });
+
+            function displaySearches(searches) {
+                const container = document.getElementById("savedSearchesTableBody");
+                if (!container) {
+                    console.error("❌ Ei leitud tabeli keha: savedSearchesTableBody");
+                    return;
+                }
+
+                console.log("🔎 Kuvan otsingud tabelisse:", searches);
+                container.innerHTML = ""; // ✅ Puhastame tabeli enne lisamist
+
+                if (searches.length === 0) {
+                    container.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-gray-500">⚠ Ei leitud salvestatud hankeid.</td></tr>`;
+                    return;
+                }
+
+                searches.forEach((search, index) => {
+                    container.innerHTML += `
+                        <tr class="border-b even:bg-gray-100 hover:bg-gray-200 transition-all">
+                            <td class="p-4">${search.name}</td>
+                            <td class="p-4">${search.procedureType}</td>
+                            <td class="p-4">${search.cost} €</td>
+                            <td class="p-4 text-blue-600 font-semibold">${search.requestSubmissionDate}</td>
+                            <td class="p-4 text-gray-500">${search.contractSigningDate}</td>
+                            <td class="p-4 text-center">
+                                <button onclick="editSearch(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition transform hover:scale-105">✏️ Muuda</button>
+                            </td>
+                            <td class="p-4 text-center">
+                                <button onclick="deleteSearch(${index})" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition transform hover:scale-105">❌ Kustuta</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                console.log("✅ Otsingud lisatud tabelisse!");
+            }
         </script>
 
         <style>
