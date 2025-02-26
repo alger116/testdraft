@@ -20,6 +20,7 @@ module.exports = {
         background: "#F9FAFB", // Light Gray (gray-100)
         text: "#1E293B", // Dark Gray (gray-800)
         accent: "#93C5FD", // Light Blue Accent (blue-300)
+        mint: "oklch(0.72 0.11 178)", // Mint color
       },
       spacing: {
         "progress-margin": "4px", // Adjust spacing under progress bars
@@ -35,6 +36,7 @@ module.exports = {
       },
     },
   },
+
   plugins: [require("daisyui")],
 
   // daisyUI config (optional - here are the default values)
