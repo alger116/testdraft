@@ -207,21 +207,20 @@
                     class="save-button bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1 rounded-lg flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                     <i class="fas fa-user-plus mr-2"></i> Registreeri
                 </a>
-
-                <button id="logoutButton"
-                    class="btn bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-lg flex items-center justify-center shadow-md hover:from-red-600 hover:to-red-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                <button id="logoutButton" class="flex items-center gap-2 px-5 py-2 bg-red-500 text-white rounded-full shadow-md transition-all duration-300 
+    hover:bg-red-600 hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-red-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V7m0 3V6m0 10v-3" />
                     </svg>
-                    <span class="ml-2">Logi välja</span>
+                    <span class="text-sm font-medium">Logi välja</span>
                 </button>
 
 
                 <!-- ✅ Dark Mode Toggle -->
                 <div class="flex items-center space-x-2">
-                    <span class="text-sm text-gray-200"></span>
+                    <span class="text-sm text-black-100"></span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="toggleDarkMode" class="sr-only peer">
                         <div
@@ -240,7 +239,7 @@
         </div>
         </div>
         <div id="toolTab" class="flex space-x-4">
-            <div class="container bg-white p-6 rounded shadow max-w-2xl" id="formContainer">
+            <div class="container bg-white p-6 rounded shadow max-w-xl" id="formContainer">
                 <h2 class="text-2xl font-bold text-center mb-4"></h2>
                 <form id="procurementForm" class="space-y-4">
                     <div>
@@ -336,10 +335,19 @@
                             class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-blue-600 hover:to-blue-700 hover:scale-105 hover:shadow-lg transition-all duration-300">
                             <i class="fas fa-calculator mr-2"></i> Arvuta menetlusaeg
                         </button>
-                        <button id="updateProcurement"
-                            class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300 hidden">
-                            ✅ Lisa hange tabelisse
-                        </button>
+                        <div x-data="{ added: false }" class="relative">
+                            <!-- ✅ Lisa hange tabelisse nupp (hidden vaikimisi) -->
+                            <button id="updateProcurement" @click="added = true; setTimeout(() => added = false, 2000)"
+                                class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg flex-1 flex items-center justify-center shadow-md hover:from-green-600 hover:to-green-700 hover:scale-105 hover:shadow-lg transition-all duration-300 hidden">
+                                ✅ Lisa hange tabelisse
+                            </button>
+
+                            <!-- ✅ Väike checkmark teade -->
+                            <div x-show="added" x-transition.opacity
+                                class="absolute mt-2 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md flex items-center">
+                                ✅ Lisatud!
+                            </div>
+                        </div>
                     </div>
                 </form>
                 <div class="hidden flex space-x-3 mt-6">
@@ -360,7 +368,7 @@
                     </button>
                 </div>
             </div>
-            <div class="container bg-white p-6 rounded shadow max-w-2xl hidden" id="resultContainer">
+            <div class="container bg-white p-6 rounded shadow max-w-xl hidden" id="resultContainer">
                 <div id="result" class="result-card"></div>
             </div>
         </div>
@@ -973,7 +981,7 @@
                 `).join('');
 
                     const errorMessage = new Date(this.requestSubmissionDate) < new Date() ?
-                        '<p class="error-message text-red-500 font-bold">NB! Oled hiljaks jäänud, palun tutvu menetlusele kuluva ajaga ja korrigeeri lepingu sõlmimise kuupäeva</p>' : '';
+                        '<p class="error-message text-red-500 font-bold">NB! Oled hiljaks jäänud planeerimisel!</p>' : '';
 
                     return `
                     <div class="result-card bg-white p-6 rounded max-w-lg">
