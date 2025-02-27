@@ -4,6 +4,9 @@ module.exports = {
     "./index.html", // ✅ Main HTML file
     "./admin.html",
     "./login.html",
+    "./timeline.html",
+    "./profile.html",
+    "./settings.html",
     "./register.html",
     "./_layouts/**/*.html", // ✅ Jekyll layouts
     "./_includes/**/*.html", // ✅ Jekyll includes
@@ -15,6 +18,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        mint: "hsl(178, 72%, 11%)",
+        primary: "hsl(217, 100%, 50%)",
+        secondary: "hsl(217, 100%, 50%)",
+        background: "hsl(217, 100%, 50%)",
+        text: "hsl(217, 100%, 50%)",
+        accent: "hsl(217, 100%, 50%)",
         primary: "#3B82F6", // Soft Blue (Tailwind blue-500)
         secondary: "#2563EB", // Darker Blue (blue-600)
         background: "#F9FAFB", // Light Gray (gray-100)
